@@ -493,7 +493,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                                     style={{ height: 45, width:45, borderRadius: 15 }}
                                     source={IMAGES.small1}
                                 />
-                                <Text style={{ ...FONTS.Marcellus, fontSize: 14, color: colors.title }}>Hello{"\n"}<Text style={{fontSize:18}}>Elizabeth</Text></Text>
+                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>Hello{"\n"}<Text style={{fontSize:18}}>Red Carpet</Text></Text>
                             </View>
                         </TouchableOpacity>
                         <View

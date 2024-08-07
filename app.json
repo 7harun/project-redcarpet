@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "redcarpet",
-    "slug": "redcarpet",
+    "name": "app",
+    "slug": "app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.w3itexperts.redcarpet"
+      "package": "com.w3itexperts.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -182,7 +182,7 @@ const BottomTab = ({ state, descriptors, navigation } : Props) => {
                                     <Image
                                         style={{ width: 21, height: 21, tintColor: isFocused ? COLORS.white : colors.title, resizeMode: 'contain' }}
                                         source={
-                                            label == 'Home' ? IMAGES.home :
+                                            label == 'Home' ? IMAGES.heart2 :
                                             label == 'Wishlist' ? IMAGES.heart2 :
                                             label == 'MyCart' ? IMAGES.shopping2 :
                                             label == 'Category' ? IMAGES.document :
