@@ -46,7 +46,7 @@ const Swiper2Data = [
     {
         id:"5",
         image: IMAGES.item14,
-        title: "Dazzling Gold\nBracelet",
+        title: "Birthday Celebrations",
         price: "$80",
         discount: "$95",
         offer: "Up To 79% Off",
@@ -81,35 +81,35 @@ const Swiper2Data = [
 const CategoriesData = [
     {
         image: IMAGES.product1,
-        title: "Popular Ring"
+        title: "Birthday"
     },
     {
         image: IMAGES.product2,
-        title: "Earring"
+        title: "Wedding"
     },
     {
         image: IMAGES.product3,
-        title: "Bracelets"
+        title: "House Warming"
     },
     {
         image: IMAGES.product4,
-        title: "Anklets"
+        title: "Reception"
     },
     {
         image: IMAGES.product1,
-        title: "Popular Ring"
+        title: "Dothi Cermony"
     },
     {
         image: IMAGES.product2,
-        title: "Earring"
+        title: "Sangeth"
     },
     {
         image: IMAGES.product3,
-        title: "Bracelets"
+        title: "Catering"
     },
     {
         image: IMAGES.product4,
-        title: "Anklets"
+        title: "Baby Shower"
     },
 ]
 
@@ -493,7 +493,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                                     style={{ height: 45, width:45, borderRadius: 15 }}
                                     source={IMAGES.small1}
                                 />
-                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>Hello{"\n"}<Text style={{fontSize:18}}>Red Carpet</Text></Text>
+                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>{"\n"}<Text style={{fontSize:18}}>Red Carpet</Text></Text>
                             </View>
                         </TouchableOpacity>
                         <View
@@ -547,7 +547,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                             </View>
                         </View>
                     </View>
-                    <View style={{height:50,
+                    <View style={{height:40,
                         backgroundColor:colors.card,
                         opacity:.6,
                         borderRadius:10,
@@ -557,7 +557,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                     />
                     <View style={{ flexDirection: 'row', marginTop: 20 }}>
                         <View style={{ flex:1 }}>
-                            <Text style={{ ...FONTS.Marcellus, fontSize: 24, color:colors.title,lineHeight:33 }}>The Natural{"\n"}Beauty Of A Jewelry{"\n"}Collection</Text>
+                            <Text style={{ ...FONTS.Marcellus, fontSize: 24, color:colors.title,lineHeight:33 }}>Effortless Event {"\n"}Planning at Your {"\n"}Fingertips</Text>
                         </View>
                         
                         <View
@@ -575,11 +575,11 @@ const Home = ({navigation} : HomeScreenProps) => {
                                 borderRadius:100
                             }]}
                         >
-                            <View style={{height:110,width:110,backgroundColor:colors.card,borderRadius:100,}}>
+                            {/* <View style={{height:110,width:110,backgroundColor:colors.card,borderRadius:100,}}>
                                 <View style={{position:'absolute',top:-44,right:-12}}>
                                     <SvgcurvedText small={undefined}/>
                                 </View>
-                            </View>
+                            </View> */}
                         </View>
                     </View>
                 </View>
@@ -598,7 +598,9 @@ const Home = ({navigation} : HomeScreenProps) => {
                 <View style={{ width: '100%',marginBottom:5  }}>
                     <View style={[GlobalStyleSheet.container, { marginHorizontal: 5, marginVertical: 5, }]}>
                         <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-                            <Text style={{ ...FONTS.Marcellus, fontSize: 20, color: colors.title }}>Add To Your{"\n"}Jewelry Collection</Text>
+                            <Text style={{ ...FONTS.Marcellus, fontSize: 20, color: colors.title }}>
+                                {/* Add To Your{"\n"}Jewelry Collection */}
+                                </Text>
                         </View>
                         <View style={{ marginHorizontal: -15, }}>
                             <ScrollView
@@ -662,7 +664,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                             ]}
                             source={IMAGES.product5}
                         />
-                        <View style={{alignItems:'center',position:'absolute',left:0,right:0,top:70}}>
+                        {/* <View style={{alignItems:'center',position:'absolute',left:0,right:0,top:70}}>
                             <View style={{height:85,width:85,backgroundColor:theme.dark ? 'rgba(0,0,0, 0.70)':'rgba(255, 255, 255, 0.70)',borderRadius:100,}}>
                                 <View style={{position:'absolute',top:-56,left:-41}}>
                                     <SvgcurvedText
@@ -670,13 +672,13 @@ const Home = ({navigation} : HomeScreenProps) => {
                                     />
                                 </View>
                             </View>
-                        </View>
+                        </View> */}
                         
                     </View>
                 </View>
                 <View style={[GlobalStyleSheet.container,{paddingTop:25}]}>
                     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-                        <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title, }}>Highly Recommended{"\n"}Jewelry Essentials</Text>
+                        <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title, }}>Venues Near You</Text>
                     </View>
                     <View style={{ marginHorizontal: -15 ,marginTop:20,}}>
                         <ScrollView
