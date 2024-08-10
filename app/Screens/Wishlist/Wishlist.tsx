@@ -19,23 +19,64 @@ const sliderData = [
         title: "All",
     },
     {
-        title: "Child",
+        title: "Venues",
     },
     {
-        title: "Man",
+        title: "Photography",
     },
     {
-        title: "Woman",
+        title: "Outdoor shoots",
     },
     {
-        title: "unisex",
+        title: "Catering",
     },
     {
-        title: "Boys",
+        title: "Mehandi",
     },
     {
-        title: "Girls",
+        title: "Decorations",
     },
+]
+
+const Swiper2Data = [
+    {
+        id:"5",
+        image: IMAGES.ph1,
+        title: "Photography",
+        price: "8000",
+        discount: "10000",
+        offer: "Up To 79% Off",
+    },
+    {
+        id:"6",
+        image: IMAGES.ph2,
+        title: "Photography",
+        price: "8000",
+        discount: "10000",
+        delivery: "Free delivery",
+        offer: "Up To 69% Off",
+
+    },
+    {
+        id:"7",
+        image: IMAGES.bday,
+        title: "Birthday decorations",
+        price: "8000",
+        discount: "10000",
+        delivery: "Free delivery",
+        offer: "Up To 79% Off",
+
+    },
+    {
+        id:"8",
+        image: IMAGES.mandap,
+        title: "Mandap Decorations",
+        price: "8000",
+        discount: "10000",
+        delivery: "Free delivery",
+        marginTop:10
+    }
+   
 ]
 
 const gridData = [
@@ -194,7 +235,7 @@ const Wishlist = ({ navigation } : WishlistScreenProps ) => {
                         contentContainerStyle={{ paddingHorizontal:15,paddingBottom:190,flexGrow:1}}
                     >
                         <View style={{ marginTop: -10}}>
-                            {wishList.map((data:any, index:any) => {
+                            {Swiper2Data.map((data:any, index:any) => {
                                 return (
                                     <CardStyle3
                                         id={data.id}
@@ -210,7 +251,7 @@ const Wishlist = ({ navigation } : WishlistScreenProps ) => {
                                     />
                                 )
                             })}
-                            {wishList.length === 0 && 
+                            {Swiper2Data.length === 0 && 
                                 <View
                                     style={{
                                         position:'absolute',
@@ -245,7 +286,7 @@ const Wishlist = ({ navigation } : WishlistScreenProps ) => {
                                             paddingHorizontal:40,
                                             marginBottom:30,
                                         }}
-                                    >Add Product to you favourite and shop now.</Text>
+                                    >Add Events to your favourites and shop now.</Text>
                                 </View>
                             }
                         </View>

@@ -15,10 +15,10 @@ import { IMAGES } from '../../constants/Images';
 
 const TrackorderData = [
     {
-        image: IMAGES.item11,
-        title: "Sterling Silver Ring",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.ph3,
+        title: "Marraige shoot",
+        price: "8000",
+        discount: "1000",
         review:"(2k Review)",
         offer:"40% Off"
     },

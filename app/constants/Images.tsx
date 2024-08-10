@@ -48,6 +48,7 @@ export const IMAGES = {
 	folder: require('../assets/images/icons/folder.png'),
 	payment: require('../assets/images/icons/payment.png'),
 	dollar: require('../assets/images/icons/dollar.png'),
+	rupee: require('../assets/images/icons/rupee.png'),
 	downaeeowsmall: require('../assets/images/icons/downaeeowsmall.png'),
 	call: require('../assets/images/icons/call.png'),
 	send: require('../assets/images/icons/send.png'),
@@ -85,8 +86,25 @@ export const IMAGES = {
 	item8: require('../assets/images/item/pic8.jpeg'),
 	item9: require('../assets/images/item/pic9.jpeg'),
 	item10: require('../assets/images/item/pic10.jpeg'),
-	item11: require('../assets/images/item/pic11.png'),
-	item12: require('../assets/images/item/pic12.png'),
+	
+	item11: require('../assets/images/item/party1.jpg'),
+	item12: require('../assets/images/item/party2.jpg'),
+	party3: require('../assets/images/item/party3.jpg'),
+	party4: require('../assets/images/item/party4.jpg'),
+
+	catring1: require('../assets/images/item/catring1.jpg'),
+	catring2: require('../assets/images/item/catring2.jpg'),
+	mahendi: require('../assets/images/item/mahendi.jpg'),
+	mandap: require('../assets/images/item/mandap.jpg'),
+	bday: require('../assets/images/item/bday.jpg'),
+	staged: require('../assets/images/item/staged.jpg'),
+
+	ph1: require('../assets/images/item/ph1.jpg'),
+	ph2: require('../assets/images/item/ph2.jpg'),
+	ph3: require('../assets/images/item/ph3.jpg'),
+
+
+
 	item13: require('../assets/images/item/pic13.png'),
 	item14: require('../assets/images/item/pic9.jpeg'),
 	item21: require('../assets/images/item/pic21.png'),
@@ -96,6 +114,7 @@ export const IMAGES = {
 	item25: require('../assets/images/item/pic25.png'),
 	item32: require('../assets/images/item/pic32.png'),
 	item34: require('../assets/images/item/pic34.png'),
+	
 	item38: require('../assets/images/item/pic38.png'),
 	item39: require('../assets/images/item/pic39.png'),
 	item40: require('../assets/images/item/pic40.png'),
@@ -125,7 +144,7 @@ export const IMAGES = {
 	small11: require('../assets/images/small/pic4.jpg'),
 
 	product1: require('../assets/images/product/pic1.png'),
-	product2: require('../assets/images/product/pic2.png'),
+	product2: require('../assets/images/product/pic2.jpeg'),
 	product3: require('../assets/images/product/pic3.png'),
 	product4: require('../assets/images/product/pic4.png'),
 	product5: require('../assets/images/product/pic2.jpeg'),

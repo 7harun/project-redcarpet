@@ -79,7 +79,7 @@ const Onbording = ({navigation} : OnbordingScreenProps) => {
                         <View style={[GlobalStyleSheet.col50,{width:144,height:144,borderRadius:100,backgroundColor:COLORS.white,marginRight:50,marginTop:-30,alignItems:'center'}]}>
                             <Image
                                 style={{resizeMode:'contain',width:'100%',height:undefined,aspectRatio:1/1,marginTop:40}}
-                                source={IMAGES.item3}
+                                source={IMAGES.mandap}
                             />
                         </View>
                     </View>
@@ -87,7 +87,7 @@ const Onbording = ({navigation} : OnbordingScreenProps) => {
                         <View style={[GlobalStyleSheet.col50,{width:190,height:190,borderRadius:150,backgroundColor:COLORS.primary,marginLeft:-30,marginTop:70,overflow:'hidden',alignItems:'center',justifyContent:'center'}]}>
                             <Image
                                 style={{width:'100%',height:undefined,aspectRatio:1/1.1,marginLeft:20,marginTop:10}}
-                                source={IMAGES.item21}
+                                source={IMAGES.mahendi}
                             />
                         </View>
                         <View style={[
@@ -105,7 +105,7 @@ const Onbording = ({navigation} : OnbordingScreenProps) => {
                         >
                             <Image
                                 style={{width:'100%',height:undefined,aspectRatio:1/1.3,transform: [{ rotate: '135deg' },{scale :Platform.OS === 'web' ? 2 : 1.6}],marginTop:52}}
-                                source={IMAGES.item2}
+                                source={IMAGES.ph1}
                             />
                         </View>
                     </View>

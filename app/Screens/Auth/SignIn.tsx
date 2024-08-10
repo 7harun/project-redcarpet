@@ -77,7 +77,7 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
                     <View style={{ width: 600, height: 500, backgroundColor: COLORS.primary, borderRadius: 250, marginLeft: -95, marginTop: -220, overflow: 'hidden' }}>
                         <Image
                             style={{ height: undefined, aspectRatio: 2.3 / 1.5, resizeMode: 'contain', width: '100%', marginTop: 150, }}
-                            source={IMAGES.item4}
+                            source={IMAGES.party3}
                         />
                         <View style={{ width: 600, height: 500, backgroundColor: '#360F00', borderRadius: 250, position: 'absolute', opacity: .8 }} />
                     </View>

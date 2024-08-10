@@ -4,10 +4,10 @@
     "slug": "app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/rc.jpg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/rc.jpg",
       "resizeMode":"cover",
       "backgroundColor": "#70747D"
     },
@@ -18,7 +18,7 @@
       "supportsTablet": true,
       "requireFullScreen": true,
       "splash": {
-        "image": "./assets/splash.png",
+        "image": "./assets/rc.jpg",
         "resizeMode": "cover",
         "backgroundColor": "#70747D"
       }

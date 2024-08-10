@@ -23,7 +23,7 @@ const PaymentAccordion = () => {
 
     const SECTIONS = [
         {
-            icon: IMAGES.dollar,
+            icon: IMAGES.rupee,
             title: 'Cash on Delivery(Cash/UPI)',
             content: 'Carry on your cash payment..\nThanx!',
         },

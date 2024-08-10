@@ -17,11 +17,11 @@ const FilterSheet2 = ({sheetRef} : Props) => {
   const theme = useTheme();
   const { colors }: {colors : any} = theme;
 
-  const brandData = ["Good Vibes", "Maybelline", "NY Bae", "Lakme","Vibes"];
+  const brandData = ["Trending", "Top Ratings", "Best Deals", "50% off"];
 
   const [activeSize, setActiveSize] = useState(brandData[0]);
 
-  const categoriesData = ["All", "Face Wash", "Cleanser", "Scrubs", "Makeup Remover", "Hand Cream",];
+  const categoriesData = ["All", "Wedding", "Reception", "Sangeth", "Catering", "Birthday",];
 
   const [active1Size, setActive1Size] = useState(categoriesData[0]);
 
@@ -172,7 +172,7 @@ const FilterSheet2 = ({sheetRef} : Props) => {
                   <Text style={{ ...FONTS.fontRegular, fontSize: 13, color: colors.title }}>See All</Text>
                 </TouchableOpacity>
               </View>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 5 }}>
+              {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 5 }}>
                 {sizeData.map((data, index) => {
                   return (
                     <View
@@ -211,7 +211,7 @@ const FilterSheet2 = ({sheetRef} : Props) => {
                   </View>
                   )
                 })}
-              </View>
+              </View> */}
               <View style={{ flexDirection: 'row', gap: 10, paddingRight: 10, marginTop: 20,marginBottom:50 }}>
                 <View style={{ width: '50%' }}>
                   <View

@@ -12,9 +12,9 @@ import { IMAGES } from '../../constants/Images';
 const TrackorderData = [
     {
         image: IMAGES.item11,
-        title: "Sterling Silver Ring",
-        price: "$80",
-        discount: "$95",
+        title: "Venue ",
+        price: "8000",
+        discount: "10000",
         review:"(2k Review)",
         offer:"40% Off"
     },
@@ -110,7 +110,7 @@ const Trackorder = () => {
                         </View>
                         <View style={{ height: 60, width: 2, backgroundColor: COLORS.primary, position: 'absolute', left: 11, top: 40 }}></View>
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 20 }}>
+                    {/* <View style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 20 }}>
                         <View style={{ height: 24, width: 24, borderWidth: 2, borderColor: colors.card, borderRadius: 24,backgroundColor:theme.dark ? '#0C101C':'#F9F5F3' }}>
                         </View>
                         <View style={{backgroundColor:colors.card,padding:10,borderRadius:12,opacity:.4}}>
@@ -135,7 +135,7 @@ const Trackorder = () => {
                             <Text style={{ ...FONTS.Marcellus, fontSize: 16, color: colors.title }}>Out For Delivery<Text style={{ ...FONTS.fontRegular, fontSize: 14, color:theme.dark ? 'rgba(255,255,255,0.50)': 'rgba(0, 0, 0, 0.50)' }}>  31 Dec 2024</Text></Text>
                             <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>Your order is out for delivery</Text>
                         </View>
-                    </View>
+                    </View> */}
                 </View>
             </ScrollView>
         </SafeAreaView>

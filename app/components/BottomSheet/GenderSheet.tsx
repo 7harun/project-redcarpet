@@ -16,7 +16,7 @@ const GenderSheet2 = ({genderRef} : Props) => {
     const theme = useTheme();
     const { colors } : {colors : any} = theme;
 
-    const GenderData = ["Men", "Women",];
+    const GenderData = ["Venues", "Catering","Photography"];
 
     const [activeSize, setActiveSize] = useState(GenderData[0]);
 
@@ -34,7 +34,7 @@ const GenderSheet2 = ({genderRef} : Props) => {
                     paddingHorizontal: 15
                 }}
             >
-                <Text style={[FONTS.Marcellus, { color: colors.title, fontSize: 20 }]}>Gender</Text>
+                <Text style={[FONTS.Marcellus, { color: colors.title, fontSize: 20 }]}>Category</Text>
                 <View
                     style={[{
                         shadowColor:theme.dark ? "#000": "rgba(195, 123, 95, 0.20)",

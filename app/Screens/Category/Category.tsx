@@ -12,58 +12,58 @@ import { RootStackParamList } from '../../Navigations/RootStackParamList';
 
 const CategoriesData = [
     {
-        image: IMAGES.product1,
-        title: "Popular Ring"
+        image: IMAGES.ph1,
+        title: "Photography"
     },
     {
         image: IMAGES.product2,
-        title: "Earring"
+        title: "Marraige shoot"
     },
     {
-        image: IMAGES.product3,
-        title: "Bracelets"
+        image: IMAGES.ph3,
+        title: "Photography"
+},
+    {
+        image: IMAGES.mahendi,
+        title: "Mehandi"
     },
     {
-        image: IMAGES.product4,
-        title: "Anklets"
-    },
-    {
-        image: IMAGES.product1,
-        title: "Popular Ring"
+        image: IMAGES.mandap,
+        title: "  Mandap \nDecorations"
     },
     {
         image: IMAGES.product2,
-        title: "Earring"
+        title: "Decorations"
     },
     {
-        image: IMAGES.product3,
-        title: "Bracelets"
+        image: IMAGES.party3,
+        title: "   Venue \nDecorations"
     },
     {
-        image: IMAGES.product4,
-        title: "Anklets"
+        image: IMAGES.party4,
+        title: "  Outdoor \nDecorations"
     },
 ]
 
 const CategoryData = [
     {
-        image: IMAGES.item22,
-        title: "Necklaces",
+        image: IMAGES.catring2,
+        title: "Catering",
         count: '24',
     },
     {
-        image: IMAGES.item23,
-        title: "Rings",
+        image: IMAGES.bday,
+        title: "Decorations",
         count: '24',
     },
     {
-        image: IMAGES.item24,
-        title: "Earrings",
+        image: IMAGES.staged,
+        title: "Decorations",
         count: '24',
     },
     {
-        image: IMAGES.item25,
-        title: "Anklets",
+        image: IMAGES.ph2,
+        title: "Photography",
         count: '24',
     }
 ]

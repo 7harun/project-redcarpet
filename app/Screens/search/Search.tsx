@@ -16,34 +16,40 @@ const SearchData = [
         title: "All",
     },
     {
-        title: "Rings",
+        title: "Venues",
     },
     {
-        title: "Necklaces",
+        title: "Photography",
     },
     {
-        title: "Earrings",
+        title: "Outdoor shoots",
     },
     {
-        title: "Bracelets",
+        title: "Catering",
+    },
+    {
+        title: "Mehandi",
+    },
+    {
+        title: "Decorations",
     },
 ]
 
 const SearchHistoryData = [
     {
-        title: "Radiant Ruby Pendant",
+        title: "Photography near me",
     },
     {
-        title: "Rose Gold Chain Bracelet",
+        title: "Function Halls near me",
     },
     {
-        title: "Pearl Cluster Ring",
+        title: "Outdoor Videography",
     },
     {
-        title: "Amethyst Hoop Earrings",
+        title: "Best Catering services",
     },
     {
-        title: "Topaz Solitaire Ring",
+        title: "Birthday Decorations",
     },
 
 ]

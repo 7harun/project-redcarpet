@@ -29,11 +29,11 @@ const Sidebar = ({navigation} : any) => {
             name: "Products",
             navigate: "Products",
         },
-        {
-            icon: IMAGES.components,
-            name: "Components",
-            navigate: "Components",
-        },
+        // {
+        //     icon: IMAGES.components,
+        //     name: "Components",
+        //     navigate: "Components",
+        // },
         {
             icon: IMAGES.star,
             name: "Review",
@@ -54,11 +54,11 @@ const Sidebar = ({navigation} : any) => {
             name: "My Cart",
             navigate: 'MyCart',
         },
-        {
-            icon: IMAGES.chat,
-            name: "Chat List",
-            navigate: 'Chat',
-        },
+        // {
+        //     icon: IMAGES.chat,
+        //     name: "Chat List",
+        //     navigate: 'Chat',
+        // },
         {
             icon: IMAGES.user2,
             name: "Profile",
@@ -163,8 +163,8 @@ const Sidebar = ({navigation} : any) => {
                             borderTopColor: colors.border
                         }}
                     >
-                        <Text style={{ ...FONTS.fontSemiBold, fontSize: 13, color: colors.title, marginBottom: 4 }}>Redcarpet<Text style={{ ...FONTS.fontRegular, fontSize: 13 }}> Cosmetic Store</Text></Text>
-                        <Text style={{ ...FONTS.fontRegular, fontSize: 13, color: colors.title }}>App Version 1.0</Text>
+                        <Text style={{ ...FONTS.fontSemiBold, fontSize: 13, color: colors.title, marginBottom: 4 }}>Redcarpet</Text>
+                        {/* <Text style={{ ...FONTS.fontRegular, fontSize: 13, color: colors.title }}>App Version 1.0</Text> */}
                     </View>
                 </ScrollView>
             </View>

@@ -16,7 +16,7 @@ import { addToCart } from '../../redux/reducer/cartReducer';
 
 const swiperimageData = [
     {
-        image: IMAGES.itemDetails1,
+        image: IMAGES.ph1,
     },
 ]
 
@@ -36,10 +36,10 @@ const ProductDetails = ({ navigation } : ProductDetailsScreenProps) => {
     const addItemToCart = () => {
         dispatch(addToCart({
             id:"05",
-            image:IMAGES.itemDetails1,
-            title: "Elegant Gold Earrings",
-            price: "$80",
-            discount: "$95",
+            image:IMAGES.ph1,
+            title: "World Famous Photography",
+            price: "8000",
+            discount: "10000",
             review: "(2k Review)",
         } as any ));
     }
@@ -53,7 +53,7 @@ const ProductDetails = ({ navigation } : ProductDetailsScreenProps) => {
             }
         ]}>
                 <Header
-                    title="Product Details"
+                    title="Details"
                     leftIcon={'back'}
                     rightIcon={'cart'}
                     color
@@ -78,11 +78,11 @@ const ProductDetails = ({ navigation } : ProductDetailsScreenProps) => {
                 </View>
                 <View style={[GlobalStyleSheet.container, { marginTop: 5 }]}>
                     <View style={{marginBottom:20}}>
-                        <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title }}>Elegant Gold Earrings</Text>
+                        <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title }}>World Famous Photography</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5,marginTop:5 }}>
                             <Image
                                 style={{ height: 14, width: 14, resizeMode: 'contain' }}
-                                source={IMAGES.star4}
+                                source={IMAGES.ph1}
                             />
                             <Text style={{ ...FONTS.fontSemiBold, fontSize: 14, color: colors.title }}>4.5<Text style={{ ...FONTS.fontRegular, fontSize: 14, color: theme.dark ? 'rgba(255,255,255,.5)' : 'rgba(0,0,0,.5)' }}> (490)</Text></Text>
                         </View>
@@ -91,11 +91,11 @@ const ProductDetails = ({ navigation } : ProductDetailsScreenProps) => {
                         <View>
                             <Text style={{ ...FONTS.fontMedium, fontSize: 16, color: colors.title }}>Price:</Text>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 10 }}>
-                                <Text style={{ ...FONTS.fontMedium, fontSize: 20, color: colors.title }}>$270</Text>
-                                <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title, textDecorationLine: 'line-through' }}>$310</Text>
+                                <Text style={{ ...FONTS.fontMedium, fontSize: 20, color: colors.title }}>8000</Text>
+                                <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title, textDecorationLine: 'line-through' }}>10000</Text>
                             </View>
                         </View>
-                        <View style={{  }}>
+                        {/* <View style={{  }}>
                             <Text style={{ ...FONTS.fontMedium, fontSize: 16, color: colors.title }}>Items Size:</Text>
                             <View
                                 style={{
@@ -126,12 +126,12 @@ const ProductDetails = ({ navigation } : ProductDetailsScreenProps) => {
                                     )
                                 })}
                             </View>
-                        </View>
+                        </View> */}
                     </View>
                     <View style={{ marginTop: 10 }}>
                         <Text style={{ ...FONTS.fontSemiBold, fontSize: 16, color: colors.title }}>Description:</Text>
                         <View>
-                            <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title, opacity: 0.7, marginTop: 10 }}>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humor.</Text>
+                            <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title, opacity: 0.7, marginTop: 10 }}>Pioneers in the industry, we offer Fashion Accessories Photography Service, Wedding Photography Service, Model Portfolio Photography Service, E Commerce Product Photography Service, Pre Wedding Shoot Photography Service and Social Media Photography Service from India.</Text>
                         </View>
                     </View>
                 </View>

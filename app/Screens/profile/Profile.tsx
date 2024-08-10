@@ -20,8 +20,8 @@ const btnData = [
         navigate: 'Wishlist',
     },
     {
-        title: "Coupons",
-        navigate: 'Coupons',
+        title: "Cart",
+        navigate: 'MyCart',
     },
     {
         title: "Track Order",
@@ -69,11 +69,11 @@ const ListwithiconData = [
                 title: "Reviews",
                 navigate: 'WriteReview'
             },
-            {
-                icon: IMAGES.comment,
-                title: "Questions & Answers",
-                navigate: 'Questions'
-            },
+            // {
+            //     icon: IMAGES.comment,
+            //     title: "Questions & Answers",
+            //     navigate: 'Questions'
+            // },
         ],
     },
 
@@ -124,7 +124,7 @@ const Profile = ({ navigation } : ProfileScreenProps) => {
                             source={IMAGES.small1}
                         />
                     </View>
-                    <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title }}>Hello, Roopa</Text>
+                    <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title }}>Hello, RC'User</Text>
                 </View>
                 <View style={[GlobalStyleSheet.row]}>
                     {btnData.map((data:any, index:any) => {

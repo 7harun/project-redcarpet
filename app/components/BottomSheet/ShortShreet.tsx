@@ -16,7 +16,7 @@ const ShortSheet2 = ({shortRef} : Props) => {
     const theme = useTheme();
     const { colors } : {colors : any} = theme;
 
-    const GenderData = ["Men", "Women",];
+    const GenderData = ["Price", "Near By",];
 
     const [activeSize, setActiveSize] = useState(GenderData[0]);
 

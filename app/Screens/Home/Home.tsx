@@ -45,34 +45,38 @@ const Swiper1Data =[
 const Swiper2Data = [
     {
         id:"5",
-        image: IMAGES.item14,
-        title: "Birthday Celebrations",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.ph1,
+        title: "Photography",
+        price: "8000",
+        discount: "10000",
         offer: "Up To 79% Off",
     },
     {
         id:"6",
-        image: IMAGES.item44,
-        title: "Radiant Ruby\nPendant",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.ph2,
+        title: "Photography",
+        price: "8000",
+        discount: "10000",
         delivery: "Free delivery",
+        offer: "Up To 69% Off",
+
     },
     {
         id:"7",
-        image: IMAGES.item45,
-        title: "Radiant Ruby\nPendant",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.bday,
+        title: "Birthday decorations",
+        price: "8000",
+        discount: "10000",
         delivery: "Free delivery",
+        offer: "Up To 79% Off",
+
     },
     {
         id:"8",
-        image: IMAGES.item13,
-        title: "Radiant Ruby\nPendant",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.mandap,
+        title: "Mandap Decorations",
+        price: "8000",
+        discount: "10000",
         delivery: "Free delivery",
         marginTop:10
     }
@@ -115,45 +119,45 @@ const CategoriesData = [
 
 const cardstyle3DataData = [
     {
-        image: IMAGES.item38,
-        title: "Radiant Ruby\nProduct",
-        price: "$80",
-        discount: "$89",
+        image: IMAGES.party4,
+        title: "Venue4",
+        price: "8000",
+        discount: "10000",
        
     },
     {
-        image: IMAGES.item34,
-        title: "Emerald Drop\nNecklace",
-        price: "$80",
-        discount: "$89",
+        image: IMAGES.catring1,
+        title: "Catering services",
+        price: "8000",
+        discount: "10000",
        
     },
     {
-        image: IMAGES.item32,
-        title: "Sapphire Stud\nEarrings",
-        price: "$80",
-        discount: "$89",
+        image: IMAGES.mahendi,
+        title: "Mahendi services",
+        price: "8000",
+        discount: "10000",
        
     },
     {
-        image: IMAGES.item38,
-        title: "Radiant Ruby\nProduct",
-        price: "$80",
-        discount: "$89",
+        image: IMAGES.party4,
+        title: "Venue4",
+        price: "8000",
+        discount: "10000",
        
     },
     {
-        image: IMAGES.item34,
-        title: "Emerald Drop\nNecklace",
-        price: "$80",
-        discount: "$89",
+        image: IMAGES.catring1,
+        title: "Catering services",
+        price: "8000",
+        discount: "10000",
        
     },
     {
-        image: IMAGES.item32,
-        title: "Sapphire Stud\nEarrings",
-        price: "$80",
-        discount: "$89",
+        image: IMAGES.mahendi,
+        title: "Mahendi services",
+        price: "8000",
+        discount: "10000",
        
     },
 ]
@@ -162,33 +166,33 @@ const CardStyle1Data = [
     {
         id:"0",
         image: IMAGES.item11,
-        title: "Sterling Silver Ring",
-        price: "$80",
-        discount: "$89",
+        title: "Venue1",
+        price: "8000",
+        discount: "10000",
        
     },
     {
         id:"1",
         image: IMAGES.item12,
-        title: "Pearl Cluster Ring",
-        price: "$80",
-        discount: "$89",
+        title: "Venue2",
+        price: "8000",
+        discount: "10000",
        
     },
     {
         id:"2",
-        image: IMAGES.item11,
-        title: "Sterling Silver Ring",
-        price: "$80",
-        discount: "$89",
+        image: IMAGES.party3,
+        title: "Venue3",
+        price: "8000",
+        discount: "10000",
        
     },
     {
         id:"3",
-        image: IMAGES.item12,
-        title: "Pearl Cluster Ring",
-        price: "$80",
-        discount: "$89",
+        image: IMAGES.party4,
+        title: "Venue4",
+        price: "8000",
+        discount: "10000",
        
     },
 ]
@@ -196,34 +200,95 @@ const CardStyle1Data = [
 const CardStyle2Data = [
     {
         id:"9",
-        image: IMAGES.item11,
-        title: "Sterling Silver\nRing",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.catring1,
+        title: "Catering 1",
+        price: "8000",
+        discount: "10000",
     },
     {
         id:"10",
-        image: IMAGES.item12,
-        title: "Pearl Cluster\nRing",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.catring2,
+        title: "Catering 2",
+        price: "8000",
+        discount: "10000",
     },
     {
         id:"11",
-        image: IMAGES.item11,
-        title: "Sterling Silver\nRing",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.catring1,
+        title: "Catering 3",
+        price: "8000",
+        discount: "10000",
     },
     {
         id:"12",
-        image: IMAGES.item12,
-        title: "Pearl Cluster\nRing",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.catring2,
+        title: "Catering 4",
+        price: "8000",
+        discount: "10000",
     }
 ]
 
+const CardDecorators = [
+    {
+        id:"9",
+        image: IMAGES.bday,
+        title: "BirthDay Decorations",
+        price: "8000",
+        discount: "10000",
+    },
+    {
+        id:"10",
+        image: IMAGES.staged,
+        title: "Stage decorations",
+        price: "8000",
+        discount: "10000",
+    },
+    {
+        id:"11",
+        image: IMAGES.bday,
+        title: "BirthDay Decorations",
+        price: "8000",
+        discount: "10000",
+    },
+    {
+        id:"12",
+        image: IMAGES.mandap,
+        title: "Mandap Decorations",
+        price: "8000",
+        discount: "10000",
+    }
+]
+
+const CardPhotoGraphers = [
+    {
+        id:"9",
+        image: IMAGES.ph1,
+        title: "Photography",
+        price: "8000",
+        discount: "10000",
+    },
+    {
+        id:"10",
+        image: IMAGES.ph2,
+        title: "Videography",
+        price: "8000",
+        discount: "10000",
+    },
+    {
+        id:"11",
+        image: IMAGES.ph3,
+        title: "Outdoor shoots",
+        price: "8000",
+        discount: "10000",
+    },
+    {
+        id:"12",
+        image: IMAGES.ph1,
+        title: "Photography",
+        price: "8000",
+        discount: "10000",
+    }
+]
 const PeopleData = [
     {
         image: IMAGES.item41,
@@ -323,26 +388,26 @@ const PopularData = [
 
 const CartData = [
     {
-        image: IMAGES.item39,
-        title: "Sterling Silver Ring",
-        price: "$80",
-        discount: "$95",
         review: "(2k Review)",
         offer: "40% Off",
+        image: IMAGES.party3,
+        title: "Venue3",
+        price: "8000",
+        discount: "10000",
     },
     {
-        image: IMAGES.item40,
-        title: "Pearl Cluster Ring",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.catring1,
+        title: "Catering",
+        price: "8000",
+        discount: "10000",
         review: "(2k Review)",
         offer: "Up To 70% Off",
     },
     {
-        image: IMAGES.item13,
-        title: "Sapphire Stud Earringst",
-        price: "$80",
-        discount: "$95",
+        image: IMAGES.mahendi,
+        title: "Mahendi services",
+        price: "8000",
+        discount: "10000",
         review: "(2k Review)",
         offer: "60% Off",
     },
@@ -384,14 +449,14 @@ const adsData = [
 
 const SponsoredData = [
     {
-        image: IMAGES.item40,
+        image: IMAGES.catring1,
         title: "Pearl Cluster\nRing",
         price: "$80",
         discount: "$89",
         offer:"Min. 30% Off"
     },
     {
-        image: IMAGES.item39,
+        image: IMAGES.catring2,
         title: "Topaz\nSolitaire Ring",
         price: "$80",
         discount: "$89",
@@ -632,7 +697,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                                                 >
                                                     <View style={{backgroundColor:colors.card,height:80,width:80,borderRadius:100,alignItems:'center',justifyContent:'center'}}>
                                                         <Image
-                                                            style={{ height: 50, width: 50,borderRadius:100, resizeMode: 'contain', }}
+                                                            style={{ height: 80, width: 70,borderRadius:35, resizeMode: 'contain', }}
                                                             source={data.image}
                                                         />
                                                     </View>
@@ -714,6 +779,125 @@ const Home = ({navigation} : HomeScreenProps) => {
                         />
                     </View>
                 </View>
+
+                <View style={[GlobalStyleSheet.container,{paddingTop:25}]}>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title, }}>Top Caterers near you</Text>
+                    </View>
+                    <View style={{ marginHorizontal: -15 ,marginTop:20,}}>
+                        <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={{ paddingHorizontal: 15 }}
+                        >
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, marginRight: 10 }}>
+                                {CardStyle2Data.map((data:any, index:any) => {
+                                    return (
+                                        <View style={[{ marginBottom: 20, width: SIZES.width > SIZES.container ? SIZES.container / 3 : SIZES.width / 2.3 }]} key={index}>
+                                            <CardStyle1
+                                                id={data.id}
+                                                image={data.image}
+                                                title={data.title}
+                                                price={data.price}
+                                                discount={data.discount}
+                                                onPress={() => navigation.navigate('ProductDetails')}
+                                                onPress1={() => addItemToWishList(data)}
+                                                onPress2={() =>{addItemToCart(data) ; navigation.navigate('MyCart')}}            
+                                                closebtn                                             
+                                            />
+                                        </View>
+                                    )
+                                })}
+                            </View>
+                        </ScrollView>
+                    </View>
+                    <View style={{top:60,left:0,position:'absolute',zIndex:-1}}>
+                        <Image
+                            style={{}}
+                            source={IMAGES.border2}
+                        />
+                    </View>
+                </View>
+
+                <View style={[GlobalStyleSheet.container,{paddingTop:25}]}>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title, }}>Top Decorators near you</Text>
+                    </View>
+                    <View style={{ marginHorizontal: -15 ,marginTop:20,}}>
+                        <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={{ paddingHorizontal: 15 }}
+                        >
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, marginRight: 10 }}>
+                                {CardDecorators.map((data:any, index:any) => {
+                                    return (
+                                        <View style={[{ marginBottom: 20, width: SIZES.width > SIZES.container ? SIZES.container / 3 : SIZES.width / 2.3 }]} key={index}>
+                                            <CardStyle1
+                                                id={data.id}
+                                                image={data.image}
+                                                title={data.title}
+                                                price={data.price}
+                                                discount={data.discount}
+                                                onPress={() => navigation.navigate('ProductDetails')}
+                                                onPress1={() => addItemToWishList(data)}
+                                                onPress2={() =>{addItemToCart(data) ; navigation.navigate('MyCart')}}            
+                                                closebtn                                             
+                                            />
+                                        </View>
+                                    )
+                                })}
+                            </View>
+                        </ScrollView>
+                    </View>
+                    <View style={{top:60,left:0,position:'absolute',zIndex:-1}}>
+                        <Image
+                            style={{}}
+                            source={IMAGES.border2}
+                        />
+                    </View>
+                </View>
+
+                <View style={[GlobalStyleSheet.container,{paddingTop:25}]}>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title, }}>Top Photographers near you</Text>
+                    </View>
+                    <View style={{ marginHorizontal: -15 ,marginTop:20,}}>
+                        <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={{ paddingHorizontal: 15 }}
+                        >
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, marginRight: 10 }}>
+                                {CardPhotoGraphers.map((data:any, index:any) => {
+                                    return (
+                                        <View style={[{ marginBottom: 20, width: SIZES.width > SIZES.container ? SIZES.container / 3 : SIZES.width / 2.3 }]} key={index}>
+                                            <CardStyle1
+                                                id={data.id}
+                                                image={data.image}
+                                                title={data.title}
+                                                price={data.price}
+                                                discount={data.discount}
+                                                onPress={() => navigation.navigate('ProductDetails')}
+                                                onPress1={() => addItemToWishList(data)}
+                                                onPress2={() =>{addItemToCart(data) ; navigation.navigate('MyCart')}}            
+                                                closebtn                                             
+                                            />
+                                        </View>
+                                    )
+                                })}
+                            </View>
+                        </ScrollView>
+                    </View>
+                    <View style={{top:60,left:0,position:'absolute',zIndex:-1}}>
+                        <Image
+                            style={{}}
+                            source={IMAGES.border2}
+                        />
+                    </View>
+                </View>
+
+
                 <View style={[GlobalStyleSheet.container,{ backgroundColor: colors.background,paddingTop:0,paddingBottom:0}]}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Text style={{ ...FONTS.Marcellus, fontSize: 20, color: colors.title }}>Recently Shortlisted By You</Text>
@@ -754,70 +938,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                         </ScrollView>
                     </View>
                 </View>
-                <View style={{backgroundColor:colors.background,width:'100%'}}>
-                    <View style={[GlobalStyleSheet.container, { paddingBottom:5 }]}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                            <Text style={{ ...FONTS.Marcellus, fontSize: 20, color: colors.title, }}>Sponsored</Text>
-                            <TouchableOpacity>
-                                <Text style={{ ...FONTS.fontRegular, fontSize: 13, color: colors.title }}>See All</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ marginHorizontal: -15 ,marginTop:20}}>
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={{ paddingHorizontal: 15,paddingBottom:20 }}
-                            >
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, }}>
-                                    {SponsoredData.map((data,index) => {
-                                        return(
-                                            <View
-                                                key={index}
-                                                style={[{
-                                                    shadowColor: "rgba(195, 123, 95, 0.25)",
-                                                    shadowOffset: {
-                                                        width: -10,
-                                                        height: 20,
-                                                    },
-                                                    shadowOpacity: .1,
-                                                    shadowRadius: 5,
-                                                }, Platform.OS === "ios" && {
-                                                    backgroundColor: colors.card,
-                                                    borderRadius:100
-                                                }]}
-                                            >
-                                                <View style={{backgroundColor:colors.card,height:138,padding:20,borderRadius:20,flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:15}}>
-                                                    <View style={{flex:1}}>
-                                                        <Text style={{...FONTS.Marcellus,fontSize:16,color:colors.title}}>{data.title}</Text>
-                                                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 5 }}>
-                                                            <Text style={{ ...FONTS.Marcellus, fontSize: 16, color: colors.title, }}>{data.price}</Text>
-                                                            <Text
-                                                                style={{
-                                                                    ...FONTS.Marcellus,
-                                                                    fontSize: 13,
-                                                                    textDecorationLine: 'line-through',
-                                                                    color: theme.dark ? 'rgba(255,255,255, .4)' : 'rgba(0, 0, 0, 0.40)',
-                                                                    marginRight: 5
-                                                                }}>{data.discount}
-                                                            </Text>
-                                                        </View>
-                                                        <Text style={{...FONTS.fontSemiBold,fontSize:13,color:COLORS.success,marginTop:8}}>{data.offer}</Text>
-                                                    </View>
-                                                    <View>
-                                                        <Image
-                                                            style={{height:100,width:100,resizeMode:'contain'}}
-                                                            source={data.image}
-                                                        />
-                                                    </View>
-                                                </View>
-                                            </View>
-                                        )
-                                    })}
-                                </View>
-                            </ScrollView>
-                        </View>
-                    </View>
-                </View>
+               
                 <View style={{ backgroundColor: colors.background, width: '100%',}}>
                     <View style={[GlobalStyleSheet.container, { marginBottom:20 }]}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -827,7 +948,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                             </TouchableOpacity>
                         </View>
                         <View style={[GlobalStyleSheet.row, { marginTop: 20 }]}>
-                            {PeopleData.map((data:any, index:any) => {
+                            {cardstyle3DataData.map((data:any, index:any) => {
                                 return (
                                     <View style={[GlobalStyleSheet.col50, { marginBottom: 0 }]} key={index}>
                                         <Cardstyle2
@@ -938,7 +1059,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                         </View>   
                     </View>
                 </View>
-                <View style={{ backgroundColor:colors.background, width: '100%', }}>
+                {/* <View style={{ backgroundColor:colors.background, width: '100%', }}>
                     <View style={[GlobalStyleSheet.container, { marginVertical: 10,marginBottom:5 }]}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={{ ...FONTS.Marcellus, fontSize: 20, color: colors.title }}>Popular Nearby</Text>
@@ -970,7 +1091,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                             source={IMAGES.ads1}
                         />
                     </View>
-                </View>
+                </View> */}
                 <View style={{ backgroundColor: colors.background, width: '100%', }}>
                     <View style={[GlobalStyleSheet.container, { marginBottom: 10, paddingBottom: 0, }]}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -1021,148 +1142,6 @@ const Home = ({navigation} : HomeScreenProps) => {
                                 })}
                             </View>
                         </ScrollView>
-                    </View>
-                </View>
-                <View style={{ backgroundColor:colors.background, width: '100%', }}>
-                    <View style={[GlobalStyleSheet.container, { paddingTop:0,marginTop:10 }]}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                            <Text style={{ ...FONTS.Marcellus, fontSize: 20, color: colors.title, }}>Featured Now </Text>
-                            <TouchableOpacity>
-                                <Text style={{ ...FONTS.fontRegular, fontSize: 13, color: colors.title }}>See All</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ marginHorizontal: -15 }}>
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={{ paddingHorizontal: 15,paddingBottom:25 }}
-                            >
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                                    {Cart2Data.map((data:any, index:any) => {
-                                        return (
-                                            <View
-                                                key={index}
-                                                style={[{
-                                                    shadowColor: "rgba(195, 123, 95, 0.25)",
-                                                    shadowOffset: {
-                                                        width: -10,
-                                                        height: 20,
-                                                    },
-                                                    shadowOpacity: .1,
-                                                    shadowRadius: 5,
-                                                }, Platform.OS === "ios" && {
-                                                    backgroundColor: colors.card,
-                                                    borderRadius:100
-                                                }]}
-                                            >
-                                                <TouchableOpacity key={index}
-                                                    onPress={() => navigation.navigate('ProductDetails')}
-                                                    style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 20, backgroundColor: colors.card, padding: 10, borderRadius: 20,paddingRight:20 }}
-                                                >
-                                                    <Image
-                                                        style={{ width: 75, height: 75, borderRadius: 15,backgroundColor:colors.background }}
-                                                        source={data.image}
-                                                    />
-                                                    <View style={{}}>
-                                                        <Text style={{ ...FONTS.Marcellus, fontSize: 16, color: colors.title,  }}>{data.title}</Text>
-                                                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 5 }}>
-                                                            <Text style={{ ...FONTS.fontSemiBold, fontSize: 16, color: colors.title, }}>{data.price}</Text>
-                                                            <Text
-                                                                style={{
-                                                                    ...FONTS.fontRegular,
-                                                                    fontSize: 13,
-                                                                    textDecorationLine: 'line-through',
-                                                                    textDecorationColor: 'rgba(0, 0, 0, 0.70)',
-                                                                    color: theme.dark ? 'rgba(255,255,255,0.7)' : 'rgba(0, 0, 0, 0.70)',
-                                                                    marginRight: 5
-                                                                }}>{data.discount}
-                                                            </Text>
-                                                            <Image
-                                                                style={{ height: 12, width: 12, resizeMode: 'contain', }}
-                                                                source={IMAGES.star4}
-                                                            />
-                                                            <Text style={{ ...FONTS.fontRegular, fontSize: 12, color: theme.dark ? 'rgba(255,255,255,0.5)' : 'rgba(0, 0, 0, 0.50)' }}>(2k review)</Text>
-                                                        </View>
-                                                        <Text style={{ ...FONTS.fontMedium, fontSize: 13, color: COLORS.danger }}>{data.offer}</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-                                        )
-                                    })}
-                                </View>
-                            </ScrollView>
-                        </View>
-                    </View>
-                    <View style={[GlobalStyleSheet.container, {  marginTop: 0, paddingTop: 0,paddingBottom:0 }]}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                            <Text style={{ ...FONTS.Marcellus, fontSize: 20, color: colors.title, }}>Featured Offer For You</Text>
-                            <TouchableOpacity>
-                                <Text style={{ ...FONTS.fontRegular, fontSize: 13, color: colors.title }}>See All</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ marginHorizontal: -15, marginTop: 20 }}>
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={{ paddingHorizontal: 15,paddingBottom:15 }}
-                            >
-                                {adsData.map((data:any, index:any) => {
-                                    return (
-                                        <View
-                                            key={index}
-                                            style={[{
-                                                shadowColor: "rgba(195, 123, 95, 0.25)",
-                                                shadowOffset: {
-                                                    width: 2,
-                                                    height: 15,
-                                                },
-                                                shadowOpacity: .2,
-                                                shadowRadius: 5,
-                                            }, Platform.OS === "ios" && {
-                                                //backgroundColor: colors.card,
-                                            }]}
-                                       >
-                                            <TouchableOpacity 
-                                                style={{
-                                                    marginRight: 15,
-                                                    marginBottom:10
-                                                }}
-                                                onPress={() => navigation.navigate('Coupons')}
-                                            >
-                                                <Image
-                                                    style={{ width:250, height: 105, borderRadius: 15 }}
-                                                    source={data.image}
-                                                />
-                                            </TouchableOpacity>
-                                        </View>
-                                    )
-                                })}
-                            </ScrollView>
-                        </View>
-                    </View>
-                </View>
-                <View style={{ backgroundColor:colors.background, width: '100%', }}>
-                    <View style={[GlobalStyleSheet.container, { marginVertical: 5,marginTop:0 }]}>
-                        <Text style={{ ...FONTS.Marcellus, fontSize: 20, color: colors.title }}>Great Saving On Everyday Essentials</Text>
-                        <Text style={{ ...FONTS.fontRegular, fontSize: 13, color: colors.title }}>Up to 60% off + up to $107 Cash BACK</Text>
-                        <View style={[GlobalStyleSheet.row, { marginTop: 20 }]}>
-                            {People2Data.map((data:any, index:any) => {
-                                return (
-                                    <View style={[GlobalStyleSheet.col50, { marginBottom: 0 }]} key={index}>
-                                        <Cardstyle2
-                                            id=''
-                                            image={data.image}
-                                            title={data.title}
-                                            price={data.price}
-                                            discount={data.discount}
-                                            delivery={data.delivery}
-                                            onPress={() => navigation.navigate('ProductDetails')}
-                                            marginTop={data.marginTop}
-                                        />
-                                    </View>
-                                )
-                            })}
-                        </View>
                     </View>
                 </View>
             </ScrollView>

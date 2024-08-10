@@ -15,7 +15,7 @@ const checkoutData = [
     {
         image: IMAGES.map,
         title: "Delivery address",
-        text: "123 Main Street, Anytown, USA 12345",
+        text: "123 Main Street, Gachibowli, Hyderabad,Telangana 500019",
         navigate: "SaveAddress"
     },
     {
@@ -128,16 +128,16 @@ const Checkout = ({ navigation } : CheckoutScreenProps) => {
                     </View>
                     <View style={{ marginTop: 150 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>Bluebell Hand Block Tiered</Text>
-                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>2 x $2000.00</Text>
+                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>Photography+Outdoor shoot</Text>
+                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>2 x 8000.00</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>Men Black Grey Allover Printed</Text>
-                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>2 x $1699.00</Text>
+                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>Mandap Decorations</Text>
+                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>2 x 1500.00</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
                             <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>Discount</Text>
-                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>-$100.00</Text>
+                            <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>-2000</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
                             <Text style={{ ...FONTS.fontRegular, fontSize: 14, color: colors.title }}>Shipping</Text>
@@ -146,7 +146,7 @@ const Checkout = ({ navigation } : CheckoutScreenProps) => {
                         <View style={{ borderWidth: 1, borderColor: theme.dark ? COLORS.white : colors.border }}></View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 20 }}>
                             <Text style={{ ...FONTS.fontSemiBold, fontSize: 18, color: colors.title }}>My Order</Text>
-                            <Text style={{ ...FONTS.fontSemiBold, fontSize: 18, color: COLORS.success }}>$3,599.00</Text>
+                            <Text style={{ ...FONTS.fontSemiBold, fontSize: 18, color: COLORS.success }}>17000</Text>
                         </View>
                     </View>
                 </View>

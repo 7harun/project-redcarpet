@@ -166,7 +166,7 @@ const Shopping = ({navigation} : ShoppingScreenProps) => {
                         <View style={{ height:200, width: '100%', backgroundColor: colors.card, flex: 1, paddingHorizontal: 15, position: 'absolute', bottom: 0,paddingTop:10 ,borderTopLeftRadius:25,borderTopRightRadius:25}}>
                             <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                                 <Text style={{ ...FONTS.fontRegular, fontSize: 18, color: colors.title }}>Subtotal</Text>
-                                <Text style={{ ...FONTS.fontBold, fontSize: 18,color:colors.title}}> $3,599</Text>
+                                <Text style={{ ...FONTS.fontBold, fontSize: 18,color:colors.title}}> 8000</Text>
                             </View>
                             <View style={[GlobalStyleSheet.container, { paddingHorizontal: 10, marginTop:10, paddingTop: 0 }]}>
                                 <Button
@@ -212,7 +212,7 @@ const Shopping = ({navigation} : ShoppingScreenProps) => {
                                     paddingHorizontal:40,
                                     //marginBottom:30,
                                 }}
-                            >Add Product to you favourite and shop now.</Text>
+                            >Add Events to your favourites and shop now.</Text>
                         </View>
                     </View>
                 )

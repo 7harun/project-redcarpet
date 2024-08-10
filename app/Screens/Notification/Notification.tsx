@@ -8,80 +8,11 @@ import { IMAGES } from '../../constants/Images';
 
 const SwipeData = [
     {
-        image: IMAGES.small3,
+        image: IMAGES.ph2,
         title: "New Arrivals Alert!",
         date: "15 July 2024"
     },
-    {
-        image: IMAGES.small4,
-        title: "Flash Sale Announcement",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small5,
-        title: "Exclusive Discounts Inside",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small6,
-        title: "Limited Stock - Act Fast!",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small7,
-        title: "Get Ready to Shop",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small3,
-        title: "New Arrivals Alert!",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small4,
-        title: "Flash Sale Announcement",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small5,
-        title: "Don't Miss Out on Savings",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small6,
-        title: "Limited Stock - Act Fast!",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small7,
-        title: "Get Ready to Shop",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small3,
-        title: "New Arrivals Alert!",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small4,
-        title: "Flash Sale Announcement",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small5,
-        title: "Exclusive Discounts Inside",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small6,
-        title: "Limited Stock - Act Fast!",
-        date: "15 July 2024"
-    },
-    {
-        image: IMAGES.small7,
-        title: "Get Ready to Shop",
-        date: "15 July 2024"
-    },
+    
 ]
 
 const Notification = () => {

@@ -15,22 +15,22 @@ const saveData = [
     {
         image: IMAGES.home,
         title: "Home Address",
-        text: "123 Main Street, Anytown, USA 12345",
+        text: "123 Main Street, Gachibowli, Hyderabad,Telangana 500019",
     },
     {
         image: IMAGES.map,
         title: "Office Address",
-        text: "456 Elm Avenue, Smallville, CA 98765",
+        text: "456 Gandhi Avenue, Hi-Tech City, Hyderabad,Telangana 500019",
     },
     {
         image: IMAGES.home,
         title: "Home Address",
-        text: "789 Maple Lane, Suburbia, NY 54321",
+        text: "123 Main Street, Gachibowli, Hyderabad,Telangana 500019",
     },
     {
         image: IMAGES.shop,
         title: "Shop Address",
-        text: "654 Pine Road, Countryside, FL 34567",
+        text: "654 Temple Road, Telecom Nagar, Hyderabad,Telangana 500019",
     },
 ]
 

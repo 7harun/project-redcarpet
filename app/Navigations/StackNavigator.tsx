@@ -67,7 +67,7 @@ const StackNavigator = () => {
   return (
     <>
       <Stack.Navigator
-        initialRouteName={"Home"}
+        initialRouteName={"Onbording"}
         screenOptions={{
           headerShown: false,
           cardStyle: { backgroundColor: "transparent" },
