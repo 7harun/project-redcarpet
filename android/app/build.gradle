@@ -83,9 +83,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.w3itexperts.app'
+    namespace 'com.w3itexperts.redcarpet'
     defaultConfig {
-        applicationId 'com.w3itexperts.app'
+        applicationId 'com.w3itexperts.redcarpet'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

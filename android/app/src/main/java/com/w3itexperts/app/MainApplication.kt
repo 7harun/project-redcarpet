@@ -1,4 +1,4 @@
-package com.w3itexperts.app
+package com.w3itexperts.redcarpet
 
 import android.app.Application
 import android.content.res.Configuration
