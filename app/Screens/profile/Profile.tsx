@@ -100,10 +100,10 @@ const Profile = ({ navigation } : ProfileScreenProps) => {
             <View style={[GlobalStyleSheet.container, { flex: 1 }]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row', alignItems:'flex-start', gap: 5 }}>
-                        <Image
+                        {/* <Image
                             style={{ height: 30, width: 30, resizeMode: 'contain', }}
                             source={IMAGES.logo}
-                        />
+                        /> */}
                         <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title }}>Redcarpet</Text>
                     </View>
                     <TouchableOpacity 
