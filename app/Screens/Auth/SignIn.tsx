@@ -8,43 +8,64 @@ import Button from '../../components/Button/Button';
 import SocialBtn from '../../components/Socials/SocialBtn';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import axios from 'axios';
 import { IMAGES } from '../../constants/Images';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Navigations/RootStackParamList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useContext } from 'react';
+import { AuthContext } from '../../services/authContext';
+import Home from '../Home/Home';
+
 
 type SignInScreenProps = StackScreenProps<RootStackParamList, 'SignIn'>;
 
 const SignIn = ({ navigation }: SignInScreenProps) => {
+// const SignIn: React.FC<SignInScreenProps> = ({ navigation }) => {
 
     const [email, setEmail] = useState(''); // State to store the email
     const [pwd, setPwd] = useState(''); // State to store the email
     const [error, setError] = useState(''); // State to store the error message
     const [fadeAnim] = useState(new Animated.Value(0)); // Animated value for fade effect
+    const { login } = useContext(AuthContext) || { login: () => {} };
 
 
 
-    const checkData = (testuser: string, pwd: string): boolean => {
-        return testuser === 'test' && pwd === '12345';
-    };
 
 
-    const handlePress = () => {
 
-        // if (checkData(email, pwd)) {
-        if (true) {
-            // Navigate to Home if credentials are valid
-            setError(''); // Clear error message
+    const handlePress = async () => {
+        try {
+            // Replace 'your-api-url' with the actual endpoint URL
+            const response = await axios.post('http://ec2-52-66-250-72.ap-south-1.compute.amazonaws.com/ems/api/users/login', {
+                username:email,
+                password: pwd,
+            });
+            console.log(response.data)
+            // Check the response from the API
+            if (response.data.status) { // Assuming the API returns a 'success' flag
+                setError(''); // Clear error message
+                
+                login(response.data.token)
+                navigation.navigate('DrawerNavigation', { screen: 'Home' });
 
-            navigation.navigate('DrawerNavigation', { screen: 'Home' });
-        } else {
-            setError('Invalid credentials'); // Set error message
-            fadeInError(); // Trigger fade-in animation
+            } else {
+                setError('Invalid credentials'); // Set error message
+                fadeInError(); // Trigger fade-in animation
+                setTimeout(() => {
+                    fadeOutError(); // Trigger fade-out animation after a delay
+                }, 3000);
+            }
+        } catch (error) {
+            setError('An error occurred. Please try again.'); // Set error message for API call failure
+            fadeInError();
             setTimeout(() => {
-                fadeOutError(); // Trigger fade-out animation after a delay
-            }, 3000); // Adjust delay as needed
-        };
+                fadeOutError();
+            }, 3000);
+            console.error(error); // Log the error for debugging
+        }
     }
+    
 
     // Fade in the error message
     const fadeInError = () => {
@@ -158,7 +179,7 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
                         />
                     </View>
                 </View>
-                <View style={[GlobalStyleSheet.container, { paddingHorizontal: 20, flex: 1 }]}>
+                {/* <View style={[GlobalStyleSheet.container, { paddingHorizontal: 20, flex: 1 }]}>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -205,7 +226,7 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
                             />
                         </View>
                     </View>
-                </View>
+                </View> */}
                 <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center', flex: 1 }}>
                     <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title }}>Not a member?</Text>
                     <TouchableOpacity

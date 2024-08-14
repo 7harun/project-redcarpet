@@ -1,18 +1,17 @@
-import React, { useState } from "react";
-import {
-  NavigationContainer,
-  DefaultTheme as NavigationDefaultTheme,
-  DarkTheme as NavigationDarkTheme
-} from '@react-navigation/native';
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import StackNavigator from "./StackNavigator";
-import themeContext from "../constants/themeContext";
-import { COLORS } from "../constants/theme";
-
+// routes.tsx
+import React, { useState, useContext } from 'react';
+import { NavigationContainer, DefaultTheme as NavigationDefaultTheme, DarkTheme as NavigationDarkTheme } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import StackNavigator from './StackNavigator';
+import themeContext from '../constants/themeContext';
+import { COLORS } from '../constants/theme';
+import { AuthContext } from '../services/authContext';
+// import AuthNavigator from './AuthNavigator';
 
 const Routes = () => {
-
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const { isAuthenticated } = useContext(AuthContext) || { isAuthenticated: false };
+
   const authContext = React.useMemo(() => ({
     setDarkTheme: () => {
       setIsDarkTheme(true);
@@ -34,7 +33,7 @@ const Routes = () => {
       input: COLORS.input,
       border: COLORS.borderColor,
     }
-  }
+  };
 
   const CustomDarkTheme = {
     ...NavigationDarkTheme,
@@ -48,7 +47,7 @@ const Routes = () => {
       input: COLORS.darkInput,
       border: COLORS.darkBorder,
     }
-  }
+  };
 
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
@@ -56,11 +55,12 @@ const Routes = () => {
     <SafeAreaProvider>
       <themeContext.Provider value={authContext}>
         <NavigationContainer theme={theme}>
-          <StackNavigator />
+          {/* {isAuthenticated ? <StackNavigator /> : <AuthNavigator />} */}
+          <StackNavigator /> 
         </NavigationContainer>
       </themeContext.Provider>
     </SafeAreaProvider>
   );
-
 };
+
 export default Routes;

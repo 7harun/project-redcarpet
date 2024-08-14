@@ -491,9 +491,91 @@ const SliderData = [
     
 ]
 
+import { useEffect } from 'react';
+import Geolocation from 'react-native-geolocation-service';
+import { PERMISSIONS, request } from 'react-native-permissions';
+import axios from 'axios';
+
 type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
 
-const Home = ({navigation} : HomeScreenProps) => {
+const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
+    
+    type Location = {
+        latitude: number;
+        longitude: number;
+      } | null;
+
+
+    const [location, setLocation] = useState<Location>(null);
+    const [address, setAddress] = useState<string>('Fetching location...');
+    // const GOOGLE_MAPS_APIKEY = "AIzaSyCmpq6ns1sG4YZY0wiGT6dZwrUV1P4Lfr0";
+
+    useEffect(() => {
+        const requestLocationPermission = async () => {
+        if (Platform.OS === 'web') {
+            if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                const { latitude, longitude } = position.coords;
+                setLocation({ latitude, longitude });
+                },
+                (error) => {
+                console.error(error.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            );
+            } else {
+            console.error('Geolocation is not supported by this browser.');
+            }
+        } else {
+            const result = await request(
+            Platform.OS === 'ios'
+                ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+                : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+            );
+
+            if (result === 'granted') {
+            Geolocation.getCurrentPosition(
+                (position) => {
+                const { latitude, longitude } = position.coords;
+                setLocation({ latitude, longitude });
+                },
+                (error) => {
+                console.log(error.code, error.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            );
+            }
+        }
+        };
+
+        requestLocationPermission();
+    }, []);
+
+    // useEffect(() => {
+    //     const getAddressFromCoords = async () => {
+    //     if (location) {
+    //         try {
+    //         const response = await axios.get(
+    //             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${GOOGLE_MAPS_APIKEY}`
+    //         );
+
+    //         if (response.data.results.length > 0) {
+    //             const address = response.data.results[0].formatted_address;
+    //             setAddress(address);
+    //         } else {
+    //             setAddress('Address not found');
+    //         }
+    //         } catch (error) {
+    //         console.error('Error fetching address:', error);
+    //         setAddress('Error fetching address');
+    //         }
+    //     }
+    //     };
+
+    //     getAddressFromCoords();
+    // }, [location]);
+
 
 
     const theme = useTheme();
@@ -506,24 +588,24 @@ const Home = ({navigation} : HomeScreenProps) => {
     //const navigation = useNavigation();
 
 
-    const [state ,setstate] = useState<any>({
-        pickcupCords:{
-            latitude:23.12028, 
-            longitude:81.30379,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        },
-        droplocationCords:{
-            latitude:23.05343, 
-            longitude:81.37520,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        }
-    })
+    // const [state ,setstate] = useState<any>({
+    //     pickcupCords:{
+    //         latitude:23.12028, 
+    //         longitude:81.30379,
+    //         latitudeDelta: 0.0922,
+    //         longitudeDelta: 0.0421,
+    //     },
+    //     droplocationCords:{
+    //         latitude:23.05343, 
+    //         longitude:81.37520,
+    //         latitudeDelta: 0.0922,
+    //         longitudeDelta: 0.0421,
+    //     }
+    // })
 
-    const GOOGLE_MAPS_APIKEY = "AIzaSyCmpq6ns1sG4YZY0wiGT6dZwrUV1P4Lfr0";
+    // const GOOGLE_MAPS_APIKEY = "AIzaSyCmpq6ns1sG4YZY0wiGT6dZwrUV1P4Lfr0";
 
-    const {pickcupCords ,droplocationCords} = state
+    // const {pickcupCords ,droplocationCords} = state
 
     const addItemToWishList = (data: any) => {
         dispatch(addTowishList(data));
@@ -541,12 +623,11 @@ const Home = ({navigation} : HomeScreenProps) => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{paddingBottom:80 }}
             >
-                <View style={[GlobalStyleSheet.container, { marginHorizontal: 5, marginVertical: 5,backgroundColor:colors.background,marginBottom:0,paddingBottom:0 }]}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',height:45 }}>
-                        <TouchableOpacity
-                            // onPress={() => dispatch(openDrawer())}
-                             onPress={() => navigation.openDrawer()}
-                        >
+                    <View style={[GlobalStyleSheet.container, { marginHorizontal: 5, marginVertical: 5, backgroundColor: colors.background, marginBottom: 0, paddingBottom: 0 }]}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 45 }}>
+                            <TouchableOpacity
+                            onPress={() => navigation.openDrawer()}
+                            >
                             <View style={{
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -555,99 +636,53 @@ const Home = ({navigation} : HomeScreenProps) => {
                                 paddingRight: 15
                             }}>
                                 <Image
-                                    style={{ height: 45, width:45, borderRadius: 15 }}
-                                    source={IMAGES.small1}
+                                style={{ height: 45, width: 45, borderRadius: 15 }}
+                                source={IMAGES.small1}
                                 />
-                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>{"\n"}<Text style={{fontSize:18}}>Red Carpet</Text></Text>
+                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>{"\n"}<Text style={{ fontSize: 18 }}>Red Carpet</Text></Text>
                             </View>
-                        </TouchableOpacity>
-                        <View
-                            style={[{
-                                shadowColor: 'rgba(195, 123, 95, 0.20)',
-                                shadowOffset: {
-                                    width: 2,
-                                    height: 20,
-                                },
-                                shadowOpacity: .1,
-                                shadowRadius: 5,
-                            }]}
-                        >
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate('Notification')}
-                                style={{ height:45,width:45,backgroundColor:colors.card,borderRadius:15,alignItems:'center',justifyContent:'center' }}
-                            >
-                                <Image
-                                    style={[GlobalStyleSheet.image, { tintColor:colors.title }]}
-                                    source={IMAGES.bell}
-                                />
                             </TouchableOpacity>
-                        </View>
-                    </View>
-                    
-                    <View
-                        style={[{
-                            shadowColor: "rgba(195, 123, 95, 0.25)",
-                            shadowOffset: {
-                                width: 2,
-                                height: 20,
-                            },
-                            shadowOpacity: .1,
-                            shadowRadius: 5,
-                            marginTop:20
-                        }]}
-                    >
-                        <View style={{}}>
-                            <View>
-                                <TextInput
-                                    style={{...FONTS.fontRegular,fontSize:16,height:52,backgroundColor:colors.card,borderRadius:15,paddingLeft:20,color:colors.title}}
-                                    placeholder='Search'
-                                    placeholderTextColor={theme.dark ? 'rgba(255,255,255,0.8)':'#666666'}
-                                />
-                                <View style={{position:'absolute',right:15,top:15}}>
+                            <View
+                                style={[{
+                                    shadowColor: 'rgba(195, 123, 95, 0.20)',
+                                    shadowOffset: {
+                                        width: 2,
+                                        height: 20,
+                                    },
+                                    shadowOpacity: .1,
+                                    shadowRadius: 5,
+                                }]}
+                            >
+                                <TouchableOpacity
+                                    onPress={() => navigation.navigate('Notification')}
+                                    style={{ height:45,width:45,backgroundColor:colors.card,borderRadius:15,alignItems:'center',justifyContent:'center' }}
+                                >
                                     <Image
-                                        style={{height:20,width:20,tintColor:COLORS.primary}}
-                                        source={IMAGES.search}
+                                        style={[GlobalStyleSheet.image, { tintColor:colors.title }]}
+                                        source={IMAGES.bell}
                                     />
-                                </View>
+                                </TouchableOpacity>
                             </View>
-                        </View>
-                    </View>
-                    <View style={{height:40,
-                        backgroundColor:colors.card,
-                        opacity:.6,
-                        borderRadius:10,
-                        marginHorizontal:20,
-                        marginTop:-40,
-                        zIndex:-1,}}
-                    />
-                    <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                        <View style={{ flex:1 }}>
-                            <Text style={{ ...FONTS.Marcellus, fontSize: 24, color:colors.title,lineHeight:33 }}>Effortless Event {"\n"}Planning at Your {"\n"}Fingertips</Text>
-                        </View>
-                        
-                        <View
-                            style={[{
-                                shadowColor: "rgba(195, 123, 95, 0.15)",
-                                shadowOffset: {
-                                    width: 2,
-                                    height: 2,
-                                },
-                                shadowOpacity: .1,
-                                shadowRadius: 5,
-                                marginRight:20,
-                            }, Platform.OS === "ios" && {
-                                backgroundColor: colors.card,
-                                borderRadius:100
-                            }]}
-                        >
-                            {/* <View style={{height:110,width:110,backgroundColor:colors.card,borderRadius:100,}}>
-                                <View style={{position:'absolute',top:-44,right:-12}}>
-                                    <SvgcurvedText small={undefined}/>
-                                </View>
+
+                            {/* Display Location */}
+                            {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <Image style={{ height: 20, width: 20, marginRight: 5, tintColor: colors.title }} source={IMAGES.bell} />
+                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>
+                                    {address}
+                                </Text>
+                            </View> */}
+                            {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <Image
+                                    style={{ height: 20, width: 20, marginRight: 5, tintColor: colors.title }}
+                                    source={IMAGES.bell} // Your location icon here
+                                />
+                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>
+                                    {location ? `Lat: ${location.latitude}, Lon: ${location.longitude}` : 'Fetching location...'}
+                                </Text>
                             </View> */}
                         </View>
+
                     </View>
-                </View>
                 <View style={{alignItems:'center',marginTop:20}}>
                     <View style={[GlobalStyleSheet.container,{padding:0}]}>
                         <ImageSwiper

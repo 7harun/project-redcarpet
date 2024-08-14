@@ -9,6 +9,10 @@ import ListItem from '../../components/list/ListItem';
 import { IMAGES } from '../../constants/Images';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Navigations/RootStackParamList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../../services/authContext';
+import { useContext } from 'react';
+
 
 const btnData = [
     {
@@ -79,6 +83,20 @@ const ListwithiconData = [
 
 ];
 
+const handleLogout = async (navigation: any) => {
+    try {
+      // Remove the token from AsyncStorage
+      await AsyncStorage.removeItem('authToken');
+      console.log('Token removed');
+      navigation.navigate('SignIn'); // Navigate to SignIn screen
+      
+      // Navigate to the SignIn screen
+      
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
 type ProfileScreenProps = StackScreenProps<RootStackParamList, 'Profile'>;
 
 const Profile = ({ navigation } : ProfileScreenProps) => {
@@ -107,7 +125,7 @@ const Profile = ({ navigation } : ProfileScreenProps) => {
                         <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title }}>Redcarpet</Text>
                     </View>
                     <TouchableOpacity 
-                        onPress={() => navigation.navigate('SignIn')}
+                        onPress={() => handleLogout(navigation)}
                         style={{ flexDirection: 'row', alignItems: 'center' }}
                     >
                         <Image
