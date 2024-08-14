@@ -88,7 +88,11 @@ const handleLogout = async (navigation: any) => {
       // Remove the token from AsyncStorage
       await AsyncStorage.removeItem('authToken');
       console.log('Token removed');
-      navigation.navigate('SignIn'); // Navigate to SignIn screen
+    //   navigation.navigate('SignIn'); // Navigate to SignIn screen
+        navigation.navigate('DrawerNavigation', { screen: 'SignIn' });
+
+        
+
       
       // Navigate to the SignIn screen
       
@@ -96,6 +100,7 @@ const handleLogout = async (navigation: any) => {
       console.error('Error during logout:', error);
     }
   };
+  
 
 type ProfileScreenProps = StackScreenProps<RootStackParamList, 'Profile'>;
 
