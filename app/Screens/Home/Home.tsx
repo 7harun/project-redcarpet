@@ -492,7 +492,7 @@ const SliderData = [
 ]
 
 import { useEffect } from 'react';
-import Geolocation from 'react-native-geolocation-service';
+// import Geolocation from 'react-native-geolocation-service';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import axios from 'axios';
 
@@ -500,57 +500,57 @@ type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
 
 const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
     
-    type Location = {
-        latitude: number;
-        longitude: number;
-      } | null;
+    // type Location = {
+    //     latitude: number;
+    //     longitude: number;
+    //   } | null;
 
 
-    const [location, setLocation] = useState<Location>(null);
-    const [address, setAddress] = useState<string>('Fetching location...');
-    // const GOOGLE_MAPS_APIKEY = "AIzaSyCmpq6ns1sG4YZY0wiGT6dZwrUV1P4Lfr0";
+    // const [location, setLocation] = useState<Location>(null);
+    // const [address, setAddress] = useState<string>('Fetching location...');
+    // // const GOOGLE_MAPS_APIKEY = "AIzaSyCmpq6ns1sG4YZY0wiGT6dZwrUV1P4Lfr0";
 
-    useEffect(() => {
-        const requestLocationPermission = async () => {
-        if (Platform.OS === 'web') {
-            if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                const { latitude, longitude } = position.coords;
-                setLocation({ latitude, longitude });
-                },
-                (error) => {
-                console.error(error.message);
-                },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-            );
-            } else {
-            console.error('Geolocation is not supported by this browser.');
-            }
-        } else {
-            const result = await request(
-            Platform.OS === 'ios'
-                ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-                : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-            );
+    // useEffect(() => {
+    //     const requestLocationPermission = async () => {
+    //     if (Platform.OS === 'web') {
+    //         if (navigator.geolocation) {
+    //         navigator.geolocation.getCurrentPosition(
+    //             (position) => {
+    //             const { latitude, longitude } = position.coords;
+    //             setLocation({ latitude, longitude });
+    //             },
+    //             (error) => {
+    //             console.error(error.message);
+    //             },
+    //             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    //         );
+    //         } else {
+    //         console.error('Geolocation is not supported by this browser.');
+    //         }
+    //     } else {
+    //         const result = await request(
+    //         Platform.OS === 'ios'
+    //             ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+    //             : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    //         );
 
-            if (result === 'granted') {
-            Geolocation.getCurrentPosition(
-                (position) => {
-                const { latitude, longitude } = position.coords;
-                setLocation({ latitude, longitude });
-                },
-                (error) => {
-                console.log(error.code, error.message);
-                },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-            );
-            }
-        }
-        };
+    //         if (result === 'granted') {
+    //         Geolocation.getCurrentPosition(
+    //             (position) => {
+    //             const { latitude, longitude } = position.coords;
+    //             setLocation({ latitude, longitude });
+    //             },
+    //             (error) => {
+    //             console.log(error.code, error.message);
+    //             },
+    //             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    //         );
+    //         }
+    //     }
+    //     };
 
-        requestLocationPermission();
-    }, []);
+    //     requestLocationPermission();
+    // }, []);
 
     // useEffect(() => {
     //     const getAddressFromCoords = async () => {

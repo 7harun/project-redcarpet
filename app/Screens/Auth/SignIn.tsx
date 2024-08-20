@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useContext } from 'react';
 import { AuthContext } from '../../services/authContext';
 import Home from '../Home/Home';
+import { loginUrl } from '../../api/api';
 
 
 type SignInScreenProps = StackScreenProps<RootStackParamList, 'SignIn'>;
@@ -37,7 +38,7 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
     const handlePress = async () => {
         try {
             // Replace 'your-api-url' with the actual endpoint URL
-            const response = await axios.post('http://ec2-52-66-250-72.ap-south-1.compute.amazonaws.com/ems/api/users/login', {
+            const response = await axios.post(loginUrl(), {
                 username:email,
                 password: pwd,
             });
