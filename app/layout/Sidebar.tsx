@@ -8,8 +8,17 @@ import ThemeBtn from '../components/ThemeBtn';
 import { IMAGES } from '../constants/Images';
 import { useDispatch } from 'react-redux';
 import { closeDrawer } from '../redux/actions/drawerAction';
+import { AuthContext } from '../services/authContext';
+import { useContext } from 'react';
 
 const Sidebar = ({navigation} : any) => {
+
+    const authContext = useContext(AuthContext);
+    if (!authContext || !authContext.userInfo) {
+        return null; // or some fallback UI
+      }
+  
+    const { username, email, role } = authContext.userInfo;
 
     const theme = useTheme();
     const { colors }: {colors : any} = theme;
@@ -18,7 +27,7 @@ const Sidebar = ({navigation} : any) => {
 
    // const navigation = useNavigation<any>();
 
-    const navItem = [
+    const navItemVendor = [
         {
             icon: IMAGES.home,
             name: "Home",
@@ -29,11 +38,60 @@ const Sidebar = ({navigation} : any) => {
             name: "Products",
             navigate: "Products",
         },
+        {
+            icon: IMAGES.components,
+            name: "Post Business",
+            navigate: "AddBusiness",
+        },
+        {
+            icon: IMAGES.star,
+            name: "Review",
+            navigate: "WriteReview",
+        },
+        {
+            icon: IMAGES.heart2,
+            name: "Wishlist",
+            navigate: "Wishlist",
+        },
+        {
+            icon: IMAGES.order,
+            name: "My Orders",
+            navigate: 'Myorder',
+        },
+        {
+            icon: IMAGES.shopping2,
+            name: "My Cart",
+            navigate: 'MyCart',
+        },
         // {
-        //     icon: IMAGES.components,
-        //     name: "Components",
-        //     navigate: "Components",
+        //     icon: IMAGES.chat,
+        //     name: "Chat List",
+        //     navigate: 'Chat',
         // },
+        {
+            icon: IMAGES.user2,
+            name: "Profile",
+            navigate: "Profile",
+        },
+        {
+            icon: IMAGES.logout,
+            name: "Logout",
+            navigate: 'Onbording',
+        },
+    ]
+
+
+    const navItemCustomer = [
+        {
+            icon: IMAGES.home,
+            name: "Home",
+            navigate: "BottomNavigation",
+        },
+        {
+            icon: IMAGES.producta,
+            name: "Products",
+            navigate: "Products",
+        },
         {
             icon: IMAGES.star,
             name: "Review",
@@ -99,8 +157,8 @@ const Sidebar = ({navigation} : any) => {
                                         source={IMAGES.small1}
                                     />
                                     <View>
-                                        <Text style={{ ...FONTS.fontSemiBold, fontSize: 18, color: colors.title }}>Roopa</Text>
-                                        <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title }}>example@gmail.com</Text>
+                                        <Text style={{ ...FONTS.fontSemiBold, fontSize: 18, color: colors.title }}>{username}</Text>
+                                        <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title }}>{email}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -111,7 +169,7 @@ const Sidebar = ({navigation} : any) => {
                     </View>
 
                     <View style={{ flex: 1 }}>
-                        {navItem.map((data, index) => {
+                        {(role === '0' ? navItemCustomer : navItemVendor).map((data, index) => {
                             return (
                                 <TouchableOpacity
                                     //onPress={() => {data.navigate && navigation.navigate(data.navigate); navigation.closeDrawer()}}

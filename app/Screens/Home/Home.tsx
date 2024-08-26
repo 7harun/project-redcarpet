@@ -18,6 +18,16 @@ import { RootStackParamList } from '../../Navigations/RootStackParamList';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTowishList } from '../../redux/reducer/wishListReducer';
 import { addToCart } from '../../redux/reducer/cartReducer';
+import { useEffect } from 'react';
+// import Geolocation from 'react-native-geolocation-service';
+import { PERMISSIONS, request } from 'react-native-permissions';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useContext } from 'react';
+import { AuthContext } from '../../services/authContext';
+
+
+
 
 
 
@@ -491,14 +501,19 @@ const SliderData = [
     
 ]
 
-import { useEffect } from 'react';
-// import Geolocation from 'react-native-geolocation-service';
-import { PERMISSIONS, request } from 'react-native-permissions';
-import axios from 'axios';
 
 type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
 
-const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
+// const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
+const Home = ({navigation} : HomeScreenProps) => {
+    const authContext = useContext(AuthContext);
+
+    if (!authContext || !authContext.userInfo) {
+        return null; // or some fallback UI
+      }
+  
+    const { username, email, role } = authContext.userInfo;
+
     
     // type Location = {
     //     latitude: number;
@@ -639,7 +654,7 @@ const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
                                 style={{ height: 45, width: 45, borderRadius: 15 }}
                                 source={IMAGES.small1}
                                 />
-                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>{"\n"}<Text style={{ fontSize: 18 }}>Red Carpet</Text></Text>
+                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>{username}{"\n"}<Text style={{ fontSize: 18 }}>Red Carpet {role === '0' ? 'Customer' : 'Vendor'}</Text></Text>
                             </View>
                             </TouchableOpacity>
                             <View

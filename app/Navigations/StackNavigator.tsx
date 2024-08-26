@@ -56,6 +56,7 @@ import Tables from "../Screens/Shortcode/Tables";
 import Toggles from "../Screens/Shortcode/Toggles";
 import { RootStackParamList } from "./RootStackParamList";
 import SignUp from "../Screens/Auth/SignUp";
+import AddBusiness from "../Screens/Category/AddBusiness";
 
 const Stack = createStackNavigator<RootStackParamList>(); // Use the param list type
 
@@ -64,8 +65,10 @@ const StackNavigator = () => {
 
   // Check if authContext is null
   const isAuthenticated = authContext ? authContext.isAuthenticated : false;
+  const username = authContext ? authContext.userInfo : '';
 
   console.log(isAuthenticated,'isauth')
+  console.log(username,'username')
   return (
     <>
     <Stack.Navigator
@@ -101,6 +104,7 @@ const StackNavigator = () => {
           <Stack.Screen name="Call" component={Call} />
           <Stack.Screen name="Coupons" component={Coupons} />
           <Stack.Screen name="Products" component={Products} />
+          <Stack.Screen name="AddBusiness" component={AddBusiness} />
           <Stack.Screen name="Damo" component={Damo} />
           <Stack.Screen name="Components" component={Components} />
           <Stack.Screen name="Accordion" component={AccordionScreen} />

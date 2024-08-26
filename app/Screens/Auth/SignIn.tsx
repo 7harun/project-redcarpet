@@ -17,6 +17,8 @@ import { useContext } from 'react';
 import { AuthContext } from '../../services/authContext';
 import Home from '../Home/Home';
 import { loginUrl } from '../../api/api';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { FadeInFromBottomAndroidSpec } from '@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionSpecs';
 
 
 type SignInScreenProps = StackScreenProps<RootStackParamList, 'SignIn'>;
@@ -38,17 +40,25 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
     const handlePress = async () => {
         try {
             // Replace 'your-api-url' with the actual endpoint URL
-            const response = await axios.post(loginUrl(), {
+            const response = await axios.post('http://ec2-52-66-250-72.ap-south-1.compute.amazonaws.com/ems/api/users/login', {
                 username:email,
                 password: pwd,
-            });
+            },{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },}
+        );
             console.log(response.data)
             // Check the response from the API
             if (response.data.status) { // Assuming the API returns a 'success' flag
                 setError(''); // Clear error message
-                
-                login(response.data.token)
-                navigation.navigate('DrawerNavigation', { screen: 'Home' });
+                const token = response.data.token;
+                const username = response.data.name;
+                const email = response.data.email;
+                const role = response.data.is_vendor;
+                login(token, username, email, role);
+                // navigation.navigate('DrawerNavigation', { screen: 'Home' });
 
             } else {
                 setError('Invalid credentials'); // Set error message
@@ -58,7 +68,16 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
                 }, 3000);
             }
         } catch (error) {
-            setError('An error occurred. Please try again.'); // Set error message for API call failure
+            let errorMessage = 'An error occurred. Please try again.';
+            if (axios.isAxiosError(error)) {
+                // Handle known Axios error
+                errorMessage += ` ${error.response?.data || error.message}`;
+            } else if (error instanceof Error) {
+                // Handle other errors
+                errorMessage += ` ${error.message}`;
+            }
+    
+            setError(errorMessage); // Append the error message to the string
             fadeInError();
             setTimeout(() => {
                 fadeOutError();

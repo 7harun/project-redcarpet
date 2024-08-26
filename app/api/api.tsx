@@ -1,5 +1,6 @@
 
 const BASE_URL = 'http://ec2-52-66-250-72.ap-south-1.compute.amazonaws.com/ems/api/users'; 
+// const BASE_URL = '192.168.1.8/ems/api/users'; 
 
 // Define endpoints as constants
 const ENDPOINTS = {

@@ -189,9 +189,9 @@ const gridData = [
     
 ]
 
-type ProductsScreenProps = StackScreenProps<RootStackParamList, 'Products'>;
+type AddBusinessScreenProps = StackScreenProps<RootStackParamList, 'AddBusiness'>;
 
-const Products = ({ navigation } : ProductsScreenProps) => {
+const AddBusiness = ({ navigation } : AddBusinessScreenProps) => {
 
      const theme = useTheme();
     const { colors }:{colors : any} = theme;
@@ -394,11 +394,13 @@ const Products = ({ navigation } : ProductsScreenProps) => {
                 borderTopLeftRadius:25,borderTopRightRadius:25,
             }}>
                 <BlurView
-                    style={{ width: '100%', height: 100, borderRadius: 10 }}
-                    // blurType="light"  // Ensure this is correct for the library you're using
-                    // blurAmount={10}  // This might be blurRadius or similar in your library
+                    style={[{width:'100%',height:60,borderRadius:50 },Platform.OS === "ios" && {height:80}]}
+                    // overlayColor=''
+                    // blurType="light"
+                    // blurAmount={10}
                     // reducedTransparencyFallbackColor="white"
-                    />
+                >
+                </BlurView>
                 <View style={[{ 
                     backgroundColor:theme.dark ? 'rgba(0,0,0,0.50)':'rgba(255, 255, 255, 0.50)',
                     height: 60,
@@ -466,4 +468,4 @@ const Products = ({ navigation } : ProductsScreenProps) => {
     )
 }
 
-export default Products
+export default AddBusiness

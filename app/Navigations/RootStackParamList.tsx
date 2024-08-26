@@ -30,6 +30,7 @@ export type RootStackParamList = {
     WriteReview: undefined;
     Trackorder: undefined;
     Products: undefined;
+    AddBusiness:undefined;
     Language: undefined;
     MyCart: undefined;
     Category: undefined;

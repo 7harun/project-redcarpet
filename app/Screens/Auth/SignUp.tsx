@@ -13,6 +13,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Navigations/RootStackParamList';
 import { signupUrl } from '../../api/api';
 import axios from 'axios';
+import { Picker } from '@react-native-picker/picker';
+
 
 
 type SignUpScreenProps = StackScreenProps<RootStackParamList, 'SignUp'>;
@@ -27,6 +29,7 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [mobile, setMobile] = useState('');
+    const [selectedRole, setSelectedRole] = useState<string>('0'); // Default value can be 'Vendor' or 'Customer'
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -34,6 +37,7 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
     const [emailError, setEmailError] = useState('');
     const [mobileError, setMobileError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [vendorError, setVendorError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     const shakeAnimation = new Animated.Value(0);
@@ -53,7 +57,7 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
 
     const handleSignUp = async () => {
         let valid = true;
-
+        // console.log(selectedRole)
         // Reset errors
         setNameError('');
         setEmailError('');
@@ -61,6 +65,7 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
         setPasswordError('');
         setConfirmPasswordError('');
         setTermsError('');
+        setVendorError('');
 
 
         if (!name) {
@@ -86,8 +91,13 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
             setPasswordError('Password is required');
             valid = false;
         }
+       
         if (password !== confirmPassword) {
             setConfirmPasswordError('Passwords do not match');
+            valid = false;
+        }
+        if (!selectedRole) {
+            setVendorError('Vendor Type is required');
             valid = false;
         }
         if (!isChecked) {
@@ -106,6 +116,7 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
                 userid: name,
                 pwd: password,
                 phone: mobile,
+                is_vendor:selectedRole,
                 status: 'active',
                 email: email,
                 address: 'password'
@@ -114,14 +125,12 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
             // Log the JSON data for debugging purposes
             console.log('Request Data:', JSON.stringify(data));
             // Replace 'your-api-url' with the actual endpoint URL
-            const response = await axios.post(signupUrl(), 
-                data,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
+            const response = await axios.post('http://ec2-52-66-250-72.ap-south-1.compute.amazonaws.com/ems/api/users/create',data,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },}
+        );
             console.log(response.data)
             // Check the response from the API
             if (response.data.success='User created successfully.') { // Assuming the API returns a 'success' flag
@@ -131,8 +140,15 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
                 setError('Invalid credentials'); // Set error message
             }
         } catch (error) {
-            setError('An error occurred. Please try again.'); // Set error message for API call failure
-            console.error(error); // Log the error for debugging
+            console.log(error)
+            let errorMessage = 'An error occurred. Please try again.';
+            if (axios.isAxiosError(error)) {
+                // Handle known Axios error
+                errorMessage += ` ${error.response?.data || error.message}`;
+            } else if (error instanceof Error) {
+                // Handle other errors
+                errorMessage += ` ${error.message}`;
+            }
             // console.error('Error during API request:', error.response ? error.response.data : error.message);
 
         }
@@ -211,6 +227,19 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
                                 {mobileError ? <Text style={{ color: 'red' }}>{mobileError}</Text> : null}
                             </View>
                             <View style={{ marginBottom: 15 }}>
+                                <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title }}>
+                                Role<Text style={{ color: '#FF0000' }}>*</Text>
+                                </Text>
+                                <Picker
+                                selectedValue={selectedRole}
+                                onValueChange={(itemValue) => setSelectedRole(itemValue)}
+                                >
+                                <Picker.Item label="Customer" value="0" />
+                                <Picker.Item label="Vendor" value="1" />
+                                </Picker>
+                                {vendorError ? <Text style={{ color: 'red' }}>{vendorError}</Text> : null}
+                            </View>
+                            <View style={{ marginBottom: 15 }}>
                                 <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title }}>Password<Text style={{ color: '#FF0000' }}>*</Text></Text>
                                 <CustomInput
                                     value={password}
@@ -220,6 +249,7 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
                                 />
                                 {passwordError ? <Text style={{ color: 'red' }}>{passwordError}</Text> : null}
                             </View>
+                            
                             <View>
                                 <Text style={{ ...FONTS.fontRegular, fontSize: 15, color: colors.title }}>Confirm Password<Text style={{ color: '#FF0000' }}>*</Text></Text>
                                 <CustomInput
@@ -283,5 +313,7 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
         </ScrollView>
     )
 }
+
+
 
 export default SignUp;

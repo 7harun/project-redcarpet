@@ -106,6 +106,12 @@ type ProfileScreenProps = StackScreenProps<RootStackParamList, 'Profile'>;
 
 const Profile = ({ navigation } : ProfileScreenProps) => {
 
+    const authContext = useContext(AuthContext);
+    if (!authContext || !authContext.userInfo) {
+        return null; // or some fallback UI
+      }
+  
+    const { username, email, role } = authContext.userInfo;
     const theme = useTheme();
     const { colors } : {colors : any}= theme;
 
@@ -147,7 +153,7 @@ const Profile = ({ navigation } : ProfileScreenProps) => {
                             source={IMAGES.small1}
                         />
                     </View>
-                    <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title }}>Hello, RC'User</Text>
+                    <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title }}>Hello, {username}</Text>
                 </View>
                 <View style={[GlobalStyleSheet.row]}>
                     {btnData.map((data:any, index:any) => {
