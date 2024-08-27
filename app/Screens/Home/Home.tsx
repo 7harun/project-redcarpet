@@ -508,11 +508,19 @@ type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
 const Home = ({navigation} : HomeScreenProps) => {
     const authContext = useContext(AuthContext);
 
-    if (!authContext || !authContext.userInfo) {
+    // Safely extract userInfo properties, avoiding any conditional hook call
+    const userInfo = authContext?.userInfo || null;
+    const username = userInfo?.username;
+    const email = userInfo?.email;
+    const role = userInfo?.role;
+
+    // Conditional rendering
+    if (!userInfo) {
         return null; // or some fallback UI
-      }
+    }
+
   
-    const { username, email, role } = authContext.userInfo;
+    // const { username, email, role } = authContext.userInfo;
 
     
     // type Location = {

@@ -28,7 +28,11 @@
         "foregroundImage": "./assets/rc.jpg",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.w3itexperts.redcarpet"
+      "package": "com.w3itexperts.redcarpet",
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/rc.jpg"

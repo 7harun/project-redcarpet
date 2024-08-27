@@ -57,6 +57,7 @@ import Toggles from "../Screens/Shortcode/Toggles";
 import { RootStackParamList } from "./RootStackParamList";
 import SignUp from "../Screens/Auth/SignUp";
 import AddBusiness from "../Screens/Category/AddBusiness";
+import PostBusiness from "../Screens/Category/PostBusiness";
 
 const Stack = createStackNavigator<RootStackParamList>(); // Use the param list type
 
@@ -105,6 +106,7 @@ const StackNavigator = () => {
           <Stack.Screen name="Coupons" component={Coupons} />
           <Stack.Screen name="Products" component={Products} />
           <Stack.Screen name="AddBusiness" component={AddBusiness} />
+          <Stack.Screen name="PostBusiness" component={PostBusiness} />
           <Stack.Screen name="Damo" component={Damo} />
           <Stack.Screen name="Components" component={Components} />
           <Stack.Screen name="Accordion" component={AccordionScreen} />

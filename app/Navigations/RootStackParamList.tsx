@@ -2,7 +2,11 @@ import { NavigatorScreenParams } from "@react-navigation/native";
 import { BottomTabParamList } from "./BottomTabParamList";
 
 export type RootStackParamList = {
+
     DrawerNavigation: NavigatorScreenParams<BottomTabParamList>;
+
+    PostBusiness: undefined;
+
     Damo: undefined;
     ChooseLanguage: undefined;
     QrCodeScanner: undefined;

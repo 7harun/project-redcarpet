@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, SafeAreaView, TextInput, Image, TouchableOpacity, Platform } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { COLORS, FONTS} from '../../constants/theme';
@@ -16,185 +16,213 @@ import BottomSheet2 from '../Shortcode/BottomSheet2';
 import { useDispatch } from 'react-redux';
 import { addTowishList } from '../../redux/reducer/wishListReducer';
 import { addToCart } from '../../redux/reducer/cartReducer';
+import PostBusiness from './PostBusiness';
 
 
 const sliderData = [
     {
-        title: "Crazy Deals",
+        title: "Your Business",
     },
     {
-        title: "Budget Buys",
+        title: "Post New Business",
     },
-    {
-        title: "Best Offer",
-    },
-    {
-        title: "Packages",
-    },
-    {
-        title: "Nearby",
-    },
-    {
-        title: "Trending",
-    },
-
-]
-
-const ListData = [
-    {
-        id:"21",
-        image: IMAGES.ph3,
-        title: "Marraige shoot",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-    },
-    {
-        id:"22",
-        image: IMAGES.ph1,
-        title: "Photography",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-    },
-    {
-        id:"23",
-        image: IMAGES.mahendi,
-        title: "Mehandi",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-    },
-    {
-        id:"24",
-        image: IMAGES.mandap,
-        title: "  Mandap \nDecorations",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-    },
-    {
-        id:"25",
-        image: IMAGES.party4,
-        title: "  Outdoor \nDecorations",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-    },
-    {
-        id:"26",
-        image: IMAGES.ph2,
-        title: "Decorations",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-    },
-    {
-        id:"27",
-        image: IMAGES.catring1,
-        title: "Catering Services",
-        price: "8000",
-        discount: "1000",
-        offer:"40% Off",
-    },
-    {
-        id:"28",
-        image: IMAGES.catring2,
-        title: "Catering Services",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-    }
-]
-
-const gridData = [
-    {
-        id:"13",
-        image: IMAGES.ph3,
-        title: "Marraige shoot",
-        price: "8000",
-        discount: "1000",
-        offer:"40% Off",
-        success:false
-    },
-    {
-        id:"14",
-        image: IMAGES.ph1,
-        title: "Photography",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-        offer:"FREE Delivery",
-        success:true
-    },
-    {
-        id:"15",
-        image: IMAGES.mahendi,
-        title: "Mehandi",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-        offer:"40% Off",
-        success:false
-    },
-    {
-        id:"16",
-        image: IMAGES.mandap,
-        title: "  Mandap \nDecorations",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-        offer:"FREE Delivery",
-        success:true
-    },
-    {
-        id:"17",
-        image: IMAGES.party4,
-        title: "  Outdoor \nDecorations",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-        offer:"40% Off",
-        success:false
-    },
-    {
-        id:"18",
-        image: IMAGES.ph2,
-        title: "Decorations",
-        price: "8000",
-        discount: "1000",
-        review:"40% Off",
-        offer:"FREE Delivery",
-        success:true
-    },
-    {
-        id:"19",
-        image: IMAGES.catring1,
-        title: "Catering Services",
-        price: "8000",
-        discount: "1000",
-        offer:"40% Off",
-        review:"(2k Review)",
-        success:false
-    },
-    {
-        id:"20",
-        image: IMAGES.catring2,
-        title: "Catering Services",
-        price: "8000",
-        discount: "1000",
-        offer:"FREE Delivery",
-        success:true
-    }
     
+
 ]
+
+
+
+// const gridData = [
+//     {
+//         id:"13",
+//         image: IMAGES.ph3,
+//         title: "Marraige shoot",
+//         price: "8000",
+//         discount: "1000",
+//         offer:"40% Off",
+//         success:false
+//     },
+//     {
+//         id:"14",
+//         image: IMAGES.ph1,
+//         title: "Photography",
+//         price: "8000",
+//         discount: "1000",
+//         review:"40% Off",
+//         offer:"FREE Delivery",
+//         success:true
+//     },
+//     {
+//         id:"15",
+//         image: IMAGES.mahendi,
+//         title: "Mehandi",
+//         price: "8000",
+//         discount: "1000",
+//         review:"40% Off",
+//         offer:"40% Off",
+//         success:false
+//     },
+//     {
+//         id:"16",
+//         image: IMAGES.mandap,
+//         title: "  Mandap \nDecorations",
+//         price: "8000",
+//         discount: "1000",
+//         review:"40% Off",
+//         offer:"FREE Delivery",
+//         success:true
+//     },
+//     {
+//         id:"17",
+//         image: IMAGES.party4,
+//         title: "  Outdoor \nDecorations",
+//         price: "8000",
+//         discount: "1000",
+//         review:"40% Off",
+//         offer:"40% Off",
+//         success:false
+//     },
+//     {
+//         id:"18",
+//         image: IMAGES.ph2,
+//         title: "Decorations",
+//         price: "8000",
+//         discount: "1000",
+//         review:"40% Off",
+//         offer:"FREE Delivery",
+//         success:true
+//     },
+//     {
+//         id:"19",
+//         image: IMAGES.catring1,
+//         title: "Catering Services",
+//         price: "8000",
+//         discount: "1000",
+//         offer:"40% Off",
+//         review:"(2k Review)",
+//         success:false
+//     },
+//     {
+//         id:"20",
+//         image: IMAGES.catring2,
+//         title: "Catering Services",
+//         price: "8000",
+//         discount: "1000",
+//         offer:"FREE Delivery",
+//         success:true
+//     }
+    
+// ]
+
+interface BusinessItem {
+    id: string;
+    image: any;
+    title: string;
+    price: string;
+    discount: string;
+    review?: string;
+    offer?: string;
+}
 
 type AddBusinessScreenProps = StackScreenProps<RootStackParamList, 'AddBusiness'>;
 
 const AddBusiness = ({ navigation } : AddBusinessScreenProps) => {
 
-     const theme = useTheme();
+
+    const [ListData, SetListData] = useState<BusinessItem[]>([]); // Define state type as BusinessItem[]
+    const theme = useTheme();
     const { colors }:{colors : any} = theme;
+
+    const [selectedOption, setSelectedOption] = useState("Your Business");
+
+    const handleSelectOption = (option: string) => {
+        setSelectedOption(option);
+        if (option === "Your Business") {
+            // Call your API for "Your Business" here
+            fetchYourBusinessData();
+        } else if (option === "Post New Business") {
+            navigation.navigate('PostBusiness'); // Navigate to the PostBusiness page
+        }
+    };
+
+    const fetchYourBusinessData = () => {
+
+        const staticData = [
+            {
+                id:"21",
+                image: IMAGES.ph3,
+                title: "Marraige shoot",
+                price: "8000",
+                discount: "1000",
+                review:"40% Off",
+            },
+            // {
+            //     id:"22",
+            //     image: IMAGES.ph1,
+            //     title: "Photography",
+            //     price: "8000",
+            //     discount: "1000",
+            //     review:"40% Off",
+            // },
+            // {
+            //     id:"23",
+            //     image: IMAGES.mahendi,
+            //     title: "Mehandi",
+            //     price: "8000",
+            //     discount: "1000",
+            //     review:"40% Off",
+            // },
+            // {
+            //     id:"24",
+            //     image: IMAGES.mandap,
+            //     title: "  Mandap \nDecorations",
+            //     price: "8000",
+            //     discount: "1000",
+            //     review:"40% Off",
+            // },
+            // {
+            //     id:"25",
+            //     image: IMAGES.party4,
+            //     title: "  Outdoor \nDecorations",
+            //     price: "8000",
+            //     discount: "1000",
+            //     review:"40% Off",
+            // },
+            // {
+            //     id:"26",
+            //     image: IMAGES.ph2,
+            //     title: "Decorations",
+            //     price: "8000",
+            //     discount: "1000",
+            //     review:"40% Off",
+            // },
+            // {
+            //     id:"27",
+            //     image: IMAGES.catring1,
+            //     title: "Catering Services",
+            //     price: "8000",
+            //     discount: "1000",
+            //     offer:"40% Off",
+            // },
+            // {
+            //     id:"28",
+            //     image: IMAGES.catring2,
+            //     title: "Catering Services",
+            //     price: "8000",
+            //     discount: "1000",
+            //     review:"40% Off",
+            // }
+        ]
+        SetListData(staticData);
+        // Your API call logic here
+        console.log("Fetching 'Your Business' data...");
+    };
+
+    useEffect(() => {
+        setSelectedOption("Your Business");
+        // Fetch data for "Your Business" by default on mount
+        fetchYourBusinessData();
+    }, []);
 
     const [show, setshow] = useState(true);
 
@@ -225,68 +253,7 @@ const AddBusiness = ({ navigation } : AddBusinessScreenProps) => {
                     //backgroundColor: colors.card,
                 }]}
             >
-                <View style={{
-                        height: 60,
-                        backgroundColor:theme.dark ? 'rgba(0,0,0,.4)':'rgba(255,255,255,.4)',
-                        borderBottomLeftRadius:25,
-                        borderBottomRightRadius:25,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}
-                >
-                     <View style={{height:40,width:40,borderRadius:15,backgroundColor:colors.card,justifyContent:'center',marginLeft:10,}}>
-                        <IconButton
-                            onPress={() => navigation.goBack()}
-                            icon={props => <MaterialIcons name="arrow-back-ios" {...props} />}
-                            iconColor={colors.title}
-                            size={20}
-                        />
-                     </View>
-                    <View style={{ height: 40, backgroundColor: colors.card, borderRadius: 10, marginLeft: 10, flex: 1 }}>
-                        <TextInput
-                            placeholder='Search Products'
-                            placeholderTextColor={theme.dark ? 'rgba(255, 255, 255, .6)' : 'rgba(0, 0, 0, 0.6)'}
-                            style={{ ...FONTS.fontRegular, fontSize: 16, color: colors.title, paddingLeft: 40,flex:1,borderRadius:15 }}
-                        />
-                        <View style={{ position: 'absolute', top: 9, left: 10, }}>
-                            <Image
-                                style={{ height: 20, width: 20, resizeMode: 'contain', tintColor: colors.title }}
-                                source={IMAGES.search}
-                            />
-                        </View>
-                    </View>
-                    <TouchableOpacity
-                        style={{ padding: 10, marginLeft: 10 }}
-                        onPress={() => {
-                            setshow(!show)
-                        }}
-                    >
-                        <Image
-                            style={{ height: 22, width: 22, resizeMode: 'contain', tintColor: colors.title }}
-                            source={
-                                show
-                                    ?
-                                    IMAGES.list
-                                    :
-                                    IMAGES.grid
-                            }
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ padding: 10, marginRight: 10 }}
-                        onPress={() => navigation.navigate('MyCart')}
-                    >
-                        <Image style={{
-                            height: 20,
-                            width: 20,
-                            resizeMode: 'contain',
-                            tintColor: colors.title
-                        }} source={IMAGES.shopping2} />
-                        <View style={[GlobalStyleSheet.notification, { position: 'absolute', right: 3, bottom: 22 }]}>
-                            <Text style={{ ...FONTS.fontRegular, fontSize: 10, color: COLORS.white }}>14</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                
             </View>
             <View style={[GlobalStyleSheet.container, { paddingTop: 20 }]}>
                 <View style={{ marginHorizontal: -15, marginBottom: 10 }}>
@@ -297,38 +264,26 @@ const AddBusiness = ({ navigation } : AddBusinessScreenProps) => {
                     >
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
                             {sliderData.map((data, index) => {
+                                const isSelected = selectedOption === data.title;
                                 return (
-                                    <View
+                                    <TouchableOpacity
                                         key={index}
-                                        style={[{
-                                            shadowColor: 'rgba(195, 123, 95, 0.20)',
-                                            shadowOffset: {
-                                                width: 2,
-                                                height: 4,
-                                            },
-                                            shadowOpacity: .1,
-                                            shadowRadius: 5,
-                                            marginBottom:5
-                                        }, Platform.OS === "ios" && {
-                                            backgroundColor: 'rgba(255, 255, 255, 0.70)',
+                                        style={{
+                                            backgroundColor: isSelected ? colors.primary : colors.card,
+                                            height: 40,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
                                             borderRadius: 12,
-                                        }]}
+                                            paddingHorizontal: 20,
+                                            paddingVertical: 5,
+                                        }}
+                                        onPress={() => handleSelectOption(data.title)}
                                     >
-                                        <TouchableOpacity
-                                            style={{
-                                                backgroundColor:colors.card,
-                                                height: 40,
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                borderRadius: 12,
-                                                paddingHorizontal: 20,
-                                                paddingVertical: 5,
-                                                
-                                            }}>
-                                            <Text style={{ ...FONTS.fontMedium, fontSize: 13, color:colors.title }}>{data.title}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                )
+                                        <Text style={{ ...FONTS.fontMedium, fontSize: 13, color: colors.title }}>
+                                            {data.title}
+                                        </Text>
+                                    </TouchableOpacity>
+                                );
                             })}
                         </View>
                     </ScrollView>
