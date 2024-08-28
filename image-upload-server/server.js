@@ -2,9 +2,18 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 
 
 const app = express();
+// app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:8081'
+}));
+
+
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Setup storage for multer
 const storage = multer.diskStorage({
@@ -50,20 +59,42 @@ app.get('/uploads', (req, res) => {
             return res.status(500).send({ message: "Error reading upload directory." });
         }
 
-        // Construct file details with mediaType assumption based on file extension
-        const fileDetails = files.map(file => {
-            const ext = path.extname(file).toLowerCase();
-            const mediaType = ext === '.mp4' ? 'video' : 'image';
-            return {
-                fileName: file,
-                filePath: `http://localhost:3000/uploads/${file}`, // Adjust the URL if necessary
-                mediaType: mediaType
-            };
+        // Get detailed information about each file
+        const fileDetailsPromises = files.map(file => {
+            return new Promise((resolve, reject) => {
+                const filePath = path.join(uploadDir, file);
+                
+                fs.stat(filePath, (err, stats) => {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    const ext = path.extname(file).toLowerCase();
+                    const mediaType = ext === '.mp4' ? 'video' : 'image';
+
+                    resolve({
+                        fileName: file,
+                        filePath: `http://localhost:3000/uploads/${file}`, // Adjust URL if necessary
+                        mediaType: mediaType,
+                        size: stats.size, // File size in bytes
+                        createdAt: stats.birthtime, // File creation time
+                        modifiedAt: stats.mtime // File last modification time
+                    });
+                });
+            });
         });
 
-        res.status(200).json(fileDetails);
+        // Wait for all promises to resolve
+        Promise.all(fileDetailsPromises)
+            .then(fileDetails => {
+                res.status(200).json(fileDetails);
+            })
+            .catch(error => {
+                res.status(500).send({ message: "Error getting file details.", error });
+            });
     });
 });
+
 
 
 app.listen(3000, () => {

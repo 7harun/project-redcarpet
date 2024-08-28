@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, SafeAreaView, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, SafeAreaView, TouchableOpacity, Image, StyleSheet, Alert,FlatList } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -14,14 +14,28 @@ interface MediaFile {
     name: string;
 }
 
+interface Category {
+    id: string;
+    name: string;
+}
+
+const categories: Category[] = [
+    { id: '1', name: 'Retail' },
+    { id: '2', name: 'Services' },
+    { id: '3', name: 'Restaurant' },
+    { id: '4', name: 'Other' },
+];
+
 const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
     const theme = useTheme();
     const { colors } = theme;
 
     const [businessName, setBusinessName] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState<Category | null>(null);
     const [media, setMedia] = useState<MediaFile | null>(null);
     const [mediaType, setMediaType] = useState<'image' | 'video'>('image');
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
 
     const pickMedia = async (type: 'image' | 'video') => {
         try {
@@ -78,8 +92,6 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
         console.log(formData)
         try {
             const response = await axios.post('http://192.168.1.13:3000/upload', formData, {
-                // const response = await axios.post('http://ec2-52-66-250-72.ap-south-1.compute.amazonaws.com/ems/api/categories/create', formData, {
-                
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Accept': 'application/json',
@@ -88,6 +100,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
     
             if (response.status === 200) {
                 Alert.alert('Success', `${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} uploaded successfully`);
+                navigation.navigate('AddBusiness')
             } else {
                 Alert.alert('Upload Failed', `Failed to upload ${mediaType}`);
             }
@@ -103,6 +116,15 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
         console.log('Business Name:', businessName);
         console.log('Category:', category);
         console.log(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} URI:`, media?.uri);
+        if (!businessName) {
+            Alert.alert('Missing Information', 'Please enter a business name.');
+            return;
+        }
+
+        if (!category) {
+            Alert.alert('Missing Information', 'Please select a category.');
+            return;
+        }
 
         if (media) {
             uploadMedia();
@@ -122,12 +144,26 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                 style={[styles.input, { borderColor: colors.border, color: colors.text }]}
             />
 
-            <TextInput
-                placeholder="Category"
-                value={category}
-                onChangeText={setCategory}
-                style={[styles.input, { borderColor: colors.border, color: colors.text }]}
-            />
+            <TouchableOpacity onPress={() => setIsDropdownVisible(!isDropdownVisible)} style={[styles.dropdown, { borderColor: colors.border }]}>
+                <Text style={{ color: colors.text }}>{category ? category.name : 'Select Category'}</Text>
+            </TouchableOpacity>
+            {isDropdownVisible && (
+                <FlatList
+                    data={categories}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            onPress={() => {
+                                setCategory(item);
+                                setIsDropdownVisible(false);
+                            }}
+                            style={styles.dropdownItem}>
+                            <Text style={{ color: colors.text }}>{item.name}</Text>
+                        </TouchableOpacity>
+                    )}
+                    keyExtractor={(item) => item.id}
+                    style={styles.dropdownList}
+                />
+            )}
 
             <View style={styles.buttonContainer}>
                 <Button title="Post Image" onPress={() => pickMedia('image')} />
@@ -175,6 +211,27 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         borderRadius: 8,
+    },
+    dropdown: {
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 10,
+        justifyContent: 'center',
+    },
+    dropdownList: {
+        borderWidth: 1,
+        borderRadius: 8,
+        position: 'absolute',
+        top: 80, // Adjust based on position of dropdown
+        width: '100%',
+        maxHeight: 150,
+        backgroundColor: '#fff',
+        zIndex: 10,
+    },
+    dropdownItem: {
+        padding: 10,
+        borderBottomWidth: 1,
     },
 });
 
