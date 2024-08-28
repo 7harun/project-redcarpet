@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, SafeAreaView, Image, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, Platform,StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { GlobalStyleSheet } from '../../constants/StyleSheet';
 import Header from '../../layout/Header';
@@ -12,10 +12,14 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Navigations/RootStackParamList';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/reducer/cartReducer';
+import Swiper from 'react-native-swiper';
+
 
 
 const swiperimageData = [
     {
+        image: 'https://redcarpet.s3.ap-south-1.amazonaws.com/1/flower2.jpg',
+    },{
         image: IMAGES.ph1,
     },
 ]
@@ -63,18 +67,33 @@ const ProductDetails = ({ navigation } : ProductDetailsScreenProps) => {
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
-                <View>
-                    <View style={{}}>
-                        {swiperimageData.map((data, index) => {
-                            return (
-                                <Image
-                                    key={index}
-                                    style={{ width: '100%', height: undefined, aspectRatio: 1 / 1.2, borderBottomRightRadius: 30, borderBottomLeftRadius: 30 }}
-                                    source={data.image}
-                                />
-                            )
-                        })}
-                    </View>
+                <View style={{ borderRadius: 15,
+        overflow: 'hidden',
+        marginBottom: 20,
+        shadowColor: 'rgba(0,0,0,0.2)',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 5,
+        elevation: 3,}}>
+                    <Swiper
+                        style={styles.wrapper}
+                        dotColor={colors.border}
+                        activeDotColor={COLORS.primary}
+                        paginationStyle={{ bottom: 10 }}
+                    >
+                        
+                        <View style={{width: '100%',height: 200}}>
+                            {swiperimageData.map((data, index) => {
+                                return (
+                                    <Image
+                                        key={index}
+                                        style={{ width: '100%', height: '100%' }}
+                                        source={{ uri: 'https://redcarpet.s3.ap-south-1.amazonaws.com/1/flower2.jpg' }}
+                                    />
+                                )
+                            })}
+                        </View>
+                    </Swiper>
                 </View>
                 <View style={[GlobalStyleSheet.container, { marginTop: 5 }]}>
                     <View style={{marginBottom:20}}>
@@ -157,7 +176,7 @@ const ProductDetails = ({ navigation } : ProductDetailsScreenProps) => {
                     <View style={[GlobalStyleSheet.container, { paddingHorizontal: 10, marginTop: 20, padding: 0 }]}>
                         <View style={GlobalStyleSheet.row}>
                             <View style={GlobalStyleSheet.col40}>
-                                <View style={{ }}>
+                                <View style={styles.slide}>
                                     <CheckoutItems
                                         style2
                                     />
@@ -179,5 +198,20 @@ const ProductDetails = ({ navigation } : ProductDetailsScreenProps) => {
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    wrapper: {
+        height: 300,
+    },
+    slide: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    image: {
+        width: '100%',
+        height: '100%',
+    },
+});
 
 export default ProductDetails

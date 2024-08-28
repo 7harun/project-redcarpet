@@ -137,7 +137,6 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                                         <ViewImage
                                             id={item.fileName} // Or any other unique identifier
                                             image={item.filePath} // Use URL from the data
-                                            title={item.fileName} // Use appropriate title
                                             mediaType={item.mediaType} // Pass mediaType to ViewImage
                                             onPress={() => navigation.navigate('ProductDetails')} // Adjust navigation as needed
                                             onPress1={() => console.log('Add to wishlist')} // Adjust functionality as needed
@@ -154,76 +153,7 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                     </ScrollView>
                 </View>
             </View>
-            <View style={{
-                width: '100%',
-                position: 'absolute',
-                bottom: 0,
-                overflow: 'hidden',
-                borderTopLeftRadius: 25,
-                borderTopRightRadius: 25,
-            }}>
-                <BlurView
-                    style={[{ width: '100%', height: 60, borderRadius: 50 }, Platform.OS === "ios" && { height: 80 }]}
-                />
-                <View style={[{
-                    backgroundColor: theme.dark ? 'rgba(0,0,0,0.50)' : 'rgba(255, 255, 255, 0.50)',
-                    height: 60,
-                    width: '100%',
-                    flexDirection: 'row',
-                    position: 'absolute',
-                    bottom: 0,
-                    borderTopLeftRadius: 25,
-                    borderTopRightRadius: 25,
-                }, Platform.OS === 'ios' && {
-                    height: 80
-                }]}
-                >
-                    <TouchableOpacity
-                        style={{
-                            flexDirection: 'row', alignItems: 'center', gap: 5, flex: 1,
-                            paddingHorizontal: 10,
-                            justifyContent: 'center'
-                        }}
-                        onPress={() => sheetRef.current.openSheet('gender')}
-                    >
-                        <Image
-                            style={{ height: 20, width: 20, resizeMode: 'contain', tintColor: colors.title }}
-                            source={IMAGES.user2}
-                        />
-                        <Text style={{ ...FONTS.fontMedium, fontSize: 15, color: colors.title }}>Category</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                            flexDirection: 'row', alignItems: 'center', gap: 5, flex: 1,
-                            paddingHorizontal: 10,
-                            justifyContent: 'center'
-                        }}
-                        onPress={() => sheetRef.current.openSheet('short')}
-                    >
-                        <Image
-                            style={{ height: 20, width: 20, resizeMode: 'contain', tintColor: colors.title }}
-                            source={IMAGES.arrowup}
-                        />
-                        <Text style={{ ...FONTS.fontMedium, fontSize: 15, color: colors.title }}>SORT</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                            flexDirection: 'row', alignItems: 'center', gap: 5, flex: 1,
-                            paddingHorizontal: 10,
-                            justifyContent: 'center'
-                        }}
-                        onPress={() => sheetRef.current.openSheet('filter')}
-                    >
-                        <Image
-                            style={{ height: 20, width: 20, resizeMode: 'contain', tintColor: colors.title }}
-                            source={IMAGES.filter}
-                        />
-                        <Text style={{ ...FONTS.fontMedium, fontSize: 15, color: colors.title }}>FILTER</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ width: 1, height: 32, backgroundColor: '#D9D9D9', position: 'absolute', left: 135, bottom: 15 }}></View>
-                <View style={{ width: 1, height: 32, backgroundColor: '#D9D9D9', position: 'absolute', left: 230, bottom: 15 }}></View>
-            </View>
+            
             <BottomSheet2
                 ref={sheetRef}
             />

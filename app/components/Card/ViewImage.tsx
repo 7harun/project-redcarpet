@@ -6,14 +6,13 @@ import { Video } from 'expo-av';
 interface ViewImageProps {
     id: string;
     image: string; // URL to the image
-    title: string;
     mediaType: string; // Add mediaType to differentiate between image and video
     onPress?: () => void;
     onPress1?: () => void;
     likebtn?: boolean;
 }
 
-const ViewImage: React.FC<ViewImageProps> = ({ id, image, title, mediaType, onPress, onPress1, likebtn }) => {
+const ViewImage: React.FC<ViewImageProps> = ({ id, image,  mediaType, onPress, onPress1, likebtn }) => {
     const theme = useTheme();
     const { colors } : {colors : any} = theme;
 
@@ -41,12 +40,12 @@ const ViewImage: React.FC<ViewImageProps> = ({ id, image, title, mediaType, onPr
                             source={{ uri: 'https://redcarpet.s3.ap-south-1.amazonaws.com/1/video1.mov' }}
                             style={styles.image}
                             useNativeControls
-                            resizeMode="contain"
+                            // resizeMode="contain"
+                            shouldPlay
                         />
                     ) : null}
 
                 </View>
-                <Text style={{ color: colors.title, marginTop: 5 }}>{title}</Text>
             </TouchableOpacity>
             {likebtn && (
                 <TouchableOpacity onPress={onPress1} style={styles.likeButton}>
