@@ -27,6 +27,7 @@ if (!fs.existsSync('uploads')) {
 
 // Handle POST request to /upload
 app.post('/upload', upload.single('image'), (req, res) => {
+    console.log('htting')
     const file = req.file;
     if (!file) {
         return res.status(400).send('No file uploaded.');
