@@ -1,12 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, SafeAreaView, Image, TouchableOpacity, Platform, StyleSheet } from 'react-native'
-import { useTheme } from '@react-navigation/native'
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, SafeAreaView, ScrollView, Platform, StyleSheet } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 import { COLORS, FONTS } from '../../constants/theme';
-import { IconButton } from 'react-native-paper';
-import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyleSheet } from '../../constants/StyleSheet';
-import { ScrollView } from 'react-native-gesture-handler';
-import CardStyle3 from '../../components/Card/CardStyle3';
 import Cardstyle2 from '../../components/Card/Cardstyle2';
 import { BlurView } from 'expo-blur';
 import { IMAGES } from '../../constants/Images';
@@ -16,13 +12,12 @@ import BottomSheet2 from '../Shortcode/BottomSheet2';
 import { useDispatch } from 'react-redux';
 import { addTowishList } from '../../redux/reducer/wishListReducer';
 import { addToCart } from '../../redux/reducer/cartReducer';
-// import Video from 'react-native-video';
 import { Video } from 'expo-av';
 import ViewImage from '../../components/Card/ViewImage';
 import axios from 'axios';
-
-
-
+import CustomButton from '../../components/CustomButton';
+import { GetBusiness } from '../../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const sliderData = [
     { title: "Your Business" },
@@ -31,10 +26,24 @@ const sliderData = [
 
 interface BusinessItem {
     id: string;
-    fileName: string;
-    filePath: string;
-    mediaType: string;
+    vendor_id: string;
+    name_of_firm: string;
+    images: string;
+    videos: string;
+    mobile_no: string;
+    email: string;
+    address_line_1: string;
+    address_line_2: string | null;
+    city: string;
+    country: string;
+    state: string;
+    pincode: string;
+    service_availability_radius: string;
+    service_categories: string;
+    book_in_advance_days: string;
+    created_at: string;
 }
+
 
 type AddBusinessScreenProps = StackScreenProps<RootStackParamList, 'AddBusiness'>;
 
@@ -56,13 +65,31 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
 
     const fetchYourBusinessData = async () => {
         try {
-            const response = await axios.get('http://192.168.1.13:3000/uploads'); // Replace with your local IP
-            SetListData(response.data);
-            console.log("Fetched 'Your Business' data:", response.data);
+            // Get the token from your auth context or storage
+            const token = await AsyncStorage.getItem('authToken'); // Adjust this if your token is stored elsewhere
+    
+            const response = await axios.get(GetBusiness(), {
+                headers: {
+                    'Authorization': `${token}`, // Include the token in the headers
+                    'Content-Type': 'application/json', // Optional: Specify the content type if needed
+                },
+            });
+    
+            console.log('API Response:', response.data[46]);
+    
+            if (Array.isArray(response.data)) {
+                SetListData([response.data[46],response.data[47]]);
+            } else if (response.data && Array.isArray(response.data.businessData)) {
+                SetListData(response.data.businessData);
+            } else {
+                console.error('Expected an array but got:', response.data);
+            }
         } catch (error) {
-            console.error("Error fetching 'Your Business' data:", error);
+            console.error('Error fetching business data:', error);
         }
     };
+    
+    
     
 
     useEffect(() => {
@@ -84,14 +111,6 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
 
     return (
         <SafeAreaView style={{ backgroundColor: colors.background, flex: 1 }}>
-            <View
-                style={[{
-                    shadowColor: 'rgba(195, 123, 95, 0.20)',
-                    shadowOffset: { width: 2, height: 4 },
-                    shadowOpacity: .6,
-                    shadowRadius: 5
-                }, Platform.OS === "ios" && {}]}
-            />
             <View style={[GlobalStyleSheet.container, { paddingTop: 20 }]}>
                 <View style={{ marginHorizontal: -15, marginBottom: 10 }}>
                     <ScrollView
@@ -103,9 +122,11 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                             {sliderData.map((data, index) => {
                                 const isSelected = selectedOption === data.title;
                                 return (
-                                    <TouchableOpacity
+                                    <CustomButton
                                         key={index}
-                                        style={{
+                                        title={data.title}
+                                        onPress={() => handleSelectOption(data.title)}
+                                        buttonStyle={{
                                             backgroundColor: isSelected ? colors.primary : colors.card,
                                             height: 40,
                                             alignItems: 'center',
@@ -114,12 +135,8 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                                             paddingHorizontal: 20,
                                             paddingVertical: 5,
                                         }}
-                                        onPress={() => handleSelectOption(data.title)}
-                                    >
-                                        <Text style={{ ...FONTS.fontMedium, fontSize: 13, color: colors.title }}>
-                                            {data.title}
-                                        </Text>
-                                    </TouchableOpacity>
+                                        textStyle={{ ...FONTS.fontMedium, fontSize: 13, color: colors.title }}
+                                    />
                                 );
                             })}
                         </View>
@@ -135,11 +152,12 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                                 {ListData.map((item, index) => (
                                     <View key={index} style={[GlobalStyleSheet.col50, { marginBottom: 20 }]}>
                                         <ViewImage
-                                            id={item.fileName} // Or any other unique identifier
-                                            image={item.filePath} // Use URL from the data
-                                            mediaType={item.mediaType} // Pass mediaType to ViewImage
+                                            id={item.id} // Use a unique identifier
+                                            image={item.images} // Use image URL from the data
+                                            video={item.videos} // Use video URL from the data
+                                            mediaType={item.videos ? 'video' : 'image'} // Determine media type
                                             onPress={() => navigation.navigate('ProductDetails')} // Adjust navigation as needed
-                                            onPress1={() => console.log('Add to wishlist')} // Adjust functionality as needed
+                                            onPress1={() => addItemToWishList(item)} // Adjust functionality as needed
                                             likebtn={false} // Set as true or false based on your needs
                                         />
                                     </View>
@@ -159,6 +177,7 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
             />
         </SafeAreaView>
     );
+    
 };
 
 const styles = StyleSheet.create({

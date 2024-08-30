@@ -20,7 +20,6 @@ import { loginUrl } from '../../api/api';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { FadeInFromBottomAndroidSpec } from '@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionSpecs';
 
-
 type SignInScreenProps = StackScreenProps<RootStackParamList, 'SignIn'>;
 
 const SignIn = ({ navigation }: SignInScreenProps) => {
@@ -38,9 +37,10 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
 
 
     const handlePress = async () => {
+        console.log(loginUrl())
         try {
             // Replace 'your-api-url' with the actual endpoint URL
-            const response = await axios.post('http://ec2-52-66-250-72.ap-south-1.compute.amazonaws.com/ems/api/users/login', {
+            const response = await axios.post(loginUrl(), {
                 username:email,
                 password: pwd,
             },{

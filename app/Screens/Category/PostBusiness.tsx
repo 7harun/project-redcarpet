@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, SafeAreaView, TouchableOpacity, Image, StyleSheet, Alert,FlatList } from 'react-native';
+import { View, Text, TextInput, SafeAreaView, TouchableOpacity, StyleSheet, Alert, FlatList } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Navigations/RootStackParamList';
 import axios from 'axios';
+import CustomButton from '../../components/CustomButton';
+import { POSTBusinessUrl } from '../../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type PostBusinessScreenProps = StackScreenProps<RootStackParamList, 'PostBusiness'>;
 
@@ -31,106 +34,156 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
     const { colors } = theme;
 
     const [businessName, setBusinessName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [address1, setAddress1] = useState('');
+    const [state, setState] = useState('');
+    const [city, setCity] = useState('');
+    const [sar, setSar] = useState('');
+    const [bia, setBia] = useState('');
     const [category, setCategory] = useState<Category | null>(null);
-    const [media, setMedia] = useState<MediaFile | null>(null);
-    const [mediaType, setMediaType] = useState<'image' | 'video'>('image');
+    const [images, setImages] = useState<MediaFile[]>([]);
+    const [video, setVideo] = useState<MediaFile | null>(null);
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-
-    const pickMedia = async (type: 'image' | 'video') => {
+    const pickMedia = async () => {
         try {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
                 Alert.alert("Permission required", "Permission to access media library is required!");
                 return;
             }
-    
+
             let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: type === 'image' ? ImagePicker.MediaTypeOptions.Images : ImagePicker.MediaTypeOptions.Videos,
-                allowsEditing: true,
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsMultipleSelection: true,
                 aspect: [4, 3],
                 quality: 1,
             });
-    
+
             if (!result.canceled && result.assets.length > 0) {
-                const selectedMedia = result.assets[0];
-                console.log("Selected Media Details:", {
-                    uri: selectedMedia.uri,
-                    type: selectedMedia.type,
-                    fileName: selectedMedia.uri.split('/').pop(),
-                    size: selectedMedia.fileSize,
-                });
-    
-                setMedia({
-                    uri: selectedMedia.uri,
-                    type: type === 'image' ? 'image/jpeg' : 'video/mp4',
-                    name: selectedMedia.uri.split('/').pop() || (type === 'image' ? 'photo.jpg' : 'video.mp4'),
-                });
-                setMediaType(type);
+                const selectedImages = [];
+                let selectedVideo: MediaFile | null = null;
+
+                for (const asset of result.assets) {
+                    const mediaFile: MediaFile = {
+                        uri: asset.uri,
+                        type: asset.type === 'image' ? 'image/jpeg' : 'video/mp4',
+                        name: asset.uri.split('/').pop() || (asset.type === 'image' ? 'photo.jpg' : 'video.mp4'),
+                    };
+
+                    if (asset.type === 'image') {
+                        if (selectedImages.length < 3) {
+                            selectedImages.push(mediaFile);
+                        }
+                    } else if (asset.type === 'video' && !selectedVideo) {
+                        selectedVideo = mediaFile;
+                    }
+                }
+
+                if (selectedImages.length > 0) {
+                    setImages(selectedImages);
+                }
+                if (selectedVideo) {
+                    setVideo(selectedVideo);
+                }
             }
         } catch (error) {
             console.error("Error picking media:", error);
             Alert.alert("Error", "An error occurred while picking the media.");
         }
     };
-    
-    
 
     const uploadMedia = async () => {
-        if (!media) {
-            Alert.alert(`No ${mediaType} selected`, `Please select a ${mediaType} to upload.`);
+        if (images.length === 0 && !video) {
+            Alert.alert('No Media Selected', 'Please select images and/or a video to upload.');
             return;
         }
-    
+
         const formData = new FormData();
-        formData.append('mediaType', mediaType); // Add mediaType to the form data
-        formData.append(mediaType, {
-            uri: media.uri,
-            type: media.type,
-            name: media.name,
-        } as any);
-        console.log(formData)
+        images.forEach((image) => {
+            formData.append('images', {
+                uri: image.uri,
+                type: image.type,
+                name: image.name,
+            } as any);
+        });
+
+        if (video) {
+            formData.append('video', {
+                uri: video.uri,
+                type: video.type,
+                name: video.name,
+            } as any);
+        }
+        console.log(formData);
+        alert('lk');
+        // return false;
+
         try {
-            const response = await axios.post('http://192.168.1.13:3000/upload', formData, {
+            const token = await AsyncStorage.getItem('authToken'); // Retrieve the token
+
+            const response = await axios.post(POSTBusinessUrl(), formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Accept': 'application/json',
+                    'Authorization': `${token}`, // Include the token in the headers
+
                 },
             });
-    
+            console.log(response.data)
             if (response.status === 200) {
-                Alert.alert('Success', `${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} uploaded successfully`);
-                navigation.navigate('AddBusiness')
+                Alert.alert('Success', 'Media uploaded successfully');
+                // navigation.navigate('AddBusiness');
             } else {
-                Alert.alert('Upload Failed', `Failed to upload ${mediaType}`);
+                Alert.alert('Upload Failed', 'Failed to upload media');
             }
         } catch (error) {
             console.error('Upload Error:', error);
-            Alert.alert('Error', `An error occurred while uploading the ${mediaType}`);
+            Alert.alert('Error', 'An error occurred while uploading the media.');
         }
     };
-    
-    
 
     const handlePostBusiness = () => {
         console.log('Business Name:', businessName);
         console.log('Category:', category);
-        console.log(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} URI:`, media?.uri);
-        if (!businessName) {
-            Alert.alert('Missing Information', 'Please enter a business name.');
-            return;
-        }
 
-        if (!category) {
-            Alert.alert('Missing Information', 'Please select a category.');
-            return;
-        }
+        // if (!businessName) {
+        //     Alert.alert('Missing Information', 'Please enter a business name.');
+        //     return;
+        // }
 
-        if (media) {
-            uploadMedia();
-        } else {
-            Alert.alert(`No ${mediaType} selected`, `Please select a ${mediaType} to save.`);
-        }
+        // if (!phone) {
+        //     Alert.alert('Missing Information', 'Please enter a phone.');
+        //     return;
+        // }
+
+        // if (!category) {
+        //     Alert.alert('Missing Information', 'Please select a category.');
+        //     return;
+        // }
+        // if (!address1) {
+        //     Alert.alert('Missing Information', 'Please select an Address.');
+        //     return;
+        // }
+        // if (!state) {
+        //     Alert.alert('Missing Information', 'Please select a State.');
+        //     return;
+        // }
+        // if (!city) {
+        //     Alert.alert('Missing Information', 'Please select a city.');
+        //     return;
+        // }
+        // if (!sar) {
+        //     Alert.alert('Missing Information', 'Please select Service Availability Radius.');
+        //     return;
+        // }
+        // if (!bia) {
+        //     Alert.alert('Missing Information', 'Please select Book in Advance.');
+        //     return;
+        // }
+
+        uploadMedia();
     };
 
     return (
@@ -141,6 +194,52 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                 placeholder="Business Name"
                 value={businessName}
                 onChangeText={setBusinessName}
+                style={[styles.input, { borderColor: colors.border, color: colors.text }]}
+            />
+            <TextInput
+                placeholder="Mobile Number"
+                value={phone}
+                onChangeText={setPhone}
+                style={[styles.input, { borderColor: colors.border, color: colors.text }]}
+            />
+            <TextInput
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+                style={[styles.input, { borderColor: colors.border, color: colors.text }]}
+            />
+            <TextInput
+                placeholder="Address"
+                value={address1}
+                onChangeText={setAddress1}
+                style={[styles.input, { borderColor: colors.border, color: colors.text }]}
+            />
+
+            <TextInput
+                placeholder="State"
+                value={state}
+                onChangeText={setState}
+                style={[styles.input, { borderColor: colors.border, color: colors.text }]}
+            />
+
+            <TextInput
+                placeholder="City"
+                value={city}
+                onChangeText={setCity}
+                style={[styles.input, { borderColor: colors.border, color: colors.text }]}
+            />
+
+            <TextInput
+                placeholder="Service Availability Radius"
+                value={sar}
+                onChangeText={setSar}
+                style={[styles.input, { borderColor: colors.border, color: colors.text }]}
+            />
+
+            <TextInput
+                placeholder="Book In Advance (Days)"
+                value={bia}
+                onChangeText={setBia}
                 style={[styles.input, { borderColor: colors.border, color: colors.text }]}
             />
 
@@ -166,21 +265,12 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
             )}
 
             <View style={styles.buttonContainer}>
-                <Button title="Post Image" onPress={() => pickMedia('image')} />
-                <Button title="Post Video" onPress={() => pickMedia('video')} />
+                <CustomButton title="Upload Media" onPress={pickMedia} />
+                {/* {images.length > 0 && <Text style={{ color: colors.text, marginLeft: 10 }}>Images Selected: {images.map(image => image.name).join(', ')}</Text>}
+                {video && <Text style={{ color: colors.text, marginLeft: 10 }}>Video Selected: {video.name}</Text>} */}
             </View>
 
-            <TouchableOpacity style={styles.mediaPreviewContainer}>
-                <View style={[styles.mediaPreview, { borderColor: colors.border, backgroundColor: media ? 'transparent' : colors.card }]}>
-                    {media ? (
-                        <Image source={{ uri: media.uri }} style={styles.image} />
-                    ) : (
-                        <Text style={{ color: colors.text }}>Upload {mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}</Text>
-                    )}
-                </View>
-            </TouchableOpacity>
-
-            <Button title="Post Business" onPress={handlePostBusiness} />
+            <CustomButton title="Post Business" onPress={handlePostBusiness} color={colors.primary} />
         </SafeAreaView>
     );
 };
@@ -189,49 +279,28 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         padding: 10,
+       
+
+        borderRadius: 5,
         marginBottom: 10,
-        borderRadius: 8,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-    },
-    mediaPreviewContainer: {
-        marginBottom: 20,
-    },
-    mediaPreview: {
-        height: 150,
-        borderWidth: 1,
-        borderRadius: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    image: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 8,
     },
     dropdown: {
         borderWidth: 1,
         padding: 10,
-        borderRadius: 8,
+        borderRadius: 5,
         marginBottom: 10,
-        justifyContent: 'center',
-    },
-    dropdownList: {
-        borderWidth: 1,
-        borderRadius: 8,
-        position: 'absolute',
-        top: 80, // Adjust based on position of dropdown
-        width: '100%',
-        maxHeight: 150,
-        backgroundColor: '#fff',
-        zIndex: 10,
     },
     dropdownItem: {
         padding: 10,
         borderBottomWidth: 1,
+    },
+    dropdownList: {
+        borderWidth: 1,
+        borderRadius: 5,
+        maxHeight: 150,
+    },
+    buttonContainer: {
+        marginBottom: 20,
     },
 });
 
