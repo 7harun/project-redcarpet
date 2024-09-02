@@ -37,7 +37,8 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
 
 
     const handlePress = async () => {
-        console.log(loginUrl())
+        console.log('hellow')
+        // console.log(loginUrl())
         try {
             // Replace 'your-api-url' with the actual endpoint URL
             const response = await axios.post(loginUrl(), {
@@ -49,7 +50,7 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
                     'Accept': 'application/json',
                 },}
         );
-            console.log(response.data)
+            console.log(response.data,'response')
             // Check the response from the API
             if (response.data.status) { // Assuming the API returns a 'success' flag
                 setError(''); // Clear error message
@@ -57,8 +58,9 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
                 const username = response.data.name;
                 const email = response.data.email;
                 const role = response.data.is_vendor;
-                login(token, username, email, role);
-                // navigation.navigate('DrawerNavigation', { screen: 'Home' });
+                const userid = response.data.user_id;
+                login(token, username, email, role, userid);
+                navigation.navigate('DrawerNavigation', { screen: 'Home' });
 
             } else {
                 setError('Invalid credentials'); // Set error message

@@ -1,23 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Platform, StyleSheet } from 'react-native';
+import { View, Text, Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { Video as ExpoVideo } from 'expo-av';
 import { useTheme } from '@react-navigation/native';
 import { COLORS, FONTS } from '../../constants/theme';
 import { GlobalStyleSheet } from '../../constants/StyleSheet';
-import Cardstyle2 from '../../components/Card/Cardstyle2';
-import { BlurView } from 'expo-blur';
-import { IMAGES } from '../../constants/Images';
+import CustomButton from '../../components/CustomButton';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Navigations/RootStackParamList';
 import BottomSheet2 from '../Shortcode/BottomSheet2';
-import { useDispatch } from 'react-redux';
-import { addTowishList } from '../../redux/reducer/wishListReducer';
-import { addToCart } from '../../redux/reducer/cartReducer';
-import { Video } from 'expo-av';
-import ViewImage from '../../components/Card/ViewImage';
 import axios from 'axios';
-import CustomButton from '../../components/CustomButton';
 import { GetBusiness } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const sliderData = [
     { title: "Your Business" },
@@ -25,11 +20,12 @@ const sliderData = [
 ];
 
 interface BusinessItem {
+    media: MediaItem[];
     id: string;
     vendor_id: string;
     name_of_firm: string;
-    images: string;
-    videos: string;
+    images: string; 
+    videos: string; 
     mobile_no: string;
     email: string;
     address_line_1: string;
@@ -44,6 +40,10 @@ interface BusinessItem {
     created_at: string;
 }
 
+type MediaItem = {
+    media_type: 'images' | 'videos';
+    file_path: string;
+};
 
 type AddBusinessScreenProps = StackScreenProps<RootStackParamList, 'AddBusiness'>;
 
@@ -63,24 +63,32 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
         }
     };
 
+    useEffect(() => {
+        setSelectedOption("Your Business");
+        fetchYourBusinessData();
+    }, []);
+    
+    const sheetRef = useRef<any>();
+
     const fetchYourBusinessData = async () => {
         try {
-            // Get the token from your auth context or storage
-            const token = await AsyncStorage.getItem('authToken'); // Adjust this if your token is stored elsewhere
-    
-            const response = await axios.get(GetBusiness(), {
+            const token = await AsyncStorage.getItem('authToken');
+            const userid = await AsyncStorage.getItem('userid');
+            if (!token || !userid) {
+                navigation.navigate('Login'); // Replace 'Login' with your actual login screen name
+            return;
+            }
+            const response = await axios.get(GetBusiness(userid),{
                 headers: {
-                    'Authorization': `${token}`, // Include the token in the headers
-                    'Content-Type': 'application/json', // Optional: Specify the content type if needed
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json',
                 },
             });
-    
-            console.log('API Response:', response.data[46]);
-    
-            if (Array.isArray(response.data)) {
-                SetListData([response.data[46],response.data[47]]);
-            } else if (response.data && Array.isArray(response.data.businessData)) {
-                SetListData(response.data.businessData);
+
+            if (Array.isArray(response.data['data'])) {
+                SetListData(response.data['data']);
+            } else if (Array.isArray(response.data.data)) {
+                SetListData(response.data.data);
             } else {
                 console.error('Expected an array but got:', response.data);
             }
@@ -88,26 +96,12 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
             console.error('Error fetching business data:', error);
         }
     };
-    
-    
-    
 
-    useEffect(() => {
-        setSelectedOption("Your Business");
-        fetchYourBusinessData();
-    }, []);
-
-    const [show, setshow] = useState(true);
-    const sheetRef = useRef<any>();
-    const dispatch = useDispatch();
-
-    const addItemToWishList = (data: any) => {
-        dispatch(addTowishList(data));
-    };
-
-    const addItemToCart = (data: any) => {
-        dispatch(addToCart(data));
-    };
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchYourBusinessData();
+        }, [])
+    );
 
     return (
         <SafeAreaView style={{ backgroundColor: colors.background, flex: 1 }}>
@@ -143,54 +137,110 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                     </ScrollView>
                 </View>
                 <View style={{ marginHorizontal: -15 }}>
-                    <ScrollView
+                <ScrollView
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={{ paddingBottom: 230, paddingHorizontal: 15 }}
                     >
-                        {show ?
-                            <View style={[GlobalStyleSheet.row, { marginTop: 5 }]}>
-                                {ListData.map((item, index) => (
-                                    <View key={index} style={[GlobalStyleSheet.col50, { marginBottom: 20 }]}>
-                                        <ViewImage
-                                            id={item.id} // Use a unique identifier
-                                            image={item.images} // Use image URL from the data
-                                            video={item.videos} // Use video URL from the data
-                                            mediaType={item.videos ? 'video' : 'image'} // Determine media type
-                                            onPress={() => navigation.navigate('ProductDetails')} // Adjust navigation as needed
-                                            onPress1={() => addItemToWishList(item)} // Adjust functionality as needed
-                                            likebtn={false} // Set as true or false based on your needs
-                                        />
+                        {ListData.map((item, index) => {
+                            const sliderDatamap = item.media;
+                            return (
+                                <View key={index} style={styles.businessContainer}>
+                                    <ScrollView
+                                        horizontal
+                                        showsHorizontalScrollIndicator={false}
+                                        contentContainerStyle={styles.mediaScrollContainer}
+                                    >
+                                        {sliderDatamap.length > 0 ? (
+                                            sliderDatamap.map((data, index) => (
+                                                <View key={index} style={styles.mediaContainer}>
+                                                    {data.media_type === 'images' ? (
+                                                        <Image
+                                                            source={{ uri: data.file_path }}
+                                                            style={styles.image}
+                                                        />
+                                                    ) : data.media_type === 'videos' ? (
+                                                        <ExpoVideo
+                                                            source={{ uri: data.file_path }}
+                                                            style={styles.video}
+                                                            useNativeControls
+                                                        />
+                                                    ) : (
+                                                        <Text style={styles.noMediaText}>No Media</Text>
+                                                    )}
+                                                </View>
+                                            ))
+                                        ) : (
+                                            <View style={styles.mediaContainer}>
+                                                <Text style={styles.noMediaText}>No Media</Text>
+                                            </View>
+                                        )}
+                                    </ScrollView>
+                                    <View style={styles.businessDetails}>
+                                        <Text style={styles.businessName}>{item.name_of_firm}</Text>
+                                        <Text style={styles.businessDetail}>{item.address_line_1}</Text>
+                                        <Text style={styles.businessDetail}>{item.city}</Text>
                                     </View>
-                                ))}    
-                            </View>
-                            :
-                            <View style={{ marginTop: -10 }}>
-                                {/* You can place other components or content here */}
-                            </View>
-                        }
+                                </View>
+                            );
+                        })}
                     </ScrollView>
                 </View>
             </View>
-            
-            <BottomSheet2
-                ref={sheetRef}
-            />
+            <BottomSheet2 ref={sheetRef} />
         </SafeAreaView>
     );
-    
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-    },
-    item: {
+    businessContainer: {
         marginBottom: 20,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+    },
+    mediaScrollContainer: {
+        flexDirection: 'row',
+        paddingVertical: 10,
+    },
+    mediaContainer: {
+        width: 200,
+        height: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f0f0f0',
+        borderRadius: 10,
+        overflow: 'hidden',
+        marginRight: 10,
+    },
+    noMediaText: {
+        color: '#888',
+        fontSize: 16,
+        textAlign: 'center',
     },
     image: {
         width: '100%',
-        height: 200,
+        height: '100%',
+    },
+    video: {
+        width: '100%',
+        height: '100%',
+    },
+    businessDetails: {
+        marginTop: 10,
+    },
+    businessName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'left',
+    },
+    businessDetail: {
+        fontSize: 14,
+        textAlign: 'left',
+        color: '#666',
     },
 });
 

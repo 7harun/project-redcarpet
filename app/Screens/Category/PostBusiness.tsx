@@ -100,17 +100,35 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
             return;
         }
 
+
         const formData = new FormData();
+        formData.append('name_of_firm', businessName);
+        formData.append('mobile_no', phone);
+        formData.append('email', email);
+        formData.append('address_line_1', address1);
+        formData.append('city', city);
+        formData.append('state', state);
+        formData.append('pincode', ''); // Add pincode if applicable
+        formData.append('service_availability_radius', sar);
+        formData.append('book_in_advance_days', bia);
         images.forEach((image) => {
-            formData.append('images', {
+            formData.append('images[]', {
                 uri: image.uri,
                 type: image.type,
                 name: image.name,
             } as any);
         });
+        // Append images
+        // images.forEach((image, index) => {
+        //     formData.append('images[]', {
+        //         uri: image,
+        //         type: 'image/jpeg',
+        //         name: `image${index}.jpg`,
+        //     });
+        // });
 
         if (video) {
-            formData.append('video', {
+            formData.append('videos[]', {
                 uri: video.uri,
                 type: video.type,
                 name: video.name,
@@ -122,7 +140,12 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
 
         try {
             const token = await AsyncStorage.getItem('authToken'); // Retrieve the token
-
+            const userid = await AsyncStorage.getItem('userid');
+            if (!token || !userid) {
+                navigation.navigate('Login'); // Replace 'Login' with your actual login screen name
+            return;
+            }
+            formData.append('vendor_id', userid);
             const response = await axios.post(POSTBusinessUrl(), formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -132,9 +155,9 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                 },
             });
             console.log(response.data)
-            if (response.status === 200) {
+            if (response.status === 1) {
                 Alert.alert('Success', 'Media uploaded successfully');
-                // navigation.navigate('AddBusiness');
+                navigation.navigate('AddBusiness');
             } else {
                 Alert.alert('Upload Failed', 'Failed to upload media');
             }

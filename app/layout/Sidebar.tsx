@@ -83,7 +83,7 @@ const Sidebar = ({navigation} : any) => {
         {
             icon: IMAGES.logout,
             name: "Logout",
-            navigate: 'Onbording',
+            navigate: 'SignIn',
         },
     ]
 

@@ -57,7 +57,7 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
 
     const handleSignUp = async () => {
         let valid = true;
-        // console.log(selectedRole)
+    
         // Reset errors
         setNameError('');
         setEmailError('');
@@ -66,8 +66,8 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
         setConfirmPasswordError('');
         setTermsError('');
         setVendorError('');
-
-
+    
+        // Validation checks
         if (!name) {
             setNameError('Name is required');
             valid = false;
@@ -82,16 +82,14 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
         if (!mobile) {
             setMobileError('Mobile is required');
             valid = false;
-        }else if (!mobileRegex.test(mobile)) {
+        } else if (!mobileRegex.test(mobile)) {
             setMobileError('Mobile number must be exactly 10 digits');
             valid = false;
         }
-
         if (!password) {
             setPasswordError('Password is required');
             valid = false;
         }
-       
         if (password !== confirmPassword) {
             setConfirmPasswordError('Passwords do not match');
             valid = false;
@@ -104,43 +102,49 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
             setTermsError('You must agree to the Terms, Privacy and Fees.');
             valid = false;
         }
-
+    
+        // If validation fails, trigger shake animation and return
         if (!valid) {
             triggerShake();
             return;
         }
-
+    
         try {
             const data = {
-                name: name,
+                name,
                 userid: name,
                 pwd: password,
                 phone: mobile,
-                is_vendor:selectedRole,
+                is_vendor: selectedRole,
                 status: 'active',
-                email: email,
-                address: 'password'
+                email,
+                address: 'password', // Consider if this is required or correct
             };
-        
+    
             // Log the JSON data for debugging purposes
             console.log('Request Data:', JSON.stringify(data));
-            // Replace 'your-api-url' with the actual endpoint URL
-            const response = await axios.post('http://ec2-52-66-250-72.ap-south-1.compute.amazonaws.com/ems/api/users/create',data,{
+    
+            // Replace 'signupUrl()' with the actual endpoint URL
+            const response = await axios.post(signupUrl(), data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },}
-        );
-            console.log(response.data)
+                    'Accept': 'application/json',
+                },
+            });
+    
+            console.log(response.data,'dd');
+    
             // Check the response from the API
-            if (response.data.success='User created successfully.') { // Assuming the API returns a 'success' flag
+            if (response.data.status === 1) { // Use === for comparison
+                console.log('123')
                 navigation.navigate('SignIn');
-
-            } else {
-                setError('Invalid credentials'); // Set error message
+            } else if (response.data.status === 0) {
+                console.log('123')
+                setError(response.data.error);
             }
         } catch (error) {
-            console.log(error)
+            console.error('Error during API request:', error.response ? error.response.data : error.message);
+    
             let errorMessage = 'An error occurred. Please try again.';
             if (axios.isAxiosError(error)) {
                 // Handle known Axios error
@@ -149,14 +153,11 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
                 // Handle other errors
                 errorMessage += ` ${error.message}`;
             }
-            // console.error('Error during API request:', error.response ? error.response.data : error.message);
-
+            setError(errorMessage); // Set error message to show to the user
         }
-
-
-        // If all checks pass, navigate to the SignIn screen
-        // navigation.navigate('SignIn');
     };
+    
+    
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>

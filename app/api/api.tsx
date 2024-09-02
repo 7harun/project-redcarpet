@@ -5,10 +5,11 @@ const BASE_URL = 'http://ec2-52-66-250-210.ap-south-1.compute.amazonaws.com/ems/
 // Define endpoints as constants
 const ENDPOINTS = {
     LOGIN: 'users/login',
-    SIGNUP: '/create',
-    USER: '/user',
-    POSTBusiness: '/vendors/create',
-    GetBusiness: '/vendors',
+    SIGNUP: 'users/create',
+    USER: 'user',
+    POSTBusiness: 'vendors_business/create',
+    GetBusiness: 'vendors_business',
+    GetCategory: 'categories',
     // Add other endpoints here
 };
 
@@ -20,4 +21,5 @@ export const loginUrl = () => buildUrl(ENDPOINTS.LOGIN);
 export const signupUrl = () => buildUrl(ENDPOINTS.SIGNUP);
 export const userUrl = () => buildUrl(ENDPOINTS.USER);
 export const POSTBusinessUrl = () => buildUrl(ENDPOINTS.POSTBusiness);
-export const GetBusiness = () => buildUrl(ENDPOINTS.GetBusiness);
+export const GetBusiness = (vendorId: string | number) => buildUrl(`${ENDPOINTS.GetBusiness}/${vendorId}`);
+export const GetCategory = () => buildUrl(ENDPOINTS.GetCategory);
