@@ -137,54 +137,109 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                     </ScrollView>
                 </View>
                 <View style={{ marginHorizontal: -15 }}>
-                <ScrollView
+                    <ScrollView
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={{ paddingBottom: 230, paddingHorizontal: 15 }}
                     >
                         {ListData.map((item, index) => {
                             const sliderDatamap = item.media;
-                            return (
-                                <View key={index} style={styles.businessContainer}>
-                                    <ScrollView
-                                        horizontal
-                                        showsHorizontalScrollIndicator={false}
-                                        contentContainerStyle={styles.mediaScrollContainer}
-                                    >
-                                        {sliderDatamap.length > 0 ? (
-                                            sliderDatamap.map((data, index) => (
-                                                <View key={index} style={styles.mediaContainer}>
-                                                    {data.media_type === 'images' ? (
-                                                        <Image
-                                                            source={{ uri: data.file_path }}
-                                                            style={styles.image}
-                                                        />
-                                                    ) : data.media_type === 'videos' ? (
-                                                        <ExpoVideo
-                                                            source={{ uri: data.file_path }}
-                                                            style={styles.video}
-                                                            useNativeControls
-                                                        />
-                                                    ) : (
+                            
+                            // Determine if the current index is even or odd
+                            const isEvenIndex = index % 2 === 0;
+
+                            // If the current index is even, create a row container
+                            if (isEvenIndex) {
+                                return (
+                                    <View key={index} style={styles.rowContainer}>
+                                        {/* First item in the row */}
+                                        <View style={styles.businessContainer}>
+                                            <ScrollView
+                                                horizontal
+                                                showsHorizontalScrollIndicator={false}
+                                                contentContainerStyle={styles.mediaScrollContainer}
+                                            >
+                                                {sliderDatamap.length > 0 ? (
+                                                    sliderDatamap.map((data, index) => (
+                                                        <View key={index} style={styles.mediaContainer}>
+                                                            {data.media_type === 'images' ? (
+                                                                <Image
+                                                                    source={{ uri: data.file_path }}
+                                                                    style={styles.image}
+                                                                />
+                                                            ) : data.media_type === 'videos' ? (
+                                                                <ExpoVideo
+                                                                    source={{ uri: data.file_path }}
+                                                                    style={styles.video}
+                                                                    useNativeControls
+                                                                />
+                                                            ) : (
+                                                                <Text style={styles.noMediaText}>No Media</Text>
+                                                            )}
+                                                        </View>
+                                                    ))
+                                                ) : (
+                                                    <View style={styles.mediaContainer}>
                                                         <Text style={styles.noMediaText}>No Media</Text>
+                                                    </View>
+                                                )}
+                                            </ScrollView>
+                                            <View style={styles.businessDetails}>
+                                                <Text style={styles.businessName}>{item.name_of_firm}</Text>
+                                                <Text style={styles.businessDetail}>{item.address_line_1}</Text>
+                                                <Text style={styles.businessDetail}>{item.city}</Text>
+                                            </View>
+                                        </View>
+
+                                        {/* Second item in the row, if it exists */}
+                                        {index + 1 < ListData.length && (
+                                            <View style={styles.businessContainer}>
+                                                <ScrollView
+                                                    horizontal
+                                                    showsHorizontalScrollIndicator={false}
+                                                    contentContainerStyle={styles.mediaScrollContainer}
+                                                >
+                                                    {ListData[index + 1].media.length > 0 ? (
+                                                        ListData[index + 1].media.map((data, idx) => (
+                                                            <View key={idx} style={styles.mediaContainer}>
+                                                                {data.media_type === 'images' ? (
+                                                                    <Image
+                                                                        source={{ uri: data.file_path }}
+                                                                        style={styles.image}
+                                                                    />
+                                                                ) : data.media_type === 'videos' ? (
+                                                                    <ExpoVideo
+                                                                        source={{ uri: data.file_path }}
+                                                                        style={styles.video}
+                                                                        useNativeControls
+                                                                    />
+                                                                ) : (
+                                                                    <Text style={styles.noMediaText}>No Media</Text>
+                                                                )}
+                                                            </View>
+                                                        ))
+                                                    ) : (
+                                                        <View style={styles.mediaContainer}>
+                                                            <Text style={styles.noMediaText}>No Media</Text>
+                                                        </View>
                                                     )}
+                                                </ScrollView>
+                                                <View style={styles.businessDetails}>
+                                                    <Text style={styles.businessName}>{ListData[index + 1].name_of_firm}</Text>
+                                                    <Text style={styles.businessDetail}>{ListData[index + 1].address_line_1}</Text>
+                                                    <Text style={styles.businessDetail}>{ListData[index + 1].city}</Text>
                                                 </View>
-                                            ))
-                                        ) : (
-                                            <View style={styles.mediaContainer}>
-                                                <Text style={styles.noMediaText}>No Media</Text>
                                             </View>
                                         )}
-                                    </ScrollView>
-                                    <View style={styles.businessDetails}>
-                                        <Text style={styles.businessName}>{item.name_of_firm}</Text>
-                                        <Text style={styles.businessDetail}>{item.address_line_1}</Text>
-                                        <Text style={styles.businessDetail}>{item.city}</Text>
                                     </View>
-                                </View>
-                            );
+                                );
+                            } else {
+                                // Return null for odd index, since it's handled by the even index logic
+                                return null;
+                            }
                         })}
                     </ScrollView>
                 </View>
+
             </View>
             <BottomSheet2 ref={sheetRef} />
         </SafeAreaView>
@@ -192,15 +247,18 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
 };
 
 const styles = StyleSheet.create({
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between', // Adjust spacing between items
+        marginBottom: 15, // Add space between rows
+    },
     businessContainer: {
-        marginBottom: 20,
-        padding: 10,
+        flex: 1,
+        marginHorizontal: 5, // Adjust margin between two items
         backgroundColor: '#fff',
         borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
+        overflow: 'hidden',
+        // Add other styles as needed
     },
     mediaScrollContainer: {
         flexDirection: 'row',

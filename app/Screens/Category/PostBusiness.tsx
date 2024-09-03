@@ -135,6 +135,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
             } as any);
         }
         console.log(formData);
+        
         alert('lk');
         // return false;
 
@@ -155,7 +156,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                 },
             });
             console.log(response.data)
-            if (response.status === 1) {
+            if (response.status === 200) {
                 Alert.alert('Success', 'Media uploaded successfully');
                 navigation.navigate('AddBusiness');
             } else {
