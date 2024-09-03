@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import { Video as ExpoVideo } from 'expo-av';
+import { Video as ExpoVideo, ResizeMode } from 'expo-av';
 import { useTheme } from '@react-navigation/native';
 import { COLORS, FONTS } from '../../constants/theme';
 import { GlobalStyleSheet } from '../../constants/StyleSheet';
@@ -170,6 +170,7 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                                                                 <ExpoVideo
                                                                     source={{ uri: data.file_path }}
                                                                     style={styles.video}
+                                                                    resizeMode={ResizeMode.COVER}  // Using ResizeMode.COVER from the enum
                                                                     useNativeControls
                                                                 />
                                                             ) : (
@@ -210,6 +211,7 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                                                                     <ExpoVideo
                                                                         source={{ uri: data.file_path }}
                                                                         style={styles.video}
+                                                                        resizeMode={ResizeMode.COVER}  // Using ResizeMode.COVER from the enum
                                                                         useNativeControls
                                                                     />
                                                                 ) : (
@@ -261,31 +263,34 @@ const styles = StyleSheet.create({
         // Add other styles as needed
     },
     mediaScrollContainer: {
+        
         flexDirection: 'row',
         paddingVertical: 10,
+        marginHorizontal: 5, // Adjust margin between two items
+
+
     },
     mediaContainer: {
-        width: 200,
-        height: 200,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f0f0f0',
+        width: 150, // Define a fixed width
+        height: 150, // Define a fixed height for both images and videos
+        marginRight: 10,
         borderRadius: 10,
         overflow: 'hidden',
-        marginRight: 10,
-    },
-    noMediaText: {
-        color: '#888',
-        fontSize: 16,
-        textAlign: 'center',
     },
     image: {
         width: '100%',
         height: '100%',
+        borderRadius: 10,
     },
     video: {
         width: '100%',
         height: '100%',
+        borderRadius: 10,
+    },
+    noMediaText: {
+        textAlign: 'center',
+        lineHeight: 150, // Center the text vertically
+        color: '#aaa',
     },
     businessDetails: {
         marginTop: 10,
