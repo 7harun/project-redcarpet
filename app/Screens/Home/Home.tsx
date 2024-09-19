@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import { useTheme } from '@react-navigation/native'
 import { View, Text, SafeAreaView, Image, TouchableOpacity, StyleSheet, Platform, TextInput } from 'react-native'
 import { GlobalStyleSheet } from '../../constants/StyleSheet';
@@ -18,13 +18,13 @@ import { RootStackParamList } from '../../Navigations/RootStackParamList';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTowishList } from '../../redux/reducer/wishListReducer';
 import { addToCart } from '../../redux/reducer/cartReducer';
-import { useEffect } from 'react';
 // import Geolocation from 'react-native-geolocation-service';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useContext } from 'react';
 import { AuthContext } from '../../services/authContext';
+import { GetCategory } from '../../api/api';
 
 
 
@@ -501,23 +501,70 @@ const SliderData = [
     
 ]
 
+interface CategoryItem {
+    id: string;
+    image: string;
+    name: string;
+    
+}
+
 
 type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
 
 // const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
 const Home = ({navigation} : HomeScreenProps) => {
     const authContext = useContext(AuthContext);
-
+    
     // Safely extract userInfo properties, avoiding any conditional hook call
     const userInfo = authContext?.userInfo || null;
     const username = userInfo?.username;
     const email = userInfo?.email;
     const role = userInfo?.role;
 
+
+
     // Conditional rendering
     if (!userInfo) {
         return null; // or some fallback UI
     }
+
+
+    const [ListData, SetListData] = useState<CategoryItem[]>([]);
+    const getCategoryData = async () => {
+        try {
+            const token = await AsyncStorage.getItem('authToken');
+            const userid = await AsyncStorage.getItem('userid');
+            if (!token || !userid) {
+                navigation.navigate('Login');
+                return;
+            }
+            const response = await axios.get(GetCategory(), {
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log(response.data)
+            if (Array.isArray(response.data['data'])) {
+                SetListData(response.data['data']);
+            } else if (Array.isArray(response.data)) {
+                SetListData(response.data);
+            } else {
+                console.error('Expected an array but got:', response.data);
+            }
+            console.log(ListData, 'ListData')
+        } catch (error) {
+            console.error('Error fetching business data:', error);
+        }
+    };
+
+    useEffect(()=>{
+        getCategoryData();
+    },[]);
+
+
+    
 
   
     // const { username, email, role } = authContext.userInfo;
@@ -732,7 +779,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                                 contentContainerStyle={{ paddingHorizontal: 15 }}
                             >
                                 <View style={{ marginTop: 15, flexDirection: 'row', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
-                                    {CategoriesData.map((data, index) => {
+                                    {ListData.map((data, index) => {
                                         return (
                                             <TouchableOpacity
                                                 activeOpacity={.9}
@@ -756,14 +803,14 @@ const Home = ({navigation} : HomeScreenProps) => {
                                                     <View style={{backgroundColor:colors.card,height:80,width:80,borderRadius:100,alignItems:'center',justifyContent:'center'}}>
                                                         <Image
                                                             style={{ height: 80, width: 70,borderRadius:35, resizeMode: 'contain', }}
-                                                            source={data.image}
+                                                            source={{uri:'https://redcarpet.s3.ap-south-1.amazonaws.com/1/flower2.jpg'}}
                                                         />
                                                     </View>
                                                 </View>
                                                 <View style={{
                                                     marginTop: 10
                                                 }}>
-                                                    <Text style={{ ...FONTS.Marcellus, fontSize: 15, color: colors.title }}>{data.title}</Text>
+                                                    <Text style={{ ...FONTS.Marcellus, fontSize: 15, color: colors.title }}>{data.name}</Text>
                                                 </View>
                                             </TouchableOpacity>
                                         )

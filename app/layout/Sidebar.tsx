@@ -20,10 +20,7 @@ const Sidebar = ({navigation} : any) => {
     const email = userInfo?.email;
     const role = userInfo?.role;
 
-    // Conditional rendering
-    if (!userInfo) {
-        return null; // or some fallback UI
-    }
+    
 
     
 
@@ -135,6 +132,11 @@ const Sidebar = ({navigation} : any) => {
             navigate: 'Onbording',
         },
     ]
+    
+    // Conditional rendering
+    if (!userInfo) {
+        return null; // or some fallback UI
+    }
 
     return (
         <>

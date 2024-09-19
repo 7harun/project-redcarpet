@@ -25,7 +25,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // const login = async (token: string,username:string) => {
 const login = async (token: string, username: string, email: string, role: string , userid: string) => {
-
     try {
       await AsyncStorage.setItem('authToken', token);
       await AsyncStorage.setItem('username', username);
@@ -35,7 +34,7 @@ const login = async (token: string, username: string, email: string, role: strin
       setIsAuthenticated(true);
       setUserInfo({ username, email, role,userid });
     } catch (e) {
-      console.error('Failed to save the token to the storage');
+      console.error('Failed to save the token to the storage1',e);
     }
   };
 
@@ -50,7 +49,7 @@ const login = async (token: string, username: string, email: string, role: strin
       setIsAuthenticated(false);
       setUserInfo(null);
     } catch (e) {
-      console.error('Failed to remove the token from storage');
+      console.error('Failed to remove the token from storage2');
     }
   };
 
@@ -66,7 +65,7 @@ const login = async (token: string, username: string, email: string, role: strin
       setUserInfo(storedUsername && storedEmail && storedRole && storeUserid ? { username: storedUsername, email: storedEmail, role: storedRole,userid: storeUserid } : null);
 
     } catch (e) {
-      console.error('Failed to fetch the token from storage');
+      console.error('Failed to fetch the token from storage',e);
     }
   };
 
