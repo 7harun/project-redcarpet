@@ -16,6 +16,10 @@ import BottomSheet2 from '../Shortcode/BottomSheet2';
 import { useDispatch } from 'react-redux';
 import { addTowishList } from '../../redux/reducer/wishListReducer';
 import { addToCart } from '../../redux/reducer/cartReducer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { GetCategoryData } from '../../api/api';
+
 
 
 const sliderData = [
@@ -189,11 +193,34 @@ const gridData = [
     
 ]
 
-type ProductsScreenProps = StackScreenProps<RootStackParamList, 'Products'>;
+// Define the media structure
+type Media = {
+    id: string;
+    business_id: string;
+    user_id: string;
+    file_path: string;
+    size: string;
+    media_type: string;
+  };
+  
+  // Update the CategoryData type to reflect the media as an object
+  type CategoryData = {
+    id: string;
+    name_of_firm: string;
+    media?: Media; // Media is now a single object
+  };
+  
+  type IndividualCategoriesDataType = Record<string, CategoryData[]>;
+  
 
-const Products = ({ navigation } : ProductsScreenProps) => {
 
-     const theme = useTheme();
+type IndividualCategoryScreenProps = StackScreenProps<RootStackParamList, 'IndividualCategory'>;
+
+const IndividualCategory = ({ route,navigation } : IndividualCategoryScreenProps) => {
+    
+    const { categoryId } = route.params;
+
+    const theme = useTheme();
     const { colors }:{colors : any} = theme;
 
     const [show, setshow] = useState(true);
@@ -209,6 +236,33 @@ const Products = ({ navigation } : ProductsScreenProps) => {
     const addItemToCart = (data: any) => {
         dispatch(addToCart(data));
     }
+
+    const [IndividualCategoriesData, SetIndividualCategoriesData] = useState<IndividualCategoriesDataType>({});
+    const getCategoriesData = async () => {
+        try {
+            const token = await AsyncStorage.getItem('authToken');
+            const data = {
+                "id":categoryId
+            }
+            const response = await axios.post(GetCategoryData(),data, {
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+            }); // Replace with your actual API URL
+            if (response.data.status === 1) {
+                SetIndividualCategoriesData(response.data['data']);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    useEffect(()=>{
+        getCategoriesData();
+    },[]);
+    console.log(IndividualCategoriesData,'IndividualCategoriesData');
+    
 
     return (
         <SafeAreaView style={{ backgroundColor: colors.background, flex: 1, }}>
@@ -338,50 +392,45 @@ const Products = ({ navigation } : ProductsScreenProps) => {
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={{ paddingBottom: 230,paddingHorizontal:15 }}
                     >
-                        {show ?
-                            <View style={[GlobalStyleSheet.row,{marginTop:5}]}>
-                                {ListData.map((data:any, index:any) => {
-                                    return (
-                                        <View key={index} style={[GlobalStyleSheet.col50, { marginBottom: 20 }]}>
-                                            <Cardstyle2
-                                                id={data.id}
-                                                image={data.image}
-                                                title={data.title}
-                                                price={data.price}
-                                                discount={data.discount}
-                                                onPress={() => navigation.navigate('ProductDetails')}
-                                                onPress1={() => addItemToWishList(data)}
-                                                likebtn
-                                            />
-                                        </View>
-                                    )
+                        {show ? (
+                            <View style={[GlobalStyleSheet.row, { marginTop: 5 }]}>
+                                {Object.keys(IndividualCategoriesData).map((categoryKey) => {
+                                    // categoryKey could be "Venues", "Decorators", "Caterers", etc.
+                                    const categoryData = IndividualCategoriesData[categoryKey];
+
+                                    // Ensure categoryData exists and is an array
+                                    if (Array.isArray(categoryData)) {
+                                        return categoryData.map((item: CategoryData, index: number) => {
+                                            // Check if media exists and extract file_path
+                                            const imageSource = item?.media?.file_path ? item.media.file_path : null;
+                                            console.log(imageSource)
+                                            return (
+                                                <View key={index} style={[GlobalStyleSheet.col50, { marginBottom: 20 }]}>
+                                                    <Cardstyle2
+                                                        id={item.id}
+                                                        image={imageSource ? { uri: imageSource } : IMAGES.redcarpet} 
+                                                        title={item.name_of_firm}
+                                                        price={'8000'} // Replace with actual price if available
+                                                        discount={'1000'} // Replace with actual discount if available
+                                                        onPress={() => navigation.navigate('ProductDetails')}
+                                                        onPress1={() => addItemToWishList(item)}
+                                                        likebtn
+                                                    />
+                                                </View>
+                                            );
+                                        });
+                                    }
+                                    return null;
                                 })}
                             </View>
-                            :
+                        ) : (
                             <View style={{ marginTop: -10 }}>
-                                {gridData.map((data:any, index:any) => {
-                                    return (
-                                        <CardStyle3
-                                            id={data.id}
-                                            key={index}
-                                            title={data.title}
-                                            price={data.price}
-                                            image={data.image}
-                                            discount={data.discount}
-                                            onPress={() => navigation.navigate('MyCart')}
-                                            onPress1={() => addItemToWishList(data)}
-                                            onPress2={() =>{addItemToCart(data) ; navigation.navigate('MyCart')}}
-                                            review={data.review}
-                                            success={data.success}
-                                            offer={data.offer}
-                                            CardStyle4
-                                            CardStyle5
-                                            likeBtn
-                                        />
-                                    )
-                                })}
+                                {/* Grid view handling */}
                             </View>
-                        }
+                        )}
+
+
+
 
                     </ScrollView>
                 </View>
@@ -466,4 +515,4 @@ const Products = ({ navigation } : ProductsScreenProps) => {
     )
 }
 
-export default Products
+export default IndividualCategory

@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Image, SafeAreaView, ScrollView, StyleSheet ,TextInput ,TouchableOpacity , Platform} from 'react-native';
+import { IconButton } from 'react-native-paper';
+import { MaterialIcons} from '@expo/vector-icons';
+import { IMAGES } from '../../constants/Images';
 import { Video as ExpoVideo, ResizeMode } from 'expo-av';
 import { useTheme } from '@react-navigation/native';
 import { COLORS, FONTS } from '../../constants/theme';
@@ -53,7 +56,7 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
     const { colors }:{ colors: any } = theme;
 
     const [selectedOption, setSelectedOption] = useState("Your Business");
-
+    const [show, setshow] = useState(true);
     const handleSelectOption = (option: string) => {
         setSelectedOption(option);
         if (option === "Your Business") {
@@ -87,6 +90,7 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
 
             if (Array.isArray(response.data['data'])) {
                 SetListData(response.data['data']);
+                console.log(response.data['data']);
             } else if (Array.isArray(response.data.data)) {
                 SetListData(response.data.data);
             } else {
@@ -105,6 +109,82 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
 
     return (
         <SafeAreaView style={{ backgroundColor: colors.background, flex: 1 }}>
+            <View
+                style={[{
+                    shadowColor: 'rgba(195, 123, 95, 0.20)',
+                    shadowOffset: {
+                        width: 2,
+                        height: 4,
+                    },
+                    shadowOpacity: .6,
+                    shadowRadius: 5,
+                }, Platform.OS === "ios" && {
+                    //backgroundColor: colors.card,
+                }]}
+            >
+                <View style={{
+                        height: 60,
+                        backgroundColor:theme.dark ? 'rgba(0,0,0,.4)':'rgba(255,255,255,.4)',
+                        borderBottomLeftRadius:25,
+                        borderBottomRightRadius:25,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}
+                >
+                     <View style={{height:40,width:40,borderRadius:15,backgroundColor:colors.card,justifyContent:'center',marginLeft:10,}}>
+                        <IconButton
+                            onPress={() => navigation.goBack()}
+                            icon={props => <MaterialIcons name="arrow-back-ios" {...props} />}
+                            iconColor={colors.title}
+                            size={20}
+                        />
+                     </View>
+                    <View style={{ height: 40, backgroundColor: colors.card, borderRadius: 10, marginLeft: 10, flex: 1 }}>
+                        <TextInput
+                            placeholder='Search Products'
+                            placeholderTextColor={theme.dark ? 'rgba(255, 255, 255, .6)' : 'rgba(0, 0, 0, 0.6)'}
+                            style={{ ...FONTS.fontRegular, fontSize: 16, color: colors.title, paddingLeft: 40,flex:1,borderRadius:15 }}
+                        />
+                        <View style={{ position: 'absolute', top: 9, left: 10, }}>
+                            <Image
+                                style={{ height: 20, width: 20, resizeMode: 'contain', tintColor: colors.title }}
+                                source={IMAGES.search}
+                            />
+                        </View>
+                    </View>
+                    <TouchableOpacity
+                        style={{ padding: 10, marginLeft: 10 }}
+                        onPress={() => {
+                            setshow(!show)
+                        }}
+                    >
+                        <Image
+                            style={{ height: 22, width: 22, resizeMode: 'contain', tintColor: colors.title }}
+                            source={
+                                show
+                                    ?
+                                    IMAGES.list
+                                    :
+                                    IMAGES.grid
+                            }
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{ padding: 10, marginRight: 10 }}
+                        onPress={() => navigation.navigate('MyCart')}
+                    >
+                        <Image style={{
+                            height: 20,
+                            width: 20,
+                            resizeMode: 'contain',
+                            tintColor: colors.title
+                        }} source={IMAGES.shopping2} />
+                        <View style={[GlobalStyleSheet.notification, { position: 'absolute', right: 3, bottom: 22 }]}>
+                            <Text style={{ ...FONTS.fontRegular, fontSize: 10, color: COLORS.white }}>14</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
             <View style={[GlobalStyleSheet.container, { paddingTop: 20 }]}>
                 <View style={{ marginHorizontal: -15, marginBottom: 10 }}>
                     <ScrollView

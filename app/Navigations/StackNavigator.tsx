@@ -30,6 +30,7 @@ import SingleChat from "../Screens/Chat/SingleChat";
 import Call from "../Screens/Chat/Call";
 import Coupons from "../Screens/profile/Coupons";
 import Products from "../Screens/Category/Products";
+import IndividualCategory from "../Screens/Category/IndividualCategory";
 import Damo from "../Screens/Home/Damo";
 import Components from "../Screens/Shortcode/Components";
 import AccordionScreen from "../Screens/Shortcode/Accordion";
@@ -105,6 +106,7 @@ const StackNavigator = () => {
           <Stack.Screen name="Call" component={Call} />
           <Stack.Screen name="Coupons" component={Coupons} />
           <Stack.Screen name="Products" component={Products} />
+          <Stack.Screen name="IndividualCategory" component={IndividualCategory} />
           <Stack.Screen name="AddBusiness" component={AddBusiness} />
           <Stack.Screen name="PostBusiness" component={PostBusiness} />
           <Stack.Screen name="Damo" component={Damo} />

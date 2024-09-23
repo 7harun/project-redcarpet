@@ -50,7 +50,7 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
                     'Accept': 'application/json',
                 },}
         );
-            console.log(response.data,'response')
+            console.log(response.data,'responsesdsd')
             // Check the response from the API
             if (response.data.status) { // Assuming the API returns a 'success' flag
                 setError(''); // Clear error message
@@ -60,7 +60,7 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
                 const role = response.data.is_vendor;
                 const userid = response.data.user_id;
                 login(token, username, email, role, userid);
-                navigation.navigate('DrawerNavigation', { screen: 'Home' });
+                // navigation.navigate('DrawerNavigation', { screen: 'Home' });
 
             } else {
                 setError('Invalid credentials'); // Set error message
