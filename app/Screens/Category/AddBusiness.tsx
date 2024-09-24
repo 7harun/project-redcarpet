@@ -78,7 +78,7 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
             const token = await AsyncStorage.getItem('authToken');
             const userid = await AsyncStorage.getItem('userid');
             if (!token || !userid) {
-                navigation.navigate('Login'); // Replace 'Login' with your actual login screen name
+                navigation.navigate('SignIn'); // Replace 'Login' with your actual login screen name
             return;
             }
             const response = await axios.get(GetBusiness(userid),{

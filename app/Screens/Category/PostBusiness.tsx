@@ -122,7 +122,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
         try {
             const token = await AsyncStorage.getItem('authToken');
             if (!token) {
-                navigation.navigate('Login');
+                navigation.navigate('SignIn');
                 return;
             }
 
@@ -298,7 +298,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
             const token = await AsyncStorage.getItem('authToken'); // Retrieve the token
             const userid = await AsyncStorage.getItem('userid');
             if (!token || !userid) {
-                navigation.navigate('Login'); // Replace 'Login' with your actual login screen name
+                navigation.navigate('SignIn'); // Replace 'Login' with your actual login screen name
             return;
             }
             formData.append('vendor_id', userid);

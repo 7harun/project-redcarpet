@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import Sidebar from '../layout/Sidebar';
 import SignIn from '../Screens/Auth/SignIn';
+import SignUp from '../Screens/Auth/SignUp';
 
 
 const Drawer = createDrawerNavigator();
@@ -24,6 +25,7 @@ const DrawerNavigation = () => {
                 }}
             >
                    <Drawer.Screen name="SignIn" component={SignIn} />
+                   <Drawer.Screen name="SignUp" component={SignUp} />
                 <Drawer.Screen name='BottomNavigation' component={BottomNavigation} />
             </Drawer.Navigator>
         </SafeAreaView>

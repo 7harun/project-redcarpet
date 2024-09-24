@@ -319,7 +319,7 @@ const Home = ({navigation} : HomeScreenProps) => {
             const userid = await AsyncStorage.getItem('userid');
             // console.log(token,'home token')
             if (!token || !userid) {
-                navigation.navigate('Login');
+                navigation.navigate('SignIn');
                 return;
             }
             const response = await axios.get(GetCategory(), {
@@ -334,7 +334,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                 SetCategories(response.data['data']);
 
             } else if (!(response.data['status'])) {
-                navigation.navigate('Login');
+                navigation.navigate('SignIn');
                 return;
             }
             else {

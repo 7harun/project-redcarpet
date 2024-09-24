@@ -143,7 +143,7 @@ const SignUp = ({ navigation }: SignUpScreenProps) => {
                 setError(response.data.error);
             }
         } catch (error) {
-            console.error('Error during API request:', error.response ? error.response.data : error.message);
+            // console.error('Error during API request:', error.response ? error.response.data : error.message);
     
             let errorMessage = 'An error occurred. Please try again.';
             if (axios.isAxiosError(error)) {
