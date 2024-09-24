@@ -24,8 +24,8 @@ const DrawerNavigation = () => {
                     return <Sidebar navigation={props.navigation} />
                 }}
             >
-                   <Drawer.Screen name="SignIn" component={SignIn} />
-                   <Drawer.Screen name="SignUp" component={SignUp} />
+                   {/* <Drawer.Screen name="SignIn" component={SignIn} />
+                   <Drawer.Screen name="SignUp" component={SignUp} /> */}
                 <Drawer.Screen name='BottomNavigation' component={BottomNavigation} />
             </Drawer.Navigator>
         </SafeAreaView>
