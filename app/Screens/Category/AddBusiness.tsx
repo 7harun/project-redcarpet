@@ -88,13 +88,10 @@ const AddBusiness = ({ navigation }: AddBusinessScreenProps) => {
                 },
             });
 
-            if (Array.isArray(response.data['data'])) {
-                SetListData(response.data['data']);
-                console.log(response.data['data']);
-            } else if (Array.isArray(response.data.data)) {
+            if (response.data.status===1) {
                 SetListData(response.data.data);
             } else {
-                console.error('Expected an array but got:', response.data);
+                SetListData([]);
             }
         } catch (error) {
             console.error('Error fetching business data:', error);

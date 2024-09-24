@@ -83,24 +83,7 @@ const ListwithiconData = [
 
 ];
 
-const handleLogout = async (navigation: any) => {
-    try {
-      // Remove the token from AsyncStorage
-      await AsyncStorage.removeItem('authToken');
-      console.log('Token removed');
-    //   navigation.navigate('SignIn'); // Navigate to SignIn screen
-        navigation.navigate('DrawerNavigation', { screen: 'SignIn' });
 
-        
-
-      
-      // Navigate to the SignIn screen
-      
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
-  };
-  
 
 type ProfileScreenProps = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -112,8 +95,27 @@ const Profile = ({ navigation } : ProfileScreenProps) => {
       }
   
     const { username, email, role } = authContext.userInfo;
+    const { logout } = useContext(AuthContext) || { logout: () => {} };
     const theme = useTheme();
     const { colors } : {colors : any}= theme;
+
+    const handleLogout = async (navigation: any) => {
+        try {
+          // Remove the token from AsyncStorage
+          logout();
+        //   navigation.navigate('SignIn'); // Navigate to SignIn screen
+            // navigation.navigate('DrawerNavigation', { screen: 'SignIn' });
+    
+            
+    
+          
+          // Navigate to the SignIn screen
+          
+        } catch (error) {
+          console.error('Error during logout:', error);
+        }
+      };
+      
 
     return (
 

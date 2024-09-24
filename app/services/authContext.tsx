@@ -48,6 +48,8 @@ const login = async (token: string, username: string, email: string, role: strin
       
       setIsAuthenticated(false);
       setUserInfo(null);
+      // Explicitly trigger checkAuth to refresh the state
+      checkAuth();
     } catch (e) {
       console.error('Failed to remove the token from storage2');
     }
