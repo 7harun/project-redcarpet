@@ -375,6 +375,10 @@ const Home = ({navigation} : HomeScreenProps) => {
 
     // Reusable function to render cards for each category
     const renderCategory = (categoryName: string, items: any[]) => {
+        if (!items || items.length === 0) {
+            // If the category has no items, return null to prevent rendering this row.
+            return null;
+        }
         return (
             <View key={categoryName} style={[GlobalStyleSheet.container, { paddingTop: 25 }]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

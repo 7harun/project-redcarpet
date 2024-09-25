@@ -4,15 +4,13 @@ import { useTheme } from '@react-navigation/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 
-
 const CustomInput = (props) => {
-
-     const theme = useTheme();
-    const { colors }:{colors : any} = theme;
+    const theme = useTheme();
+    const { colors } = theme;
 
     const [passwordShow, setPasswordShow] = useState(true);
 
-    const handndleShowPassword = () => {
+    const handleShowPassword = () => {
         setPasswordShow(!passwordShow);
     }
 
@@ -23,57 +21,37 @@ const CustomInput = (props) => {
                     shadowColor: "rgba(195,135,95,0.30)",
                     shadowOffset: {
                         width: 2,
-                        height:props.background ? 20 : 2,
+                        height: props.background ? 20 : 2,
                     },
                     shadowOpacity: .1,
                     shadowRadius: 5,
                 }, Platform.OS === "ios" && {
                     backgroundColor: colors.card,
-                    borderRadius:10
+                    borderRadius: 10
                 }]}
             >
                 <View style={{ position: 'relative', justifyContent: 'center' }}>
-                    <View style={{
-                        position: 'absolute',
-                        height: 48,
-                        width: 48,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 1,
-
-                        //top:16,
-                    }}>
-                        {props.icon && props.icon}
-                    </View>
+                    {/* Icon on the left */}
+                    {props.icon &&
+                        <View style={styles.iconContainer}>
+                            {props.icon}
+                        </View>
+                    }
+                    
+                    {/* Input Field */}
                     <TextInput
                         secureTextEntry={props.type === "password" ? passwordShow : false}
-                        style={[{
-                            ...FONTS.font,
-                            fontSize: 14,
-                            height: 45,
-                            borderWidth: 1,
+                        style={[styles.input, {
                             color: colors.title,
-                            borderColor:props.background ? COLORS.primary: colors.background,
-                            paddingVertical: 12,
-                            backgroundColor:props.background ? colors.card : colors.background,
-                            paddingHorizontal: 15,
-                            borderRadius: 10,
-                        }, props.icon && {
-                            paddingLeft: 50,
-                        }, props.inputLg && {
-                            height: 98,
-                            // paddingVertical: 18,
-                        }, props.inputSm && {
-                            paddingVertical: 7,
-                            height: 45,
-                        }, props.inputRounded && {
-                            borderRadius: 30,
-                        }, props.inputBorder && {
-                            borderWidth: 0,
-                            borderBottomWidth: 1,
-                            borderRadius: 0,
-                            backgroundColor: colors.card,
-                        }]}
+                            borderColor: props.background ? COLORS.primary : colors.background,
+                            backgroundColor: props.background ? colors.card : colors.background,
+                        },
+                        props.icon && styles.inputWithIcon, // Adjust padding if icon is present
+                        props.inputLg && styles.inputLg,   // Larger input
+                        props.inputSm && styles.inputSm,   // Smaller input
+                        props.inputRounded && styles.inputRounded, // Rounded input
+                        props.inputBorder && styles.inputBorder,  // Input with bottom border
+                        ]}
                         placeholderTextColor={colors.textLight}
                         placeholder={props.placeholder}
                         onChangeText={props.onChangeText}
@@ -82,14 +60,20 @@ const CustomInput = (props) => {
                         multiline={props.inputLg}
                         keyboardType={props.keyboardType}
                     />
+
+                    {/* Password Toggle Icon */}
                     {props.type === "password" &&
                         <TouchableOpacity
                             accessible={true}
                             accessibilityLabel="Password"
                             accessibilityHint="Password show and hidden"
-                            onPress={() => handndleShowPassword()}
+                            onPress={() => handleShowPassword()}
                             style={styles.eyeIcon}>
-                            <FeatherIcon color={theme.dark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'} size={18} name={passwordShow ? 'eye-off' : 'eye'} />
+                            <FeatherIcon 
+                                color={theme.dark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'} 
+                                size={18} 
+                                name={passwordShow ? 'eye-off' : 'eye'} 
+                            />
                         </TouchableOpacity>
                     }
                 </View>
@@ -99,7 +83,42 @@ const CustomInput = (props) => {
 };
 
 const styles = StyleSheet.create({
-
+    iconContainer: {
+        position: 'absolute',
+        height: 48,
+        width: 48,
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1,
+        left: 0,
+    },
+    input: {
+        ...FONTS.font,
+        fontSize: 14,
+        height: 45,
+        borderWidth: 1,
+        paddingVertical: 12,
+        paddingHorizontal: 15,
+        borderRadius: 10,
+    },
+    inputWithIcon: {
+        paddingLeft: 50, // Add space for the left icon
+    },
+    inputLg: {
+        height: 98,
+    },
+    inputSm: {
+        paddingVertical: 7,
+        height: 45,
+    },
+    inputRounded: {
+        borderRadius: 30,
+    },
+    inputBorder: {
+        borderWidth: 0,
+        borderBottomWidth: 1,
+        borderRadius: 0,
+    },
     eyeIcon: {
         position: 'absolute',
         height: 50,
@@ -109,7 +128,7 @@ const styles = StyleSheet.create({
         right: 0,
         zIndex: 1,
         top: 0,
-    }
-})
+    },
+});
 
 export default CustomInput;
