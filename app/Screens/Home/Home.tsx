@@ -554,66 +554,66 @@ const Home = ({navigation} : HomeScreenProps) => {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{paddingBottom:80 }}
                 >
-                        <View style={[GlobalStyleSheet.container, { marginHorizontal: 5, marginVertical: 5, backgroundColor: colors.background, marginBottom: 0, paddingBottom: 0 }]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 45 }}>
+                    <View style={[GlobalStyleSheet.container, { marginHorizontal: 5, marginVertical: 5, backgroundColor: colors.background, marginBottom: 0, paddingBottom: 0 }]}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 45 }}>
+                            <TouchableOpacity
+                            onPress={() => navigation.openDrawer()}
+                            >
+                            <View style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexDirection: 'row',
+                                gap: 10,
+                                paddingRight: 15
+                            }}>
+                                <Image
+                                style={{ height: 45, width: 45, borderRadius: 15 }}
+                                source={IMAGES.small1}
+                                />
+                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>{username}{"\n"}<Text style={{ fontSize: 18 }}>Red Carpet {role === '0' ? 'Customer' : 'Vendor'}</Text></Text>
+                            </View>
+                            </TouchableOpacity>
+                            <View
+                                style={[{
+                                    shadowColor: 'rgba(195, 123, 95, 0.20)',
+                                    shadowOffset: {
+                                        width: 2,
+                                        height: 20,
+                                    },
+                                    shadowOpacity: .1,
+                                    shadowRadius: 5,
+                                }]}
+                            >
                                 <TouchableOpacity
-                                onPress={() => navigation.openDrawer()}
+                                    onPress={() => navigation.navigate('Notification')}
+                                    style={{ height:45,width:45,backgroundColor:colors.card,borderRadius:15,alignItems:'center',justifyContent:'center' }}
                                 >
-                                <View style={{
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    flexDirection: 'row',
-                                    gap: 10,
-                                    paddingRight: 15
-                                }}>
                                     <Image
-                                    style={{ height: 45, width: 45, borderRadius: 15 }}
-                                    source={IMAGES.small1}
+                                        style={[GlobalStyleSheet.image, { tintColor:colors.title }]}
+                                        source={IMAGES.bell}
                                     />
-                                    <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>{username}{"\n"}<Text style={{ fontSize: 18 }}>Red Carpet {role === '0' ? 'Customer' : 'Vendor'}</Text></Text>
-                                </View>
                                 </TouchableOpacity>
-                                <View
-                                    style={[{
-                                        shadowColor: 'rgba(195, 123, 95, 0.20)',
-                                        shadowOffset: {
-                                            width: 2,
-                                            height: 20,
-                                        },
-                                        shadowOpacity: .1,
-                                        shadowRadius: 5,
-                                    }]}
-                                >
-                                    <TouchableOpacity
-                                        onPress={() => navigation.navigate('Notification')}
-                                        style={{ height:45,width:45,backgroundColor:colors.card,borderRadius:15,alignItems:'center',justifyContent:'center' }}
-                                    >
-                                        <Image
-                                            style={[GlobalStyleSheet.image, { tintColor:colors.title }]}
-                                            source={IMAGES.bell}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-
-                                {/* Display Location */}
-                                {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                    <Image style={{ height: 20, width: 20, marginRight: 5, tintColor: colors.title }} source={IMAGES.bell} />
-                                    <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>
-                                        {address}
-                                    </Text>
-                                </View> */}
-                                {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                    <Image
-                                        style={{ height: 20, width: 20, marginRight: 5, tintColor: colors.title }}
-                                        source={IMAGES.bell} // Your location icon here
-                                    />
-                                    <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>
-                                        {location ? `Lat: ${location.latitude}, Lon: ${location.longitude}` : 'Fetching location...'}
-                                    </Text>
-                                </View> */}
                             </View>
 
+                            {/* Display Location */}
+                            {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <Image style={{ height: 20, width: 20, marginRight: 5, tintColor: colors.title }} source={IMAGES.bell} />
+                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>
+                                    {address}
+                                </Text>
+                            </View> */}
+                            {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <Image
+                                    style={{ height: 20, width: 20, marginRight: 5, tintColor: colors.title }}
+                                    source={IMAGES.bell} // Your location icon here
+                                />
+                                <Text style={{ ...FONTS.fontJostLight, fontSize: 14, color: colors.title }}>
+                                    {location ? `Lat: ${location.latitude}, Lon: ${location.longitude}` : 'Fetching location...'}
+                                </Text>
+                            </View> */}
                         </View>
+
+                    </View>
                     <View style={{alignItems:'center',marginTop:20}}>
                         <View style={[GlobalStyleSheet.container,{padding:0}]}>
                             <ImageSwiper
@@ -713,7 +713,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                     {/* {Object.entries(CategoriesData).map(([categoryName, items]) => renderCategory(categoryName, items as any[]))} */}
                     {Object.keys(CategoriesData).length === 0 ? (
                         <Text>Loading...</Text>
-                    ) : (
+                            ) : (
                         <ScrollView>
                             {Object.entries(CategoriesData).map(([categoryName, items]) => renderCategory(categoryName, items as any[]))}
                         </ScrollView>

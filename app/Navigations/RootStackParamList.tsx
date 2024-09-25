@@ -7,7 +7,7 @@ export type RootStackParamList = {
 
     PostBusiness: undefined;
 
-    Damo: undefined;
+    Dashboard: undefined;
     ChooseLanguage: undefined;
     QrCodeScanner: undefined;
     SignUp: undefined;

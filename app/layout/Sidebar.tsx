@@ -20,6 +20,17 @@ const Sidebar = ({navigation} : any) => {
     const email = userInfo?.email;
     const role = userInfo?.role;
 
+    const { logout } = useContext(AuthContext) || { logout: () => {} };
+    const handleLogout = async () => {
+        try {
+            // Call the logout function from AuthContext
+            logout();
+            // Navigate to the SignIn screen after logout
+            // navigation.navigate('SignIn');
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    };
     
 
     
@@ -34,14 +45,10 @@ const Sidebar = ({navigation} : any) => {
     const navItemVendor = [
         {
             icon: IMAGES.home,
-            name: "Home",
+            name: "Dashboard",
             navigate: "BottomNavigation",
         },
-        {
-            icon: IMAGES.producta,
-            name: "Products",
-            navigate: "Products",
-        },
+        
         {
             icon: IMAGES.components,
             name: "Post Business",
@@ -52,26 +59,12 @@ const Sidebar = ({navigation} : any) => {
             name: "Review",
             navigate: "WriteReview",
         },
-        {
-            icon: IMAGES.heart2,
-            name: "Wishlist",
-            navigate: "Wishlist",
-        },
+     
         {
             icon: IMAGES.order,
             name: "My Orders",
             navigate: 'Myorder',
         },
-        {
-            icon: IMAGES.shopping2,
-            name: "My Cart",
-            navigate: 'MyCart',
-        },
-        // {
-        //     icon: IMAGES.chat,
-        //     name: "Chat List",
-        //     navigate: 'Chat',
-        // },
         {
             icon: IMAGES.user2,
             name: "Profile",
@@ -91,11 +84,7 @@ const Sidebar = ({navigation} : any) => {
             name: "Home",
             navigate: "BottomNavigation",
         },
-        {
-            icon: IMAGES.producta,
-            name: "Products",
-            navigate: "Products",
-        },
+        
         {
             icon: IMAGES.star,
             name: "Review",
@@ -116,11 +105,7 @@ const Sidebar = ({navigation} : any) => {
             name: "My Cart",
             navigate: 'MyCart',
         },
-        // {
-        //     icon: IMAGES.chat,
-        //     name: "Chat List",
-        //     navigate: 'Chat',
-        // },
+       
         {
             icon: IMAGES.user2,
             name: "Profile",
@@ -182,7 +167,13 @@ const Sidebar = ({navigation} : any) => {
                             return (
                                 <TouchableOpacity
                                     //onPress={() => {data.navigate && navigation.navigate(data.navigate); navigation.closeDrawer()}}
-                                    onPress={() => { data.navigate === "DrawerNavigation" ? dispatch(closeDrawer()) : dispatch(closeDrawer());  navigation.navigate(data.navigate)}}
+                                    onPress={() => { 
+                                        if (data.name === 'Logout') {
+                                            handleLogout(); // Call handleLogout on clicking 'Logout'
+                                        } else {
+                                            data.navigate === "DrawerNavigation" ? dispatch(closeDrawer()) : dispatch(closeDrawer());  navigation.navigate(data.navigate)
+                                        }
+                                    }}
                                     //onPress={() => {data.navigate === "DrawerNavigation" ? dispatch(closeDrawer()) : dispatch(closeDrawer()); navigation.navigate(data.navigate)}}
                                     key={index}
                                     style={{
