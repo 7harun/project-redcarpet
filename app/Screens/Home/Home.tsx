@@ -278,7 +278,7 @@ const SliderData = [
 interface CategoryItem {
     id: string;
     image: string;
-    name: string;
+    category_name: string;
     
 }
 
@@ -329,7 +329,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                     'Accept': 'application/json',
                 },
             });
-
+            console.log(response.data)
             if (Array.isArray(response.data['data'])) {
                 SetCategories(response.data['data']);
 
@@ -383,7 +383,7 @@ const Home = ({navigation} : HomeScreenProps) => {
             <View key={categoryName} style={[GlobalStyleSheet.container, { paddingTop: 25 }]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={{ ...FONTS.Marcellus, fontSize: 24, color: colors.title }}>
-                        {categoryName} Near You
+                        {categoryName} 
                     </Text>
                 </View>
                 <View style={{ marginHorizontal: -15, marginTop: 20 }}>
@@ -673,7 +673,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                                                     <View style={{
                                                         marginTop: 10
                                                     }}>
-                                                        <Text style={{ ...FONTS.Marcellus, fontSize: 15, color: colors.title }}>{data.name}</Text>
+                                                        <Text style={{ ...FONTS.Marcellus, fontSize: 15, color: colors.title }}>{data.category_name}</Text>
                                                     </View>
                                                 </TouchableOpacity>
                                             )

@@ -8,7 +8,7 @@ import axios from 'axios';
 import CustomButton from '../../components/CustomButton';
 import { POSTBusinessUrl } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetCategory } from '../../api/api';
+import { GetCategory,GetSubCategory } from '../../api/api';
 
 type PostBusinessScreenProps = StackScreenProps<RootStackParamList, 'PostBusiness'>;
 
@@ -20,10 +20,15 @@ interface MediaFile {
 
 interface Category {
     id: string;
-    name: string;
+    category_name: string;
     image: string;
 }
 
+interface SubCategory {
+    id: string;
+    sub_category_name: string;
+    image: string;
+}
 
 
 const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
@@ -76,15 +81,19 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
             Alert.alert('Validation Error', 'Please select a category to continue.');
             return;
         }
+        if (currentStep === 2 && !selectedSubcategory) {
+            Alert.alert('Validation Error', 'Please select a sub category to continue.');
+            return;
+        }
     
         // Validation for Step 2 (Business Details)
-        if (currentStep === 2 && (!businessName || !phone || !email || !address1 || !state || !city)) {
+        if (currentStep === 3 && (!businessName || !phone || !email || !address1 || !state || !city)) {
             Alert.alert('Validation Error', 'Please fill in all required business details to continue.');
             return;
         }
     
         // Validation for Step 3 (Pricing Information)
-        if (currentStep === 3 && (!actualPrice || !discountedPrice)) {
+        if (currentStep === 4 && (!actualPrice || !discountedPrice)) {
             Alert.alert('Validation Error', 'Please enter the actual price and discounted price to continue.');
             return;
         }
@@ -96,25 +105,69 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
 
     const handlePreviousStep = () => {
         if (currentStep > 1) setCurrentStep(currentStep - 1);
+        if(currentStep===2){
+            setSubcategories([]);
+            fetchCategories();
+        }
     };
 
     // When the user selects a category
-    const handleCategorySelect = (item: Category) => {
-        setCategory(item);  // Set the category state
+    const handleCategorySelect = async (item: Category) => {
+        setLoadingCategories(true);
+        setError(null);
+        setCategory(item);  // Set the selected category
+          // Move to Step 2 (Subcategory selection)
+        try {
+            const token = await AsyncStorage.getItem('authToken');
+            const data = { "subid": item.id } 
+            const response = await axios.post(GetSubCategory(),data,{
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+            });
+            console.log(response.data,'subcategory')
+            if (response.data.status==1) {
+                setSubcategories(response.data.data);  // Set the subcategories state
+                console.log(subcategories,'subcategories')
+                setCurrentStep(2);
+            } else {
+                setError('No subcategories available for this category.');
+            }
+        } catch (err) {
+            console.error('Error fetching subcategories:', err);
+            setError('Failed to load subcategories');
+        }
     };
 
+    const handleSubcategory = async (item: SubCategory) => {
+        setLoadingCategories(true);
+        setError(null);
+        setSelectedSubcategory(item);
+    };
+    
+
     // Monitor when category state changes, and if it's set, move to the next step
-    useEffect(() => {
-        if (category) {
-            handleNextStep();  // Only move to the next step after category is set
-        }
-    }, [category]);  // Trigger this effect when the 'category' state changes
+    // useEffect(() => {
+    //     if (category) {
+    //         handleNextStep();  // Only move to the next step after category is set
+    //     }
+    // }, [category]);  // Trigger this effect when the 'category' state changes
+    
 
     // Category related states
     const [categories, setCategories] = useState<Category[]>([]);
     const [loadingCategories, setLoadingCategories] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [subcategories, setSubcategories] = useState<SubCategory[]>([]);  // To hold subcategories
+    const [selectedSubcategory, setSelectedSubcategory] = useState<SubCategory | null>(null);  // To hold the selected subcategory
 
+    useEffect(() => {
+        if (selectedSubcategory) {
+            handleNextStep();  // Only move to the next step after category is set
+        }
+    }, [selectedSubcategory]);
     // Fetch categories from API
     const fetchCategories = async () => {
         setLoadingCategories(true);
@@ -137,6 +190,8 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
             if (Array.isArray(response.data['data'])) {
                 setCategories(response.data['data']);
                 console.log(response.data['data'], 'Fetched Categories');
+                setLoadingCategories(false);
+
             }
         } catch (err) {
             console.error('Error fetching categories:', err);
@@ -162,19 +217,52 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                         ) : (
                             <FlatList
                                 data={categories}
-                                keyExtractor={(item) => item.id}
-                                numColumns={2}
+                                keyExtractor={(item, index) => `${item.id}-${index}`} // Ensure unique keys
+                                numColumns={1} // You can change this to adjust the number of columns if needed
                                 renderItem={({ item }) => (
                                     <TouchableOpacity onPress={() => handleCategorySelect(item)} style={styles.categoryItem}>
                                         <Image source={{ uri: item.image }} style={styles.categoryImage} />
-                                        <Text style={{ color: colors.text }}>{item.name}</Text>
+                                        <Text style={{ color: colors.text, textAlign: 'center', marginTop: 5 }}>{item.category_name}</Text>
                                     </TouchableOpacity>
                                 )}
                             />
+
                         )}
                     </>
                 );
+
             case 2:
+                return (
+                    <>
+                        {subcategories.length > 0 ? (
+                            <FlatList
+                                data={subcategories}
+                                keyExtractor={(item, index) => `${item.id}-${index}`} // Ensure unique keys
+                                numColumns={2}
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity
+                                        onPress={() => handleSubcategory(item)} 
+                                        style={[
+                                            styles.subcategoryItem,
+                                            // { backgroundColor: selectedSubcategory?.id === item.id ? colors.primary : 'transparent' }
+                                        ]}
+                                    >
+                                        <Image source={{ uri: item.image }} style={styles.subcategoryImage} />
+                                        <Text style={{ color: colors.text, textAlign: 'center', marginTop: 5 }}>
+                                            {item.sub_category_name}
+                                        </Text>
+                                    </TouchableOpacity>
+                                )}
+                            />
+                        
+                        ) : (
+                            <Text style={{ color: colors.text, textAlign: 'center' }}>No subcategories available.</Text>
+                        )}
+                    </>
+                );
+                
+
+            case 3:
                 return (
                     <>
                         <TextInput
@@ -215,7 +303,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                         />
                     </>
                 );
-            case 3:
+            case 4:
                 return (
                     <>
                         <TextInput
@@ -234,7 +322,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                         />
                     </>
                 );
-            case 4:
+            case 5:
                 return (
                     <>
                         <CustomButton title="Upload Media" onPress={pickMedia} />
@@ -242,12 +330,12 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                         {video && <Text style={{ color: colors.text, marginLeft: 10 }}>Video Selected: {video.name}</Text>}
                     </>
                 );
-            case 5:
+            case 6:
                 return (
                     <>
                         <Text style={{ color: colors.text }}>Review Details</Text>
                         <Text style={{ color: colors.text }}>Business Name: {businessName}</Text>
-                        <Text style={{ color: colors.text }}>Category: {category?.name}</Text>
+                        <Text style={{ color: colors.text }}>Category: {category?.category_name}</Text>
                         <Text style={{ color: colors.text }}>Mobile Number: {phone}</Text>
                         <Text style={{ color: colors.text }}>Actual Price: {actualPrice}</Text>
                         <Text style={{ color: colors.text }}>Discounted Price: {discountedPrice}</Text>
@@ -261,10 +349,11 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
 
 
     const uploadMedia = async () => {
-        if (images.length === 0 && !video) {
-            Alert.alert('No Media Selected', 'Please select images and/or a video to upload.');
+        if (!category || !selectedSubcategory) {
+            Alert.alert('Validation Error', 'Please select a category and subcategory before proceeding.');
             return;
         }
+    
         const formData = new FormData();
         formData.append('name_of_firm', businessName);
         formData.append('mobile_no', phone);
@@ -277,7 +366,9 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
         formData.append('book_in_advance_days', bia);
         formData.append('order_price', actualPrice);
         formData.append('discount_price', discountedPrice);
-        formData.append('service_categories', category.id);
+        formData.append('service_categories', selectedSubcategory.id);  // Send the category ID
+        // formData.append('subcategory_id', selectedSubcategory.id);  // Send the subcategory ID
+        
         images.forEach((image) => {
             formData.append('images[]', {
                 uri: image.uri,
@@ -293,26 +384,25 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                 name: video.name,
             } as any);
         }
-        console.log(formData);
+    
         try {
-            const token = await AsyncStorage.getItem('authToken'); // Retrieve the token
+            const token = await AsyncStorage.getItem('authToken');
             const userid = await AsyncStorage.getItem('userid');
             if (!token || !userid) {
-                navigation.navigate('SignIn'); // Replace 'Login' with your actual login screen name
-            return;
+                navigation.navigate('SignIn');
+                return;
             }
             formData.append('vendor_id', userid);
+    
             const response = await axios.post(POSTBusinessUrl(), formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Accept': 'application/json',
-                    'Authorization': `${token}`, // Include the token in the headers
-
+                    'Authorization': `${token}`,
                 },
             });
-            console.log(response.data)
+            console.log(response)
             if (response.status === 200) {
-                Alert.alert('Success', 'Media uploaded successfully');
+                Alert.alert('Success', 'Business posted successfully!');
                 navigation.navigate('AddBusiness');
             } else {
                 Alert.alert('Upload Failed', 'Failed to upload media');
@@ -322,6 +412,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
             Alert.alert('Error', 'An error occurred while uploading the media.');
         }
     };
+    
 
     const handlePostBusiness = () => {
         console.log('Business Name:', businessName);
@@ -336,8 +427,8 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
             {renderStepContent()}
 
             <View style={styles.navigationButtons}>
-                {currentStep > 1 && <CustomButton title="Previous" onPress={handlePreviousStep} />}
-                {currentStep < 5 && <CustomButton title="Next" onPress={handleNextStep} />}
+                {currentStep > 1 && currentStep < 6 && <CustomButton title="Previous" onPress={handlePreviousStep} />}
+                {currentStep > 2 && currentStep < 6 && <CustomButton title="Next" onPress={handleNextStep} />}
             </View>
         </SafeAreaView>
     );
@@ -351,11 +442,23 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     categoryItem: {
+        flexDirection: 'column', // Change this to column to stack image and text
+        alignItems: 'center',    // Center the image and text
+        marginBottom: 20,        // Add spacing between items
+    },
+    categoryImage: {
+        width: 100,               // Adjust size as needed
+        height: 100,
+        borderRadius: 0,
+        marginBottom: 5,          // Add some space between the image and the text
+
+    },
+    subcategoryItem: {
         flex: 1,
         margin: 10,
         alignItems: 'center',
     },
-    categoryImage: {
+    subcategoryImage: {
         width: 100,
         height: 100,
         borderRadius: 10,

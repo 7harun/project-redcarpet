@@ -22,27 +22,27 @@ import { GetCategoryData } from '../../api/api';
 
 
 
-const sliderData = [
-    {
-        title: "Crazy Deals",
-    },
-    {
-        title: "Budget Buys",
-    },
-    {
-        title: "Best Offer",
-    },
-    {
-        title: "Packages",
-    },
-    {
-        title: "Nearby",
-    },
-    {
-        title: "Trending",
-    },
+// const sliderData = [
+//     {
+//         title: "Crazy Deals",
+//     },
+//     {
+//         title: "Budget Buys",
+//     },
+//     {
+//         title: "Best Offer",
+//     },
+//     {
+//         title: "Packages",
+//     },
+//     {
+//         title: "Nearby",
+//     },
+//     {
+//         title: "Trending",
+//     },
 
-]
+// ]
 
 const ListData = [
     {
@@ -238,12 +238,14 @@ const IndividualCategory = ({ route,navigation } : IndividualCategoryScreenProps
     }
 
     const [IndividualCategoriesData, SetIndividualCategoriesData] = useState<IndividualCategoriesDataType>({});
-    const getCategoriesData = async () => {
+    const [sliderData, setSliderData] = useState<{ title: string; id: string }[]>([]); // Store both title and id
+
+    const getCategoriesData = async (selectedCategoryId?: string) => {
         try {
             const token = await AsyncStorage.getItem('authToken');
-            const data = {
-                "id":categoryId
-            }
+            const data = selectedCategoryId 
+            ? { sub_category_id: selectedCategoryId }  // Use sub_category_id if selectedCategoryId is present
+            : { id: categoryId }; // Otherwise, use the categoryId for the main category
             const response = await axios.post(GetCategoryData(),data, {
                 headers: {
                     'Authorization': `${token}`,
@@ -253,6 +255,16 @@ const IndividualCategory = ({ route,navigation } : IndividualCategoryScreenProps
             }); // Replace with your actual API URL
             if (response.data.status === 1) {
                 SetIndividualCategoriesData(response.data['data']);
+                const categoryKeys = Object.keys(response.data['data']);
+                const formattedSliderData = categoryKeys.map((key) => {
+                    // Assuming each category has an array of items, get the first item's id for the slider
+                    const firstItem = response.data['data'][key]?.[0];
+                    return {
+                        title: key,
+                        id: firstItem ? firstItem.service_categories : '', // Use the ID from the first item or an empty string if no items exist
+                    };
+                });
+                setSliderData(formattedSliderData);
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -262,6 +274,11 @@ const IndividualCategory = ({ route,navigation } : IndividualCategoryScreenProps
         getCategoriesData();
     },[]);
     console.log(IndividualCategoriesData,'IndividualCategoriesData');
+
+    const handleSliderItemClick = (selectedCategoryId: string) => {
+        getCategoriesData(selectedCategoryId); // Fetch data for the selected category ID
+    };
+
     
 
     return (
@@ -347,42 +364,55 @@ const IndividualCategory = ({ route,navigation } : IndividualCategoryScreenProps
                     <ScrollView
                         horizontal
                         showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={{ paddingHorizontal: 15}}
+                        contentContainerStyle={{ paddingHorizontal: 15 }}
                     >
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                gap: 10,
+                                justifyContent: 'center',
+                            }}
+                        >
                             {sliderData.map((data, index) => {
                                 return (
                                     <View
                                         key={index}
-                                        style={[{
-                                            shadowColor: 'rgba(195, 123, 95, 0.20)',
-                                            shadowOffset: {
-                                                width: 2,
-                                                height: 4,
+                                        style={[
+                                            {
+                                                shadowColor: 'rgba(195, 123, 95, 0.20)',
+                                                shadowOffset: {
+                                                    width: 2,
+                                                    height: 4,
+                                                },
+                                                shadowOpacity: 0.1,
+                                                shadowRadius: 5,
+                                                marginBottom: 5,
                                             },
-                                            shadowOpacity: .1,
-                                            shadowRadius: 5,
-                                            marginBottom:5
-                                        }, Platform.OS === "ios" && {
-                                            backgroundColor: 'rgba(255, 255, 255, 0.70)',
-                                            borderRadius: 12,
-                                        }]}
+                                            Platform.OS === 'ios' && {
+                                                backgroundColor: 'rgba(255, 255, 255, 0.70)',
+                                                borderRadius: 12,
+                                            },
+                                        ]}
                                     >
                                         <TouchableOpacity
                                             style={{
-                                                backgroundColor:colors.card,
+                                                backgroundColor: colors.card,
                                                 height: 40,
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                                 borderRadius: 12,
                                                 paddingHorizontal: 20,
                                                 paddingVertical: 5,
-                                                
-                                            }}>
-                                            <Text style={{ ...FONTS.fontMedium, fontSize: 13, color:colors.title }}>{data.title}</Text>
+                                            }}
+                                            onPress={() => handleSliderItemClick(data.id)} // Handle slider item click
+                                        >
+                                            <Text style={{ ...FONTS.fontMedium, fontSize: 13, color: colors.title }}>
+                                                {data.title}
+                                            </Text>
                                         </TouchableOpacity>
                                     </View>
-                                )
+                                );
                             })}
                         </View>
                     </ScrollView>
