@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback  } from 'react';
 import { View, Text, SafeAreaView, Platform, ActivityIndicator } from 'react-native';
-import { useTheme } from '@react-navigation/native';
+import { useTheme,useFocusEffect  } from '@react-navigation/native';
 import { COLORS, FONTS } from '../../constants/theme';
 import { GlobalStyleSheet } from '../../constants/StyleSheet';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
@@ -12,7 +12,8 @@ import { RootStackParamList } from '../../Navigations/RootStackParamList';
 import { Feather } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetCartData } from '../../api/api'; // Make sure this is the correct import for your API function
+import { GetCartData,RemoveIndividualCartData } from '../../api/api'; // Make sure this is the correct import for your API function
+import { IMAGES } from '../../constants/Images';
 
 type ShoppingScreenProps = StackScreenProps<RootStackParamList, 'MyCart'>;
 
@@ -20,7 +21,8 @@ const Shopping = ({ navigation }: ShoppingScreenProps) => {
   const theme = useTheme();
   const { colors }: { colors: any } = theme;
 
-  const [cart, setCart] = useState<any[]>([]);
+  const [cart, setCart] = useState<any[]>([]); // Ensure cart is always initialized as an array
+
   const [loading, setLoading] = useState(true);
 
   // Fetch cart data from the API
@@ -28,11 +30,8 @@ const Shopping = ({ navigation }: ShoppingScreenProps) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
       const userid = await AsyncStorage.getItem('userid');
-
-      const data = {
-        id: userid,
-      };
-
+      const data = { id: userid };
+  
       const response = await axios.post(GetCartData(), data, {
         headers: {
           Authorization: `${token}`,
@@ -40,28 +39,61 @@ const Shopping = ({ navigation }: ShoppingScreenProps) => {
           Accept: 'application/json',
         },
       });
-
-      if (response.data.status === 1) {
-        setCart(response.data.data);
+  
+      if (response.data && response.data.status === 1) {
+        setCart(response.data.data || []); // Fallback to an empty array if no data is returned
       } else {
-        setCart([]); // Set an empty array if no data is returned
+        setCart([]); // Set an empty array if no valid data is returned
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+      setCart([]); // Fallback to an empty cart in case of error
     } finally {
       setLoading(false); // Ensure loading is set to false after the fetch completes
     }
   };
+  
 
   // Use useEffect to call the API when the component mounts
-  useEffect(() => {
-    fetchCartData();
-  }, []);
+  // useEffect(() => {
+  //   fetchCartData();
+  // }, []);
+
+  // Use useFocusEffect to call fetchCartData when the screen is focused
+  useFocusEffect(
+    useCallback(() => {
+    setLoading(true);
+      fetchCartData(); // Fetch data when screen comes into focus
+    // setLoading(false);
+
+    }, []) // Empty dependency array to run it once when the component mounts and whenever it gains focus
+  );
 
   // Handle cart item removal
-  const removeItemFromCart = (id: any) => {
-    setCart(cart.filter((item) => item.id !== id)); // Simply filter out the removed item from the state
+  const removeItemFromCart = async (id: any) => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      const data = { id: id };
+  
+      const response = await axios.post(RemoveIndividualCartData(), data, {
+        headers: {
+          Authorization: `${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+  
+      if (response.data && response.data.status === 1) {
+        setCart((prevCart) => prevCart.filter((item) => item.id !== id)); // Optimistic update
+      } else {
+        setCart([]); // Fallback to an empty array if no valid data is returned
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setCart([]); // Fallback to an empty cart in case of error
+    }
   };
+  
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.background, flex: 1 }}>
@@ -72,26 +104,27 @@ const Shopping = ({ navigation }: ShoppingScreenProps) => {
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <ActivityIndicator size="large" color={COLORS.primary} />
           </View>
-        ) : cart.length > 0 ? (
+        ) : cart && Array.isArray(cart) && cart.length > 0 ? (
           <ScrollView contentContainerStyle={{ paddingBottom: 150 }} showsVerticalScrollIndicator={false}>
             <View style={{ paddingTop: 20, paddingBottom: 5 }}>
-              {cart.map((data: any, index: any) => (
-                <View key={index}>
-                  <CartData
-                    data={{
-                      title: data.name_of_firm,
-                      price: data.discount_price,
-                      discount: data.order_price,
-                      image: data.media[0].file_path, // Use the first image from the media array
-                      review: '(2k Review)', // Placeholder review
-                    }}
-                    navigation={navigation}
-                    theme={theme}
-                    colors={colors}
-                    handleDelete={() => removeItemFromCart(data.id)}
-                  />
-                </View>
-              ))}
+            {cart.map((data: any, index: any) => (
+              <View key={index}>
+                <CartData
+                  data={{
+                    title: data.name_of_firm,
+                    price: data.discount_price,
+                    discount: data.order_price,
+                    image: data.media && data.media.file_path ? data.media.file_path : '', // Handle null or invalid media
+                    review: '(2k Review)', // Placeholder review
+                  }}
+                  navigation={navigation}
+                  theme={theme}
+                  colors={colors}
+                  handleDelete={() => removeItemFromCart(data.id)}
+                />
+              </View>
+            ))}
+
             </View>
           </ScrollView>
         ) : (
@@ -109,7 +142,7 @@ const Shopping = ({ navigation }: ShoppingScreenProps) => {
         )}
       </GestureHandlerRootView>
 
-      {cart.length > 0 && (
+      {cart && Array.isArray(cart) && cart.length > 0 && (
         <View
           style={[
             {

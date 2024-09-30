@@ -1,6 +1,6 @@
 import React, { useState ,useEffect} from 'react'
 import { useTheme } from '@react-navigation/native'
-import { View, Text, SafeAreaView, Image, TouchableOpacity, StyleSheet, Platform, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, StyleSheet, Platform, ActivityIndicator } from 'react-native'
 import { GlobalStyleSheet } from '../../constants/StyleSheet';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -24,7 +24,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useContext } from 'react';
 import { AuthContext } from '../../services/authContext';
-import { GetCategory,GetCategoryData } from '../../api/api';
+import { GetCategory,GetCategoryData,PostCartData } from '../../api/api';
+import Toast from 'react-native-toast-message';  // Import Toast
+
 
 
 
@@ -308,10 +310,12 @@ const Home = ({navigation} : HomeScreenProps) => {
     const username = userInfo?.username;
     const email = userInfo?.email;
     const role = userInfo?.role;
+    const loggedinuser = userInfo?.userid;
 
 
     const [Categories, SetCategories] = useState<CategoryItem[]>([]);
     const [CategoriesData, SetCategoriesData] = useState({});
+    const [loading, setLoading] = useState(true);
 
     const getCategories = async () => {
         try {
@@ -406,7 +410,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                                         discount={item.discount || 'N/A'}
                                         onPress={() => navigation.navigate('ProductDetails')}
                                         onPress1={() => addItemToWishList(item)}
-                                        onPress2={() => { addItemToCart(item); navigation.navigate('MyCart'); }}
+                                        onPress2={() => { addItemToCart(item)}}
                                         closebtn
                                     />
                                 </View>
@@ -541,15 +545,66 @@ const Home = ({navigation} : HomeScreenProps) => {
         dispatch(addTowishList(data));
     }
 
-    const addItemToCart = (data: any) => {
-        dispatch(addToCart(data));
-    }
+    const addItemToCart = async (data: any)  => {
+        setLoading(false);
+        console.log(data, 'addItemToCart');
+        try {
+            // Extracting business_id and user_id from the incoming data
+            const business_id = data.id;
+            // const user_id = data.media.user_id;
+            // Creating the payload for the POST request
+            const postData = {
+                business_id: business_id,  // or simply "business_id" since key and variable name are the same
+                user_id: loggedinuser           // same here
+            }
+            // Getting the token from AsyncStorage
+            const token = await AsyncStorage.getItem('authToken');
+            // Making the POST request
+            const response = await axios.post(PostCartData(), postData, {
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+            });
+            // Check the response from the API
+            console.log(response.data,'PostCartData')
+            if (response.data.status === 1) { // Use === for comparison
+                setLoading(true);
+                Toast.show({
+                    type: 'success',
+                    text1: 'Item added Successful',
+                    text2: 'Products are ready to checkout in the Cart.',
+                });
+            } else{
+                setLoading(true);
+                Toast.show({
+                    type: 'error',
+                    text1: 'Unable to add to cart',
+                    text2: ' ',
+                });
+
+            }
+    
+        } catch (error) {
+            setLoading(true);
+            Toast.show({
+                type: 'error',
+                text1: 'Unable to add to cart',
+                text2: ' ',
+            });
+            console.error('Error fetching data:', error);
+        }finally{
+            setLoading(true);
+        }
+    };
+    
 
     const cart = useSelector((state:any) => state.cart.cart);
 
     return (
         <SafeAreaView style={{ backgroundColor: colors.background, flex: 1, marginBottom: 0 }}>
-             {userInfo ? (
+             {userInfo && loading? (
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{paddingBottom:80 }}
@@ -923,7 +978,7 @@ const Home = ({navigation} : HomeScreenProps) => {
                                                     discount={data.discount}
                                                     onPress={() => navigation.navigate('ProductDetails')}
                                                     onPress1={() => addItemToWishList(data)}
-                                                    onPress2={() =>{addItemToCart(data) ; navigation.navigate('MyCart')}}
+                                                    onPress2={() =>{addItemToCart(data)}}
                                                     closebtn
                                                 />
                                             </View>
@@ -935,8 +990,11 @@ const Home = ({navigation} : HomeScreenProps) => {
                     </View>
                 </ScrollView>
             ) : (
-                <Text>Loading...</Text> // or a proper fallback UI
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator size="large" color={COLORS.primary} />
+                </View>
             )}
+            <Toast />
         </SafeAreaView>
     )
 }

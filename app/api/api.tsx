@@ -1,6 +1,6 @@
 
-// const BASE_URL = 'http://ec2-52-66-250-210.ap-south-1.compute.amazonaws.com/ems/api/'; 
-const BASE_URL = 'http://192.168.1.6:80/ems/api/'; 
+const BASE_URL = 'http://ec2-52-66-250-210.ap-south-1.compute.amazonaws.com/ems/api/'; 
+// const BASE_URL = 'http://192.168.1.10:80/ems/api/'; 
 // const BASE_URL = '192.168.1.8/ems/api/users'; 
 
 // Define endpoints as constants
@@ -14,6 +14,9 @@ const ENDPOINTS = {
     GetSubCategory: 'sub_categories',
     GetCategoryData: 'categories/getcategoriesdata',
     GetCartData: 'cart',
+    PostCartData: 'cart/create',
+    RemoveIndividualCartData: '/cart/delete',
+    
     // Add other endpoints here
 };
 
@@ -30,3 +33,7 @@ export const GetCategory = () => buildUrl(ENDPOINTS.GetCategory);
 export const GetSubCategory = () => buildUrl(ENDPOINTS.GetSubCategory);
 export const GetCategoryData = () => buildUrl(ENDPOINTS.GetCategoryData);
 export const GetCartData = () => buildUrl(ENDPOINTS.GetCartData);
+export const PostCartData = () => buildUrl(ENDPOINTS.PostCartData);
+export const RemoveIndividualCartData = () => buildUrl(ENDPOINTS.RemoveIndividualCartData);
+
+
