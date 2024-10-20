@@ -8,7 +8,9 @@ import axios from 'axios';
 import CustomButton from '../../components/CustomButton';
 import { POSTBusinessUrl } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetCategory,GetSubCategory } from '../../api/api';
+import { GetCategory,GetSubCategory,GetVendorTypes } from '../../api/api';
+import RNPickerSelect from 'react-native-picker-select';
+
 
 type PostBusinessScreenProps = StackScreenProps<RootStackParamList, 'PostBusiness'>;
 
@@ -29,6 +31,12 @@ interface SubCategory {
     sub_category_name: string;
     image: string;
 }
+
+interface VendorType {
+    id: number;
+    vendor_head: string;
+}
+
 
 
 const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
@@ -83,18 +91,13 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
         }
         if (currentStep === 2 && !selectedSubcategory) {
             Alert.alert('Validation Error', 'Please select a sub category to continue.');
+            const selectedvendortype = null;
             return;
         }
     
         // Validation for Step 2 (Business Details)
-        if (currentStep === 3 && (!businessName || !phone || !email || !address1 || !state || !city)) {
+        if (currentStep === 3 && (!businessName || !phone || !email || !address1 || !state || !city || !selectedvendortype || !actualPrice || !discountedPrice)) {
             Alert.alert('Validation Error', 'Please fill in all required business details to continue.');
-            return;
-        }
-    
-        // Validation for Step 3 (Pricing Information)
-        if (currentStep === 4 && (!actualPrice || !discountedPrice)) {
-            Alert.alert('Validation Error', 'Please enter the actual price and discounted price to continue.');
             return;
         }
     
@@ -104,10 +107,13 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
     
 
     const handlePreviousStep = () => {
+
         if (currentStep > 1) setCurrentStep(currentStep - 1);
         if(currentStep===2){
-            setSubcategories([]);
             fetchCategories();
+        }else if(currentStep===3){
+
+            getVendorTypes();
         }
     };
 
@@ -145,6 +151,9 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
         setLoadingCategories(true);
         setError(null);
         setSelectedSubcategory(item);
+        setselectedvendortype(null);
+        // handleNextStep();
+
     };
     
 
@@ -162,6 +171,10 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
     const [error, setError] = useState<string | null>(null);
     const [subcategories, setSubcategories] = useState<SubCategory[]>([]);  // To hold subcategories
     const [selectedSubcategory, setSelectedSubcategory] = useState<SubCategory | null>(null);  // To hold the selected subcategory
+    const [vendortypes, setvendortypes] = useState<{ label: string; value: number; }[]>([]); // For dropdown options
+
+    const [selectedvendortype, setselectedvendortype] = useState<VendorType | null>(null);  // To hold the selected subcategory
+
 
     useEffect(() => {
         if (selectedSubcategory) {
@@ -203,7 +216,45 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
 
     useEffect(() => {
         fetchCategories();
+        getVendorTypes();
     }, []);
+
+
+    const getVendorTypes = async () => {
+        try {
+            const token = await AsyncStorage.getItem('authToken');
+            if (!token) {
+                navigation.navigate('SignIn');
+                return;
+            }
+
+            const response = await axios.get(GetVendorTypes(), {
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+            });
+            if (Array.isArray(response.data['data'])) {
+                const mappedVendorTypes = response.data['data'].map((item: VendorType) => ({
+                    label: item.vendor_head, // Use vendor_head for the label
+                    value: item.id,          // Ensure you have the correct identifier here
+                }));
+                setvendortypes(mappedVendorTypes);
+                console.log(mappedVendorTypes, 'Fetched Vendor Types');
+
+                // setvendortypes(response.data['data']);
+                console.log(response.data['data'], 'setvendortypes');
+                setLoadingCategories(false);
+
+            }
+        } catch (err) {
+            console.error('Error fetching categories:', err);
+            setError('Failed to load categories');
+        } finally {
+            setLoadingCategories(false);
+        }
+    }
 
     const renderStepContent = () => {
         switch (currentStep) {
@@ -271,6 +322,38 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                             onChangeText={setBusinessName}
                             style={[styles.input, { borderColor: colors.border, color: colors.text }]}
                         />
+                        <RNPickerSelect
+                            onValueChange={(value) => setselectedvendortype(value)}
+                            items={vendortypes}
+                            placeholder={{
+                                label: "Select a Category",
+                                value: null,
+                                color: "#9EA0A4"
+                            }}
+                            value={selectedvendortype} // Bind the value to the selected vendor type state
+                            style={{
+                                inputIOS: {
+                                    fontSize: 16,
+                                    paddingVertical: 12,
+                                    paddingHorizontal: 10,
+                                    borderWidth: 1,
+                                    borderColor: colors.border,
+                                    borderRadius: 4,
+                                    color: colors.text,
+                                    paddingRight: 30, // to ensure the text is never behind the icon
+                                },
+                                inputAndroid: {
+                                    fontSize: 16,
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 8,
+                                    borderWidth: 0.5,
+                                    borderColor: colors.border,
+                                    borderRadius: 8,
+                                    color: colors.text,
+                                    paddingRight: 30, // to ensure the text is never behind the icon
+                                }
+                            }}
+                        />
                         <TextInput
                             placeholder="Mobile Number"
                             value={phone}
@@ -301,11 +384,6 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                             onChangeText={setCity}
                             style={[styles.input, { borderColor: colors.border, color: colors.text }]}
                         />
-                    </>
-                );
-            case 4:
-                return (
-                    <>
                         <TextInput
                             placeholder="Actual Price"
                             value={actualPrice}
@@ -322,7 +400,8 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                         />
                     </>
                 );
-            case 5:
+            
+            case 4:
                 return (
                     <>
                         <CustomButton title="Upload Media" onPress={pickMedia} />
@@ -330,7 +409,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
                         {video && <Text style={{ color: colors.text, marginLeft: 10 }}>Video Selected: {video.name}</Text>}
                     </>
                 );
-            case 6:
+            case 5:
                 return (
                     <>
                         <Text style={{ color: colors.text }}>Review Details</Text>
@@ -367,6 +446,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
         formData.append('order_price', actualPrice);
         formData.append('discount_price', discountedPrice);
         formData.append('service_categories', selectedSubcategory.id);  // Send the category ID
+        formData.append('vendor_type_id', selectedvendortype);  // Send the category ID
         // formData.append('subcategory_id', selectedSubcategory.id);  // Send the subcategory ID
         
         images.forEach((image) => {
@@ -417,6 +497,7 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
     const handlePostBusiness = () => {
         console.log('Business Name:', businessName);
         console.log('Category:', category.id);
+        console.log('selectedvendortype:', selectedvendortype);
         uploadMedia();
     };
 
@@ -427,8 +508,8 @@ const PostBusiness = ({ navigation }: PostBusinessScreenProps) => {
             {renderStepContent()}
 
             <View style={styles.navigationButtons}>
-                {currentStep > 1 && currentStep < 6 && <CustomButton title="Previous" onPress={handlePreviousStep} />}
-                {currentStep > 2 && currentStep < 6 && <CustomButton title="Next" onPress={handleNextStep} />}
+                {currentStep > 1 && currentStep < 5 && <CustomButton title="Previous" onPress={handlePreviousStep} />}
+                {currentStep > 2 && currentStep < 5 && <CustomButton title="Next" onPress={handleNextStep} />}
             </View>
         </SafeAreaView>
     );

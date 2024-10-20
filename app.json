@@ -4,10 +4,10 @@
     "slug": "redcarpet",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/rc.jpg",
+    "icon": "./assets/official_logo_rc.jpeg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/rc.jpg",
+      "image": "./assets/official_logo_rc.jpeg",
       "resizeMode":"cover",
       "backgroundColor": "#70747D"
     },
@@ -18,14 +18,14 @@
       "supportsTablet": true,
       "requireFullScreen": true,
       "splash": {
-        "image": "./assets/rc.jpg",
+        "image": "./assets/official_logo_rc.jpeg",
         "resizeMode": "cover",
         "backgroundColor": "#70747D"
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/rc.jpg",
+        "foregroundImage": "./assets/official_logo_rc.jpeg",
         "backgroundColor": "#ffffff"
       },
       "package": "com.w3itexperts.redcarpet",
@@ -35,7 +35,7 @@
       ]
     },
     "web": {
-      "favicon": "./assets/rc.jpg"
+      "favicon": "./assets/official_logo_rc.jpeg"
     },
     "extra": {
       "eas": {

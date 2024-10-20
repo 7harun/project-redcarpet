@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 
+
 const sliderData = [
     { title: "Your Business" },
     { title: "Post New Business" }

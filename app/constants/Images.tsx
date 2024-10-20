@@ -1,7 +1,7 @@
 export const IMAGES = {
 
 	user: require('../assets/images/user.png'),
-	redcarpet: require('../assets/images/rc.jpg'),
+	redcarpet: require('../assets/images/official_logo_rc.jpeg'),
 	logo: require('../assets/images/logo.png'),
 	card: require('../assets/images/card.png'),
 	card1: require('../assets/images/card1.png'),
