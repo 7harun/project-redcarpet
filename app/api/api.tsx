@@ -1,6 +1,6 @@
 
 // const BASE_URL = 'http://ec2-52-66-250-210.ap-south-1.compute.amazonaws.com/ems/api/'; 
-const BASE_URL = 'http://192.168.1.6:80/ems/api/'; 
+const BASE_URL = 'http://192.168.1.2:80/ems/api/'; 
 // const BASE_URL = '192.168.1.8/ems/api/users'; 
 
 // Define endpoints as constants
@@ -15,8 +15,9 @@ const ENDPOINTS = {
     GetCategoryData: 'categories/getcategoriesdata',
     GetCartData: 'cart',
     PostCartData: 'cart/create',
-    RemoveIndividualCartData: '/cart/delete',
+    RemoveIndividualCartData: 'cart/delete',
     GetVendorTypes:'vendor_types',
+    
     
     // Add other endpoints here
 };

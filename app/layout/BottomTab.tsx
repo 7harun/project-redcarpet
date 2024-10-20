@@ -3,6 +3,9 @@ import { Image, Platform, TouchableOpacity, View, Animated, Text, Dimensions } f
 import { COLORS, SIZES, FONTS } from '../constants/theme';
 import { useTheme } from '@react-navigation/native';
 import { GlobalStyleSheet } from '../constants/StyleSheet';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GetCartData } from '../api/api';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -13,15 +16,19 @@ type Props = {
     state : any,
     navigation : any,
     descriptors : any
+    cartCount : any
 }
 
 
-const BottomTab = ({ state, descriptors, navigation } : Props) => {
+const BottomTab = ({ state, descriptors, navigation ,cartCount} : Props) => {
 
     const theme = useTheme();
     const { colors } : {colors : any} = theme;
 
     const [tabWidth, setWidth] = useState(wp('100%'));
+
+
+    
 
     const tabWD =
         tabWidth < SIZES.container ? ( tabWidth - 20) / 5 : SIZES.container / 5;
@@ -33,6 +40,8 @@ const BottomTab = ({ state, descriptors, navigation } : Props) => {
     Dimensions.addEventListener('change', val => {
         setWidth(val.window.width);
     });
+
+
     
     useEffect(() => {
         Animated.spring(circlePosition, {
@@ -182,7 +191,7 @@ const BottomTab = ({ state, descriptors, navigation } : Props) => {
                                     <Image
                                         style={{ width: 21, height: 21, tintColor: isFocused ? COLORS.white : colors.title, resizeMode: 'contain' }}
                                         source={
-                                            label == 'Home' ? IMAGES.home :
+                                            label == 'Home' ? IMAGES.home : 
                                             label == 'Wishlist' ? IMAGES.heart2 :
                                             label == 'MyCart' ? IMAGES.shopping2 :
                                             label == 'Category' ? IMAGES.document :
@@ -190,6 +199,23 @@ const BottomTab = ({ state, descriptors, navigation } : Props) => {
                                         }
 
                                     />
+                                    {label === 'MyCart' && cartCount>0 && (
+                                        <View style={{
+                                            position: 'absolute',
+                                            right: -10,
+                                            top: -5,
+                                            backgroundColor: 'red',
+                                            borderRadius: 10,
+                                            width: 20,
+                                            height: 20,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}>
+                                            <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>
+                                                {cartCount}
+                                            </Text>
+                                        </View>
+                                    )}
                                 </Animated.View>
                                 {isFocused 
                                     ?

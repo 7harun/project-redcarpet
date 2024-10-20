@@ -207,6 +207,8 @@ type Media = {
   type CategoryData = {
     id: string;
     name_of_firm: string;
+    order_price: string;
+    discount_price: string;
     media?: Media; // Media is now a single object
   };
   
@@ -440,8 +442,8 @@ const IndividualCategory = ({ route,navigation } : IndividualCategoryScreenProps
                                                         id={item.id}
                                                         image={imageSource ? { uri: imageSource } : IMAGES.redcarpet} 
                                                         title={item.name_of_firm}
-                                                        price={'8000'} // Replace with actual price if available
-                                                        discount={'1000'} // Replace with actual discount if available
+                                                        price={item.discount_price} // Replace with actual price if available
+                                                        discount={item.order_price} // Replace with actual discount if available
                                                         onPress={() => navigation.navigate('ProductDetails')}
                                                         onPress1={() => addItemToWishList(item)}
                                                         likebtn
