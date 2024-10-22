@@ -28,7 +28,7 @@ const Payment = ({ navigation } : PaymentScreenProps) => {
             />
             <ScrollView contentContainerStyle={{ flexGrow: 1 ,paddingBottom:70}}>
                 <View style={[GlobalStyleSheet.container, { flex: 1 }]}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                    {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Text style={{ ...FONTS.Marcellus, fontSize: 18, color: colors.title }}>Credit/Debit Card</Text>
                         <TouchableOpacity
                             style={{
@@ -58,7 +58,7 @@ const Payment = ({ navigation } : PaymentScreenProps) => {
                                 debitcard
                             />
                         </ScrollView>
-                    </View>
+                    </View> */}
                     <View>
                         <View
                             style={[{

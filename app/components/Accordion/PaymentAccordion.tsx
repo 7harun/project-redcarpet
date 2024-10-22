@@ -27,22 +27,22 @@ const PaymentAccordion = () => {
             title: 'Cash on Delivery(Cash/UPI)',
             content: 'Carry on your cash payment..\nThanx!',
         },
-        {
-            icon: IMAGES.payment,
-            title: 'Google Pay/Phone Pay/BHIM UPI',
-            content: 'Your UPI ID Will be encrypted and is\n100% safe with us.',
-            component: true
-        },
-        {
-            icon: IMAGES.folder,
-            title: 'Payments/Wallet',
-            payment: true
-        },
-        {
-            icon: IMAGES.bank,
-            title: 'Netbanking',
-            netbanking: true,
-        },
+        // {
+        //     icon: IMAGES.payment,
+        //     title: 'Google Pay/Phone Pay/BHIM UPI',
+        //     content: 'Your UPI ID Will be encrypted and is\n100% safe with us.',
+        //     component: true
+        // },
+        // {
+        //     icon: IMAGES.folder,
+        //     title: 'Payments/Wallet',
+        //     payment: true
+        // },
+        // {
+        //     icon: IMAGES.bank,
+        //     title: 'Netbanking',
+        //     netbanking: true,
+        // },
     ];
 
     const AccordionHeader = (item:any, _:any, isActive:any) => {
